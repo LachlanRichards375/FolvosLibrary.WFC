@@ -1,0 +1,27 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace FolvosLibrary.WFC
+{
+	public interface IWFCManager
+	{
+
+		public void SetImporter(IWFCImporter importer);
+		public void Collapse();
+		public void SetExporter(IWFCExporter exporter);
+
+		public void Initialize();
+		public void Generate();
+		public void Cleanup();
+
+		public WFCTile[] GetDomain();
+
+		//Lifecycle
+		public event Action OnInitialize;
+		public event Action OnResult;
+		public event Action<WFCError> OnError;
+		public event Action OnCleanup;
+	}
+}
