@@ -9,5 +9,11 @@ namespace FolvosLibrary.WFC
 		{
 		}
 		public Vector2Int Position;
+
+		public override WFCError GetError(){
+			WFCError e = new WFCError();
+			e.Message = $"Error on cell at position {Position}, Domain has {Domain.Length} remaining elements";
+			return e;
+		}
 	}
 }

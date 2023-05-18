@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using FolvosLibrary.WFC;
 using UnityEngine;
 
-public class WFCExporter : IWFCExporter
+
+[CreateAssetMenu(menuName = "WFC/Exporter/BeachExporter")]
+public class WFCExporter : ScriptableObject, IWFCExporter
 {
 	public Output Export<Input, Output>(Input input)
 	{

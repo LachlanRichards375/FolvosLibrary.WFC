@@ -48,5 +48,6 @@ namespace FolvosLibrary.WFC
 		{
 			return base.GetHashCode();
 		}
+	
 	}
 }

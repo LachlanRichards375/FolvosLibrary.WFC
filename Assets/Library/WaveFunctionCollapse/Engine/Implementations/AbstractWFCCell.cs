@@ -87,5 +87,7 @@ namespace FolvosLibrary.WFC
 			}
 			return sum;
 		}
+
+		public abstract WFCError GetError();
 	}
 }

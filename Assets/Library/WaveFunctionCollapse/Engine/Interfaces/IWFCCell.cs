@@ -10,5 +10,7 @@ namespace FolvosLibrary.WFC
 		public bool HasCollapsed();
 		public float CalculateEntropy();
 		public event Action<WFCCellUpdate> OnCellUpdate;
+
+		public WFCError GetError();
 	}
 }

@@ -9,8 +9,10 @@ namespace FolvosLibrary.WFC
 	{
 
 		public void SetImporter(IWFCImporter importer);
-		public void Collapse();
+		public WFCError? Collapse();
 		public void SetExporter(IWFCExporter exporter);
+
+		public bool HasInitialized();
 
 		public void Initialize();
 		public void Generate();
@@ -23,5 +25,8 @@ namespace FolvosLibrary.WFC
 		public event Action OnResult;
 		public event Action<WFCError> OnError;
 		public event Action OnCleanup;
+
+		//EditorWindow
+		public void DrawSize();
 	}
 }

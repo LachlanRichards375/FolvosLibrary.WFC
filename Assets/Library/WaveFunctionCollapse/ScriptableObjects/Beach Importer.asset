@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c2e178e015e5e54eb52979f578f42dd, type: 3}
-  m_Name: NewCellIsWFCRule2
+  m_Script: {fileID: 11500000, guid: d558ed3e1062ff442a79e1cf463d9777, type: 3}
+  m_Name: Beach Importer
   m_EditorClassIdentifier: 
-  goal: {fileID: 0}
+  returner:
+  - {fileID: 11400000, guid: 285760a1029cfa44caf69933bb2b6ed9, type: 2}
