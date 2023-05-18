@@ -15,5 +15,12 @@ namespace FolvosLibrary.WFC
 			e.Message = $"Error on cell at position {Position}, Domain has {Domain.Length} remaining elements";
 			return e;
 		}
+
+		public override String ToString(){
+			if(CollapsedTile == null){
+				return "Undecided";
+			}
+			return CollapsedTile.Name;
+		}
 	}
 }

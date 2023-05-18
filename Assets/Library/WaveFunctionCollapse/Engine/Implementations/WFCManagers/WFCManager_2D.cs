@@ -12,7 +12,7 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
     IWFCCell[][] grid = new IWFCCell[0][];
     [SerializeField] WFCTile[] tiles;
-    Vector2Int size;
+    Vector2Int size = new Vector2Int(0,0);
 
     SortedList<Vector2Int, float> EntropyQueue = new SortedList<Vector2Int, float>();
 
@@ -55,7 +55,7 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
             for (int y = 0; y < newSize.y; y++)
             {
                 //If outside bounds of old grid we can skip
-                if (y >= grid[0].Length || grid[x][y] == null)
+                if (grid.Length == 0 || y >= grid[0].Length || grid[x] == null || grid[x][y] == null)
                 {
 					newGrid[x][y] = new WFCCell_2D(this);
                 } else {
