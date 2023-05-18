@@ -2,43 +2,6 @@ using FolvosLibrary.WFC;
 using UnityEditor;
 using UnityEngine;
 
-public class CellIsWFCRule : CellTargetWFCRule
-{
-	[SerializeField] public WFCTile goal;
-
-	public override void DrawRuleProperties()
-	{
-		EditorGUILayout.LabelField("Drawing from WFCRule");
-	}
-
-	public override bool Test()
-	{
-		AbstractWFCCell cell = (AbstractWFCCell)targetCell;
-
-		//IF cell has collapsed and is equal to our goal
-		if (cell.HasCollapsed())
-		{
-			return cell.CollapsedTile == goal;
-		}
-
-		//If our target's domain contains our goal
-		for (int i = 0; i < cell.Domain.Length; i++)
-		{
-			if (cell.Domain[i] == goal)
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	public override void RuleInitialize(IWFCManager manager)
-	{
-
-	}
-}
-
 public class CellIsTarget2D : CellTargetWFCRule
 {
 	[SerializeField] public WFCTile goal;
@@ -51,7 +14,7 @@ public class CellIsTarget2D : CellTargetWFCRule
 
 	public override bool Test()
 	{
-		AbstractWFCCell cell = (AbstractWFCCell)targetCell;
+		IWFCCell cell = (IWFCCell)targetCell;
 
 		//IF cell has collapsed and is equal to our goal
 		if (cell.HasCollapsed())
@@ -71,8 +34,10 @@ public class CellIsTarget2D : CellTargetWFCRule
 		return false;
 	}
 
-	public override void RuleInitialize(IWFCManager manager)
+	public override void RuleInitialize(IWFCManager manager, IWFCCell Cell)
 	{
-
+		WFCManager_2D m = manager as WFCManager_2D;
+		WFCCell_2D cell = Cell as WFCCell_2D;
+		targetCell = m.GetCell(offset + cell.Position);
 	}
 }

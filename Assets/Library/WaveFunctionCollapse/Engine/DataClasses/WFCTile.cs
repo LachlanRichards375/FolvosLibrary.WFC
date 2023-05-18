@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
+using System.Xml;
 using UnityEngine;
 
 namespace FolvosLibrary.WFC
@@ -9,13 +11,15 @@ namespace FolvosLibrary.WFC
 	{
 		public string Name;
 		public int TileWeight;
+		public TileData TileData;
 		[SerializeReference] public WFCRule[] Rules = new WFCRule[1];
 
-		public void RuleSetup(IWFCManager manager)
+
+		public void RuleSetup(IWFCManager manager, IWFCCell cell)
 		{
 			foreach (WFCRule rule in Rules)
 			{
-				rule.RuleInitialize(manager);
+				rule.RuleInitialize(manager, cell);
 			}
 		}
 
@@ -48,6 +52,12 @@ namespace FolvosLibrary.WFC
 		{
 			return base.GetHashCode();
 		}
-	
+	}
+
+	[System.Serializable]
+	public partial class TileData
+	{
+		[SerializeField] public Sprite Sprite;
+		//Include other types if needed
 	}
 }

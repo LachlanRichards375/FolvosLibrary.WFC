@@ -13,6 +13,6 @@ namespace FolvosLibrary.WFC
 		public abstract bool Test();
 		public event Action OnRuleFail;
 
-		public abstract void RuleInitialize(IWFCManager manager);
+		public abstract void RuleInitialize(IWFCManager manager, IWFCCell Cell);
 	}
 }
