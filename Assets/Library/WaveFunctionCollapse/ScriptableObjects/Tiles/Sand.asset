@@ -14,21 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Sand
   TileWeight: 0
+  TileData:
+    Sprite: {fileID: 0}
   Rules:
-  - rid: -2
-  - rid: 4320938146932719618
-  - rid: 4320938146932719619
+  - rid: 4320938177337753601
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 4320938146932719618
-      type: {class: CellIsWFCRule, ns: , asm: Assembly-CSharp}
-      data:
-        goal: {fileID: 0}
-    - rid: 4320938146932719619
-      type: {class: CellIsTarget2D, ns: , asm: Assembly-CSharp}
+    - rid: 4320938177337753601
+      type: {class: MultiCellIsTarget2D, ns: , asm: Assembly-CSharp}
       data:
         goal: {fileID: 0}
         offset: {x: 0, y: 0}
