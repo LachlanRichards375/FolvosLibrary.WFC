@@ -17,7 +17,7 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 
 	public override bool Test()
 	{
-		bool[] PassTest = new bool[targetCells.Length];
+		bool[] PassTest = new bool[targetCells.Count];
 		int i = 0;
 		foreach (IWFCCell ICell in targetCells)
 		{
@@ -63,9 +63,12 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 			CellDirection.Direction currentDirection = (CellDirection.Direction)(Enum.GetValues(typeof(CellDirection.Direction))).GetValue(i);
 			if (FlagsHelper.IsSet<CellDirection.Direction>(direction, currentDirection))
 			{
-				targetCells[i] = m.GetCell(cell.Position + CellDirection.CellDirectionToVector2Int(currentDirection));
+				Vector2Int direction = cell.Position + CellDirection.CellDirectionToVector2Int(currentDirection);
+				Debug.Log($"cellPos = {cell.Position} + {currentDirection} ({CellDirection.CellDirectionToVector2Int(currentDirection)}) = {direction} ");
+				IWFCCell targetCell = m.GetCell(direction);
+				Debug.Log($"Target Cell {targetCell}");
+				targetCells.Add(targetCell);
 			}
-			// yield return value;
 		}
 	}
 

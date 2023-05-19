@@ -1,13 +1,13 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace FolvosLibrary.WFC
 {
-	public abstract class IWFCCell
+	public abstract class IWFCCell : IComparable, IComparer
 	{
 		public WFCTile CollapsedTile;
 		public WFCTile[] Domain;
-		protected int domainSum = 0;
 		public event Action<WFCCellUpdate> OnCellUpdate;
 
 		protected IWFCManager manager;
@@ -25,7 +25,7 @@ namespace FolvosLibrary.WFC
 			{
 				if (tile.TileWeight > 0)
 				{
-					entropy -= (tile.TileWeight / domainSum) * Mathf.Log10((tile.TileWeight / domainSum));
+					entropy -= (tile.TileWeight / calcDomain()) * Mathf.Log10((tile.TileWeight / calcDomain()));
 				}
 			}
 			return entropy;
@@ -33,7 +33,7 @@ namespace FolvosLibrary.WFC
 
 		public void Collapse()
 		{
-			float tileNo = UnityEngine.Random.Range(0f, domainSum);
+			float tileNo = UnityEngine.Random.Range(0f, calcDomain());
 			int index = 0;
 			for (index = 0; index < Domain.Length; index++)
 			{
@@ -88,5 +88,24 @@ namespace FolvosLibrary.WFC
 		}
 
 		public abstract WFCError GetError();
+
+		public int CompareTo(object obj)
+		{
+			if (obj == null) return 1;
+			IWFCCell otherTile = obj as IWFCCell;
+			if (otherTile == null) throw new ArgumentException("Object is not a FWCTile");
+
+			return this.CalculateEntropy().CompareTo(otherTile.CalculateEntropy());
+		}
+
+		public int Compare(object x, object y)
+		{
+			if (x == null || y == null) return 1;
+			IWFCCell otherCell = x as IWFCCell;
+
+			if (otherCell == null) throw new ArgumentException("Object is not a FWCTile");
+
+			return otherCell.CompareTo(y);
+		}
 	}
 }

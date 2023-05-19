@@ -11,21 +11,32 @@ public class WFCEditorWindow : ExtendedEditorWindow
 	}
 
 	GameObject mapParent;
-	IWFCImporter importer;
-	IWFCManager manager;
-	IWFCExporter exporter;
+	[SerializeField] IWFCImporter importer;
+	[SerializeField] IWFCManager manager;
+	[SerializeField] IWFCExporter exporter;
+
+
+	bool hasInitialized = false;
+
 	private void OnGUI()
 	{
 		GUILayout.Label("Text on a screen");
 		mapParent = (GameObject)EditorGUILayout.ObjectField("Map Parent: ", mapParent, typeof(GameObject), true);
-		importer = (IWFCImporter)EditorGUILayout.ObjectField("Importer: ", (Object)importer, typeof(IWFCImporter), false);
-		manager = (IWFCManager)EditorGUILayout.ObjectField("Manager: ", (Object)manager, typeof(IWFCManager), false);
-		exporter = (IWFCExporter)EditorGUILayout.ObjectField("Exporter: ", (Object)exporter, typeof(IWFCExporter), false);
+		importer = (IWFCImporter)EditorGUILayout.ObjectField("Importer: ", (Object)importer, typeof(IWFCImporter), true);
+		manager = (IWFCManager)EditorGUILayout.ObjectField("Manager: ", (Object)manager, typeof(IWFCManager), true);
+		exporter = (IWFCExporter)EditorGUILayout.ObjectField("Exporter: ", (Object)exporter, typeof(IWFCExporter), true);
 
 		if (manager != null)
 		{
 			manager.DrawSize();
 		}
+
+		// if (GUILayout.Button("Clear Manager Domain"))
+		// {
+
+		// }
+
+		GUILayout.BeginHorizontal();
 
 		if (GUILayout.Button("Generate!"))
 		{
@@ -35,20 +46,49 @@ public class WFCEditorWindow : ExtendedEditorWindow
 			}
 			else
 			{
-				Debug.Log("Generate map");
-
-				importer.Import<string>("https://www.reddit.com/r/196/comments/10nfwvk/boy_likerule/");
-
-				if (!manager.HasInitialized())
+				if (!hasInitialized)
 				{
+					hasInitialized = true;
+					Debug.Log("Generate map");
+
+					manager.SetImporter(importer);
+					manager.SetExporter(exporter);
+
 					manager.Initialize();
+
+					manager.OnResult += OnGenerateResult;
 				}
-				manager.OnResult += OnGenerateResult;
 				manager.Generate();
-
-
 			}
 		}
+
+
+		if (GUILayout.Button("Generate Step!"))
+		{
+			if (manager == null)
+			{
+				Debug.LogError("Tried to generate when no manager is selected");
+			}
+			else
+			{
+
+				if (!hasInitialized)
+				{
+					hasInitialized = true;
+					Debug.Log("Generate map");
+
+					manager.SetImporter(importer);
+					manager.SetExporter(exporter);
+
+					manager.Initialize();
+
+					manager.OnResult += OnGenerateResult;
+				}
+				manager.GenerateStep();
+			}
+		}
+
+		GUILayout.EndHorizontal();
 	}
 
 	void OnGenerateResult()

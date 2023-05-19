@@ -13,7 +13,8 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 	[SerializeField] WFCTile[] tiles;
 	Vector2Int size = new Vector2Int(0, 0);
 
-	SortedList<Vector2Int, float> EntropyQueue = new SortedList<Vector2Int, float>();
+	// SortedList<Vector2Int, IWFCCell> EntropyQueue = new SortedList<Vector2Int, IWFCCell>();
+	List<IWFCCell> EntropyQueue = new List<IWFCCell>();
 
 	public event Action OnResult;
 	public event Action<WFCError> OnError;
@@ -23,14 +24,19 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
 	public WFCError? Collapse()
 	{
-		Vector2Int nextTile = EntropyQueue.Keys[0];
-		if (EntropyQueue[nextTile] <= 0)
+		WFCCell_2D cell = EntropyQueue[0] as WFCCell_2D;
+		Vector2Int nextTile = cell.Position;
+
+		Debug.Log($"Cell to collapse at ({nextTile}): {cell}");
+
+		if (cell.CalculateEntropy() <= 0f)
 		{
 			//We have an issue
-			Debug.LogError("Entropy queue.next is < 0");
+			Debug.LogError("Entropy queue.next is <= 0");
 			return grid[nextTile.x][nextTile.y].GetError();
 		}
-		grid[nextTile.x][nextTile.y].Collapse();
+
+		// cell.Collapse();
 		EntropyQueue.RemoveAt(0);
 		return null;
 	}
@@ -72,30 +78,43 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
 	void GetEntropyQueue()
 	{
+		Debug.Log("Getting Entropy Queue");
 		for (int x = 0; x < size.x; x++)
 		{
 			for (int y = 0; y < size.y; y++)
 			{
 				WFCCell_2D tile = (WFCCell_2D)grid[x][y];
-				EntropyQueue.Add(new Vector2Int(x, y), tile.CalculateEntropy());
+				EntropyQueue.Add(tile);
 				tile.Domain = tiles;
 				tile.OnCellUpdate += OnCellUpdate;
 				tile.Position = new Vector2Int(x, y);
 			}
 		}
+
+		Debug.Log($"Got Entropy Queue, Cells to fill: {EntropyQueue.Count}, Domain Size: {tiles.Length}");
+		SortQueue();
 	}
 
 	void OnCellUpdate(WFCCellUpdate update)
 	{
-		Vector2Int position = ((WFCCell_2D)update.UpdatedCell).Position;
+		WFCCell_2D updatedCell = ((WFCCell_2D)update.UpdatedCell);
+		int index = EntropyQueue.IndexOf(updatedCell);
+
 		if (update.UpdateType == CellUpdateType.Collapsed)
 		{
-			EntropyQueue.Remove(position);
+			EntropyQueue.RemoveAt(index);
 		}
 		else
 		{
-			EntropyQueue[position] = update.UpdatedCell.CalculateEntropy();
+			EntropyQueue[index] = update.UpdatedCell;
 		}
+
+		SortQueue();
+	}
+
+	void SortQueue()
+	{
+		EntropyQueue.Sort();
 	}
 
 	public void SetImporter(IWFCImporter importer)
@@ -110,6 +129,20 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
 	public void Initialize()
 	{
+		tiles = importer.Import<string>("https://www.reddit.com/r/196/comments/10nfwvk/boy_likerule/");
+		String print = "INITIALIZING \t Domain: ";
+		for (int i = 0; i < tiles.Length; i++)
+		{
+			print += tiles[i].ToString();
+		}
+		Debug.Log(print);
+		int yLength = -1;
+		if (grid.Length > 0)
+		{
+			yLength = grid[0].Length;
+		}
+		Debug.Log("grid size: [" + grid.Length + "," + yLength + "]");
+
 		OnInitialize?.Invoke();
 	}
 
@@ -119,11 +152,26 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		for (int i = 0; i < EntropyQueue.Count; i++)
 		{
 			WFCError? error = Collapse();
-			if (error == null)
+			if (error != null)
 			{
 				//Handle error
 
 			}
+		}
+	}
+
+	public void GenerateStep()
+	{
+		if (EntropyQueue == null || EntropyQueue.Count == 0)
+		{
+			GetEntropyQueue();
+		}
+		Debug.Log("Collapsing cell");
+		WFCError? error = Collapse();
+		if (error != null)
+		{
+			//Handle error
+
 		}
 	}
 
@@ -134,8 +182,7 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
 	public WFCTile[] GetDomain()
 	{
-		Debug.LogError("Get Domain not yet implemented");
-		return null;
+		return tiles;
 	}
 
 	public bool HasInitialized()
