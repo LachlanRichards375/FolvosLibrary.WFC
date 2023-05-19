@@ -9,14 +9,20 @@ namespace FolvosLibrary.WFC
 		[Flags]
 		public enum Direction
 		{
-			North = 1,
-			NorthEast = 2,
-			East = 3,
-			SouthEast = 4,
-			South = 5,
-			SouthWest = 6,
-			West = 7,
-			NorthWest = 8
+			Nothing = 0,
+			Everything = ~0,
+			North = 1 << 0,
+			NorthEast = 1 << 2,
+			East = 1 << 3,
+			SouthEast = 1 << 4,
+			South = 1 << 5,
+			SouthWest = 1 << 6,
+			West = 1 << 7,
+			NorthWest = 1 << 8,
+			AllNorth = NorthWest | North | NorthEast,
+			AllEast = NorthEast | East | SouthEast,
+			AllSouth = SouthWest | South | SouthEast,
+			AllWest = SouthWest | West | NorthWest,
 		}
 
 		public static Vector2Int CellDirectionToVector2Int(Direction direction)

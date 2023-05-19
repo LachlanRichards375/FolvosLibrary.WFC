@@ -20,6 +20,7 @@ public class WFCTileEditorWindow : ExtendedEditorWindow
 		serializedObject.Update();
 		DrawField("Name", false);
 		DrawField("TileWeight", false);
+		DrawField("TileData", false);
 		DrawLine();
 
 		DrawRules();
@@ -67,7 +68,6 @@ public class WFCTileEditorWindow : ExtendedEditorWindow
 		if (selectedProperty != null)
 		{
 			NewRuleEdit();
-			//OldRuleEdit();
 		}
 		else
 		{
@@ -92,37 +92,6 @@ public class WFCTileEditorWindow : ExtendedEditorWindow
 
 		currentRule?.DrawRuleProperties();
 	}
-
-	/*
-	void OldRuleEdit()
-	{
-		EditorGUILayout.LabelField("Selected: " + selectedProperty.displayName);
-
-		WFCTile tile = (selectedProperty.serializedObject.targetObject as WFCTile);
-		Debug.Log("Tile is: " + tile);
-
-		WFCRule WFCRuleList = (WFCRule)selectedProperty.objectReferenceValue;
-
-		string selectedType = "";
-		if (WFCRuleList == null)
-		{
-			selectedType = "Null";
-		}
-		else
-		{
-			selectedType = WFCRuleList.GetType().ToString();
-		}
-
-		if (EditorGUILayout.DropdownButton(new GUIContent(selectedType), FocusType.Passive))
-		{
-			// OnChangeRule();
-		}
-
-		// DrawField("Rules.data")
-		EditorGUILayout.PropertyField(selectedProperty);
-		EditorGUILayout.LabelField(selectedProperty.GetType().ToString());
-	}
-	*/
 
 	void DrawRuleChangeDropDown(WFCTile currentTile, int ruleIndex)
 	{

@@ -11,7 +11,8 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 
 	public override void DrawRuleProperties()
 	{
-		EditorGUILayout.LabelField("Drawing from WFCRule");
+		goal = (WFCTile)EditorGUILayout.ObjectField("Goal Tile: ", goal, typeof(WFCTile), true);
+		direction = (CellDirection.Direction)EditorGUILayout.EnumFlagsField("Directions: ", direction);
 	}
 
 	public override bool Test()
