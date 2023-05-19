@@ -104,7 +104,7 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		WFCCell_2D updatedCell = ((WFCCell_2D)update.UpdatedCell);
 		int index = EntropyQueue.IndexOf(updatedCell);
 
-		Debug.Log("Index: " + index);
+		// Debug.Log("Index: " + index);
 
 		if (update.UpdateType == CellUpdateType.Collapsed)
 		{

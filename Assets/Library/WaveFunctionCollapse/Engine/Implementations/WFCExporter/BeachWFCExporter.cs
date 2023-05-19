@@ -24,12 +24,17 @@ public class BeachWFCExporter : ScriptableObject, IWFCExporter
 			Exported[x] = new GameObject[toExport[0].Length];
 			for (int y = 0; y < toExport[0].Length; y++)
 			{
-				Exported[x][y] = new GameObject($"{toExport[x][y].ToString()}{{{x},{y}}}", typeof(SpriteRenderer));
+				Debug.Log($"Creating gameobject at ({x},{y})");
+				//{toExport[x][y].CollapsedTile.Name} 
+				Exported[x][y] = new GameObject($"{{{x},{y}}}", typeof(SpriteRenderer));
 				Transform t = Exported[x][y].transform;
 				t.position = new Vector3(x, y, 0f);
 
 				SpriteRenderer sR = Exported[x][y].GetComponent<SpriteRenderer>();
-				sR.sprite = input[x][y].CollapsedTile.TileData.Sprite;
+				if (input[x][y].CollapsedTile != null)
+				{
+					sR.sprite = input[x][y].CollapsedTile.TileData.Sprite;
+				}
 			}
 		}
 
