@@ -24,21 +24,22 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
 	public WFCError? Collapse()
 	{
+		// Debug.Log($"EntropyQueue.Count: {EntropyQueue.Count}, Cell to collapse: {EntropyQueue[0]}");
 		WFCCell_2D cell = EntropyQueue[0] as WFCCell_2D;
 		Vector2Int nextTile = cell.Position;
 
-		Debug.Log($"Cell to collapse at ({nextTile}): {cell}");
+		// Debug.Log($"Cell to collapse at ({nextTile}): {cell}");
 
-		// cell.CalculateEntropy();
+		// Debug.Log("Entropy of selected cell is: " + cell.CalculateEntropy());
 
-		// if (cell.CalculateEntropy() <= 0f)
-		// {
-		// 	//We have an issue
-		// 	Debug.LogError("Entropy queue.next is <= 0");
-		// 	return grid[nextTile.x][nextTile.y].GetError();
-		// }
+		if (cell.CalculateEntropy() <= 0f)
+		{
+			//We have an issue
+			Debug.LogError("Entropy queue.next is <= 0");
+			return grid[nextTile.x][nextTile.y].GetError();
+		}
 
-		// cell.Collapse();
+		cell.Collapse();
 		EntropyQueue.RemoveAt(0);
 		return null;
 	}
@@ -93,7 +94,7 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 			}
 		}
 
-		Debug.Log($"Got Entropy Queue, Cells to fill: {EntropyQueue.Count}, Domain Size: {tiles.Length}");
+		Debug.Log($"Got Entropy Queue, Cells filled: {EntropyQueue.Count}, Domain Size: {tiles.Length}");
 		Debug.Log($"grid[2][2] Position: {((WFCCell_2D)grid[2][2]).Position}");
 		SortQueue();
 	}
@@ -102,6 +103,8 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 	{
 		WFCCell_2D updatedCell = ((WFCCell_2D)update.UpdatedCell);
 		int index = EntropyQueue.IndexOf(updatedCell);
+
+		Debug.Log("Index: " + index);
 
 		if (update.UpdateType == CellUpdateType.Collapsed)
 		{
@@ -162,16 +165,20 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
 			}
 		}
+		OnResult?.Invoke();
 	}
 
-	public void GenerateStep()
+	public void GenerateStep(int step = 1)
 	{
-		Debug.Log("Collapsing cell");
-		WFCError? error = Collapse();
-		if (error != null)
+		for (int i = 0; i < step; i++)
 		{
-			//Handle error
-
+			Debug.Log("Collapsing cell");
+			WFCError? error = Collapse();
+			if (error != null)
+			{
+				//Handle error
+				Debug.LogError("Error occured : " + error.Value.Message);
+			}
 		}
 	}
 
@@ -212,10 +219,12 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 			return null;
 		}
 
-		if (position.x >= grid.Length && position.y >= grid[0].Length)
+		if (position.x >= grid.Length || position.y >= grid[0].Length)
 		{
 			return null;
 		}
+
+		// Debug.Log($"grid.Length: {grid.Length}, grid[0].length: {grid[0].Length}, position: {position}");
 
 		return grid[position.x][position.y];
 	}

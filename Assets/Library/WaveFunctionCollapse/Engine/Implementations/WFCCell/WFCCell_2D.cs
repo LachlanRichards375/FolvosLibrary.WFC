@@ -23,10 +23,10 @@ namespace FolvosLibrary.WFC
 			if (CollapsedTile == null)
 			{
 				string returner = "Undecided ";
-				foreach (WFCTile tile in Domain)
-				{
-					returner += tile.Name + " ";
-				}
+				// foreach (WFCTile tile in Domain)
+				// {
+				// 	returner += tile.Name + " ";
+				// }
 				return returner;
 			}
 			return CollapsedTile.Name;

@@ -16,7 +16,7 @@ namespace FolvosLibrary.WFC
 
 		public void Initialize();
 		public void Generate();
-		public void GenerateStep();
+		public void GenerateStep(int step = 1);
 		public void Cleanup();
 
 		public WFCTile[] GetDomain();

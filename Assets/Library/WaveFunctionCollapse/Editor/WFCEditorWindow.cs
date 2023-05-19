@@ -92,7 +92,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 
 					manager.OnResult += OnGenerateResult;
 				}
-				manager.GenerateStep();
+				manager.GenerateStep(2);
 			}
 		}
 
@@ -101,17 +101,22 @@ public class WFCEditorWindow : ExtendedEditorWindow
 
 	void OnGenerateResult()
 	{
-		GameObject[][] map = (exporter as BeachWFCExporter).Export((manager as WFCManager_2D).GetCells());
-		int rowNumber = 0;
-		foreach (GameObject[] row in map)
-		{
-			Transform rowParent = new GameObject($"Row{{{rowNumber}}}").transform;
-			rowParent.SetParent(mapParent.transform);
-			foreach (GameObject cell in row)
-			{
-				cell.transform.SetParent(rowParent);
-			}
-			rowNumber++;
-		}
+		// GameObject[][] map = (exporter as BeachWFCExporter).Export((manager as WFCManager_2D).GetCells());
+		// int rowNumber = 0;
+
+		// Debug.Log("Reached On Generate Result");
+
+		// Debug.Log($"Map.Length: {map.Length}, Map[0].Length: {map[0].Length}");
+
+		// foreach (GameObject[] row in map)
+		// {
+		// 	Transform rowParent = new GameObject($"Row{{{rowNumber}}}").transform;
+		// 	rowParent.SetParent(mapParent.transform);
+		// 	foreach (GameObject cell in row)
+		// 	{
+		// 		cell.transform.SetParent(rowParent);
+		// 	}
+		// 	rowNumber++;
+		// }
 	}
 }

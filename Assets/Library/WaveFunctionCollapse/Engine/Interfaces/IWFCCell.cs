@@ -20,15 +20,16 @@ namespace FolvosLibrary.WFC
 
 		public float CalculateEntropy()
 		{
-			float entropy = 0.0f;
-			foreach (WFCTile tile in Domain)
-			{
-				if (tile.TileWeight > 0)
-				{
-					entropy -= (tile.TileWeight / calcDomain()) * Mathf.Log10((tile.TileWeight / calcDomain()));
-				}
-			}
-			return entropy;
+			// float entropy = calcDomain();
+			// foreach (WFCTile tile in Domain)
+			// {
+			// 	if (tile.TileWeight > 0)
+			// 	{
+			// 		entropy -= (tile.TileWeight / calcDomain()) * Mathf.Log10((tile.TileWeight / calcDomain()));
+			// 	}
+			// }
+			//return number of tiles - domain Length + 1 because 0 is bad
+			return manager.GetDomain().Length - Domain.Length + 1;
 		}
 
 		public void Collapse()
@@ -108,5 +109,7 @@ namespace FolvosLibrary.WFC
 
 			return otherCell.CompareTo(y);
 		}
+
+		public override abstract string ToString();
 	}
 }
