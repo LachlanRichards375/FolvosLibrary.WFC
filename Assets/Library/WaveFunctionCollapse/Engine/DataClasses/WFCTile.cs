@@ -19,6 +19,7 @@ namespace FolvosLibrary.WFC
 		{
 			foreach (WFCRule rule in Rules)
 			{
+				// Debug.Log("Rule setup");
 				rule.RuleInitialize(manager, cell);
 			}
 		}

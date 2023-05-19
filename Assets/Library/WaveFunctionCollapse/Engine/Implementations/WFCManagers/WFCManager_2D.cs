@@ -29,12 +29,14 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
 		Debug.Log($"Cell to collapse at ({nextTile}): {cell}");
 
-		if (cell.CalculateEntropy() <= 0f)
-		{
-			//We have an issue
-			Debug.LogError("Entropy queue.next is <= 0");
-			return grid[nextTile.x][nextTile.y].GetError();
-		}
+		// cell.CalculateEntropy();
+
+		// if (cell.CalculateEntropy() <= 0f)
+		// {
+		// 	//We have an issue
+		// 	Debug.LogError("Entropy queue.next is <= 0");
+		// 	return grid[nextTile.x][nextTile.y].GetError();
+		// }
 
 		// cell.Collapse();
 		EntropyQueue.RemoveAt(0);
@@ -92,6 +94,7 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		}
 
 		Debug.Log($"Got Entropy Queue, Cells to fill: {EntropyQueue.Count}, Domain Size: {tiles.Length}");
+		Debug.Log($"grid[2][2] Position: {((WFCCell_2D)grid[2][2]).Position}");
 		SortQueue();
 	}
 
@@ -133,7 +136,7 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		String print = "INITIALIZING \t Domain: ";
 		for (int i = 0; i < tiles.Length; i++)
 		{
-			print += tiles[i].ToString();
+			print += tiles[i].ToString() + ", ";
 		}
 		Debug.Log(print);
 		int yLength = -1;
@@ -143,12 +146,13 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		}
 		Debug.Log("grid size: [" + grid.Length + "," + yLength + "]");
 
+		GetEntropyQueue();
+
 		OnInitialize?.Invoke();
 	}
 
 	public void Generate()
 	{
-		GetEntropyQueue();
 		for (int i = 0; i < EntropyQueue.Count; i++)
 		{
 			WFCError? error = Collapse();
@@ -162,10 +166,6 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
 	public void GenerateStep()
 	{
-		if (EntropyQueue == null || EntropyQueue.Count == 0)
-		{
-			GetEntropyQueue();
-		}
 		Debug.Log("Collapsing cell");
 		WFCError? error = Collapse();
 		if (error != null)
@@ -173,6 +173,11 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 			//Handle error
 
 		}
+	}
+
+	public void ClearQueue()
+	{
+		EntropyQueue = new List<IWFCCell>();
 	}
 
 	public void Cleanup()

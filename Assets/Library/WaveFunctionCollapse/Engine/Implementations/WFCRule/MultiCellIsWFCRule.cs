@@ -61,13 +61,14 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 		for (int i = 0; i < Enum.GetNames(typeof(CellDirection.Direction)).Length; i++)
 		{
 			CellDirection.Direction currentDirection = (CellDirection.Direction)(Enum.GetValues(typeof(CellDirection.Direction))).GetValue(i);
+			// Debug.Log("Loop");
 			if (FlagsHelper.IsSet<CellDirection.Direction>(direction, currentDirection))
 			{
 				Vector2Int direction = cell.Position + CellDirection.CellDirectionToVector2Int(currentDirection);
 				Debug.Log($"cellPos = {cell.Position} + {currentDirection} ({CellDirection.CellDirectionToVector2Int(currentDirection)}) = {direction} ");
-				IWFCCell targetCell = m.GetCell(direction);
-				Debug.Log($"Target Cell {targetCell}");
-				targetCells.Add(targetCell);
+				// IWFCCell targetCell = m.GetCell(direction);
+				// Debug.Log($"Target Cell {targetCell}");
+				// 	targetCells.Add(targetCell);
 			}
 		}
 	}

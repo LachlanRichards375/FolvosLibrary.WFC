@@ -37,6 +37,18 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		// }
 
 		GUILayout.BeginHorizontal();
+		if (GUILayout.Button("Reset Initialization!"))
+		{
+			hasInitialized = false;
+		}
+
+		if (GUILayout.Button("Clear Entropy Queue!"))
+		{
+			((WFCManager_2D)manager).ClearQueue();
+		}
+		GUILayout.EndHorizontal();
+
+		GUILayout.BeginHorizontal();
 
 		if (GUILayout.Button("Generate!"))
 		{
@@ -46,22 +58,18 @@ public class WFCEditorWindow : ExtendedEditorWindow
 			}
 			else
 			{
-				if (!hasInitialized)
-				{
-					hasInitialized = true;
-					Debug.Log("Generate map");
+				hasInitialized = true;
+				Debug.Log("Generate map");
 
-					manager.SetImporter(importer);
-					manager.SetExporter(exporter);
+				manager.SetImporter(importer);
+				manager.SetExporter(exporter);
 
-					manager.Initialize();
+				manager.Initialize();
 
-					manager.OnResult += OnGenerateResult;
-				}
+				manager.OnResult += OnGenerateResult;
 				manager.Generate();
 			}
 		}
-
 
 		if (GUILayout.Button("Generate Step!"))
 		{

@@ -63,6 +63,7 @@ namespace FolvosLibrary.WFC
 			OnCellUpdate += CellUpdated;
 
 			Domain = manager.GetDomain();
+
 			foreach (WFCTile tile in Domain)
 			{
 				tile.RuleSetup(manager, this);

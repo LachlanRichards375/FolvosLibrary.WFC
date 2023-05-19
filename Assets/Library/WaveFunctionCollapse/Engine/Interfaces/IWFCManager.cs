@@ -20,6 +20,8 @@ namespace FolvosLibrary.WFC
 		public void Cleanup();
 
 		public WFCTile[] GetDomain();
+		public void ClearQueue();
+
 
 		//Lifecycle
 		public event Action OnInitialize;
