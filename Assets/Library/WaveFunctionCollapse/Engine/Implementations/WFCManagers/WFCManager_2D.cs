@@ -94,27 +94,11 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 			}
 		}
 
-		Debug.Log($"Got Entropy Queue, Cells filled: {EntropyQueue.Count}, Domain Size: {tiles.Length}");
-		Debug.Log($"grid[2][2] Position: {((WFCCell_2D)grid[2][2]).Position}");
 		SortQueue();
 	}
 
 	void OnCellUpdate(WFCCellUpdate update)
 	{
-		WFCCell_2D updatedCell = ((WFCCell_2D)update.UpdatedCell);
-		int index = EntropyQueue.IndexOf(updatedCell);
-
-		// Debug.Log("Index: " + index);
-
-		if (update.UpdateType == CellUpdateType.Collapsed)
-		{
-			EntropyQueue.RemoveAt(index);
-		}
-		else
-		{
-			EntropyQueue[index] = update.UpdatedCell;
-		}
-
 		SortQueue();
 	}
 
@@ -156,30 +140,42 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
 	public void Generate()
 	{
-		for (int i = 0; i < EntropyQueue.Count; i++)
+		while (EntropyQueue.Count > 0)
 		{
-			WFCError? error = Collapse();
-			if (error != null)
-			{
-				//Handle error
-
-			}
+			GenerateOnce();
 		}
 		OnResult?.Invoke();
 	}
 
+	void GenerateOnce()
+	{
+		WFCError? error = Collapse();
+		if (error != null)
+		{
+			//Handle error
+			Debug.LogError("Error occured : " + error.Value.Message);
+		}
+		//Try print cells after each step.
+		//Logger will tell us if not allowed
+		PrintCells();
+	}
+
 	public void GenerateStep(int step = 1)
 	{
-		for (int i = 0; i < step; i++)
+		for (int i = 0; i < step && EntropyQueue.Count > 0; i++)
 		{
-			Debug.Log("Collapsing cell");
-			WFCError? error = Collapse();
-			if (error != null)
-			{
-				//Handle error
-				Debug.LogError("Error occured : " + error.Value.Message);
-			}
+			GenerateOnce();
 		}
+
+		if (EntropyQueue.Count > 0)
+		{
+			((BeachWFCExporter)exporter).Export(GetCells());
+		}
+		else
+		{
+			OnResult?.Invoke();
+		}
+
 	}
 
 	public void ClearQueue()
