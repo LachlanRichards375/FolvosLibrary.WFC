@@ -11,6 +11,7 @@ namespace FolvosLibrary.Logging
 		{
 			Debug = 1,
 			Test = 2,
+			WFCManager = 3,
 		}
 	}
 }

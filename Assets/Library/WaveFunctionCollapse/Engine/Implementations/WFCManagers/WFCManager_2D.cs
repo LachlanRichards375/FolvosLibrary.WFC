@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using FolvosLibrary.Logging;
 using FolvosLibrary.WFC;
 using UnityEngine;
-
 [CreateAssetMenu(menuName = "WFC/Manager/2DManager")]
 public class WFCManager_2D : ScriptableObject, IWFCManager
 {
@@ -64,7 +64,7 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 			for (int y = 0; y < newSize.y; y++)
 			{
 				//If outside bounds of old grid we can skip
-				if (grid.Length == 0 || y >= grid[0].Length || grid[x] == null || grid[x][y] == null)
+				if (grid.Length == 0 || x >= grid.Length || y >= grid[0].Length || grid[x] == null || grid[x][y] == null)
 				{
 					newGrid[x][y] = new WFCCell_2D(this);
 				}
@@ -227,5 +227,34 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		// Debug.Log($"grid.Length: {grid.Length}, grid[0].length: {grid[0].Length}, position: {position}");
 
 		return grid[position.x][position.y];
+	}
+
+	public void PrintCells()
+	{
+		Logging.LoggingLevel = Logging.Priority.Low;
+		Logging.LoggingGroups = Logging.ProjectGroups.WFCManager;
+
+		Logging.LogMessage message = new Logging.LogMessage();
+
+		message.MessageFrom = Logging.ProjectGroups.WFCManager;
+		message.Priority = Logging.Priority.Low;
+
+		string s = $"WFC Print Cells(): \n" +
+		$"\t> Grid size: ({grid.Length},{grid[0].Length}), Entropy Queue.Count: {EntropyQueue.Count}\n";
+
+		//This needs to be set out in this order so it
+		//prints to the console the same direction as the exporter output
+		for (int row = grid.Length - 1; row >= 0; row--)
+		{
+			string toAppend = $"{row}\t>";
+			for (int column = 0; column < grid[0].Length; column++)
+			{
+				toAppend += String.Format("{0,15}", grid[column][row].ToString());
+			}
+			s += toAppend + "\n";
+		}
+		message.Message = s;
+
+		Logging.Message(message);
 	}
 }

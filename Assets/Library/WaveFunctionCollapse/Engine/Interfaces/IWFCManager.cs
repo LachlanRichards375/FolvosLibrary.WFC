@@ -31,5 +31,8 @@ namespace FolvosLibrary.WFC
 
 		//EditorWindow
 		public void DrawSize();
+
+		//Logging
+		public void PrintCells();
 	}
 }
