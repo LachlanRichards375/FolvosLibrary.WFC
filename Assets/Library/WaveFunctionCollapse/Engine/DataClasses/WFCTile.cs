@@ -24,21 +24,6 @@ namespace FolvosLibrary.WFC
 			}
 		}
 
-		public static bool operator ==(WFCTile tile1, WFCTile tile2)
-		{
-
-			if (tile1 == null || tile2 == null)
-			{
-				return false;
-			}
-			return tile1.Name == tile2.Name;
-		}
-
-		public static bool operator !=(WFCTile tile1, WFCTile tile2)
-		{
-			return !tile1 == tile2;
-		}
-
 		public override bool Equals(object other)
 		{
 			if (other is WFCTile)
