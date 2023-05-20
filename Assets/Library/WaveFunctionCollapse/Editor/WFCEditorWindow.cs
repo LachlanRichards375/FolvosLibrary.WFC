@@ -36,18 +36,33 @@ public class WFCEditorWindow : ExtendedEditorWindow
 
 		// }
 
-		GUILayout.BeginHorizontal();
-		if (GUILayout.Button("Reset Initialization!"))
+		if (GUILayout.Button("Reset!"))
 		{
-			hasInitialized = false;
-		}
+			if (mapParent != null)
+			{
+				for (int i = 0; i < mapParent.transform.childCount; i++)
+				{
+					DestroyImmediate(mapParent.transform.GetChild(0).gameObject);
+				}
 
-		if (GUILayout.Button("Clear Entropy Queue!"))
-		{
-			((WFCManager_2D)manager).ClearQueue();
-		}
-		GUILayout.EndHorizontal();
+				hasInitialized = false;
 
+				if (manager != null)
+				{
+					manager.ClearQueue();
+				}
+
+				if (exporter != null)
+				{
+					exporter.Reset();
+				}
+
+				if (importer != null)
+				{
+					importer.Reset();
+				}
+			}
+		}
 		GUILayout.BeginHorizontal();
 
 		if (GUILayout.Button("Generate!"))

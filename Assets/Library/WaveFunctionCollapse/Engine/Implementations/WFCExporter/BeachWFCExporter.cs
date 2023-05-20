@@ -53,4 +53,9 @@ public class BeachWFCExporter : ScriptableObject, IWFCExporter
 
 		return Exported;
 	}
+
+	public void Reset()
+	{
+		Exported = new GameObject[0][];
+	}
 }

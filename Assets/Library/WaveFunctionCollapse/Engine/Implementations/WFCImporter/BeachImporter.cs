@@ -9,4 +9,9 @@ class BeachImporter : ScriptableObject, IWFCImporter
 	{
 		return returner;
 	}
+
+	public void Reset()
+	{
+
+	}
 }
