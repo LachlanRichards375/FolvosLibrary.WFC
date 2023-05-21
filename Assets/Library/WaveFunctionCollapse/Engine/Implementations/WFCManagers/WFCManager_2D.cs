@@ -24,13 +24,8 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
 	public WFCError? Collapse()
 	{
-		// Debug.Log($"EntropyQueue.Count: {EntropyQueue.Count}, Cell to collapse: {EntropyQueue[0]}");
 		WFCCell_2D cell = EntropyQueue[0] as WFCCell_2D;
 		Vector2Int nextTile = cell.Position;
-
-		// Debug.Log($"Cell to collapse at ({nextTile}): {cell}");
-
-		// Debug.Log("Entropy of selected cell is: " + cell.CalculateEntropy());
 
 		if (cell.CalculateEntropy() <= 0f)
 		{

@@ -69,6 +69,12 @@ namespace FolvosLibrary.WFC
 
 			return PassesTest.Any(t => t == true);
 		}
+
+		public override string ToString()
+		{
+			return this.Name;
+		}
+
 	}
 
 	[System.Serializable]

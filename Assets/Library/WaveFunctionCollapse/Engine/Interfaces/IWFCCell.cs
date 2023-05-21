@@ -36,7 +36,7 @@ namespace FolvosLibrary.WFC
 			// 		entropy -= (tile.TileWeight / calcDomain()) * Mathf.Log10((tile.TileWeight / calcDomain()));
 			// 	}
 			// }
-			//return number of tiles - domain Length + 1 because 0 is bad
+			//return domain Length without weighting
 			return Domain.Length;
 		}
 
@@ -62,12 +62,8 @@ namespace FolvosLibrary.WFC
 			OnCellUpdate?.Invoke(updateMessage);
 		}
 
-		public void DomainCheck(bool fromRule = false)
+		public void DomainCheck()
 		{
-			if (fromRule)
-			{
-				Debug.Log("Domain check was called from a rule");
-			}
 
 			List<int> toRemove = new List<int>();
 			int i = 0;
@@ -80,9 +76,20 @@ namespace FolvosLibrary.WFC
 				i++;
 			}
 
-			if (fromRule && toRemove.Count > 0)
+			if (this is WFCCell_2D)
 			{
-				Debug.Log("Attempting to remove " + toRemove.Count + " tiles from domain");
+				WFCCell_2D cell = this as WFCCell_2D;
+				if (toRemove.Count > 0)
+				{
+					Debug.Log("Attempting to remove " + toRemove.Count + " tiles from domain in cell at position " + cell.Position);
+				}
+			}
+			else
+			{
+				if (toRemove.Count > 0)
+				{
+					Debug.Log("Attempting to remove " + toRemove.Count + " tiles from domain");
+				}
 			}
 
 			for (i = 0; i < toRemove.Count; i++)
