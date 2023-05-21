@@ -64,6 +64,11 @@ namespace FolvosLibrary.WFC
 
 		public void DomainCheck()
 		{
+			//If we've collapsed we don't care
+			if (CollapsedTile != null)
+			{
+				return;
+			}
 
 			List<int> toRemove = new List<int>();
 			int i = 0;
@@ -81,14 +86,14 @@ namespace FolvosLibrary.WFC
 				WFCCell_2D cell = this as WFCCell_2D;
 				if (toRemove.Count > 0)
 				{
-					Debug.Log("Attempting to remove " + toRemove.Count + " tiles from domain in cell at position " + cell.Position);
+					Debug.Log("Attempting to remove " + toRemove.Count + " tiles from domain(" + Domain.Length + ") in cell at position " + cell.Position);
 				}
 			}
 			else
 			{
 				if (toRemove.Count > 0)
 				{
-					Debug.Log("Attempting to remove " + toRemove.Count + " tiles from domain");
+					Debug.Log("Attempting to remove " + toRemove.Count + " tiles from domain(" + Domain.Length + ")");
 				}
 			}
 
