@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace FolvosLibrary.WFC
 {
-	public abstract class IWFCCell : IComparable, IComparer
+	public abstract class IWFCCell : IComparable
 	{
-		public WFCTile CollapsedTile;
+		public WFCTile CollapsedTile { get; protected set; }
 		public WFCTile[] Domain;
 		public event Action<WFCCellUpdate> OnCellUpdate;
 
@@ -15,7 +16,14 @@ namespace FolvosLibrary.WFC
 		public IWFCCell(IWFCManager manager)
 		{
 			this.manager = manager;
-			manager.OnInitialize += PreInitialize;
+		}
+
+		public void RuleSetup()
+		{
+			foreach (WFCTile tile in Domain)
+			{
+				tile.RuleSetup(manager, this);
+			}
 		}
 
 		public float CalculateEntropy()
@@ -54,29 +62,58 @@ namespace FolvosLibrary.WFC
 			OnCellUpdate?.Invoke(updateMessage);
 		}
 
-		public bool HasCollapsed()
+		public void DomainCheck(bool fromRule = false)
 		{
-			return CollapsedTile == null;
-		}
+			if (fromRule)
+			{
+				Debug.Log("Domain check was called from a rule");
+			}
 
-		private void PreInitialize()
-		{
-			OnCellUpdate += CellUpdated;
-
-			Domain = manager.GetDomain();
-
+			List<int> toRemove = new List<int>();
+			int i = 0;
 			foreach (WFCTile tile in Domain)
 			{
-				tile.RuleSetup(manager, this);
+				if (!tile.PassesRules())
+				{
+					toRemove.Add(i);
+				}
+				i++;
+			}
+
+			if (fromRule)
+			{
+				Debug.Log("Attempting to remove " + toRemove.Count + " tiles from domain");
+			}
+
+			for (i = 0; i < toRemove.Count; i++)
+			{
+				Domain = RemoveAt(toRemove[i] - i);
 			}
 		}
 
-		void CellUpdated(WFCCellUpdate update)
+		WFCTile[] RemoveAt(int index)
 		{
-			if (update.UpdateType != CellUpdateType.DomainUpdate)
+			if (index < 0 || index >= Domain.Length)
 			{
-				calcDomain();
+				return null;
 			}
+
+			WFCTile[] returner = new WFCTile[Domain.Length - 1];
+
+			int RulesCount = 0, returnerCount = 0;
+			while (RulesCount < Domain.Length)
+			{
+
+				if (RulesCount != index)
+				{
+					returner[returnerCount] = Domain[RulesCount];
+					returnerCount++;
+				}
+
+				RulesCount++;
+			}
+
+			return returner;
 		}
 
 		protected int calcDomain()
@@ -90,6 +127,8 @@ namespace FolvosLibrary.WFC
 		}
 
 		public abstract WFCError GetError();
+
+		public override abstract string ToString();
 
 		public int CompareTo(object obj)
 		{
@@ -110,6 +149,5 @@ namespace FolvosLibrary.WFC
 			return otherCell.CompareTo(y);
 		}
 
-		public override abstract string ToString();
 	}
 }

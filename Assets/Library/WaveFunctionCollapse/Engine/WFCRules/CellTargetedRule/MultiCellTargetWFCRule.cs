@@ -10,7 +10,12 @@ namespace FolvosLibrary.WFC
 
 		public void TargetCellUpdated(WFCCellUpdate cellUpdate)
 		{
-			Test();
+			// Debug.Log("Targeted cell was updated, position: " + ((WFCCell_2D)cellUpdate.UpdatedCell).Position);
+			bool t = Test();
+			if (t == false)
+			{
+				InvokeOnRuleFail();
+			}
 		}
 	}
 }

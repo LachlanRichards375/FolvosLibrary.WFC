@@ -17,24 +17,30 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 
 	public override bool Test()
 	{
+		if (targetCells == null)
+		{
+			return false;
+		}
+
 		bool[] PassTest = new bool[targetCells.Count];
 		int i = 0;
 		foreach (IWFCCell ICell in targetCells)
 		{
 
-			IWFCCell cell = (IWFCCell)ICell;
+			IWFCCell targetCell = (IWFCCell)ICell;
 
 			//IF cell has collapsed and is equal to our goal
-			if (cell.HasCollapsed())
+			if (targetCell.CollapsedTile != null)
 			{
-				PassTest[i] = cell.CollapsedTile == goal;
+				PassTest[i] = targetCell.CollapsedTile == goal;
 				continue;
 			}
 
+			PassTest[i] = false;
 			//If our target's domain contains our goal
-			for (int target = 0; target < cell.Domain.Length; target++)
+			for (int target = 0; target < targetCell.Domain.Length; target++)
 			{
-				if (cell.Domain[target] == goal)
+				if (targetCell.Domain[target] == goal)
 				{
 					PassTest[i] = true;
 					break; //break out of for target loop, continue to next target cell
@@ -44,14 +50,8 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 			i++;
 		}
 
-		if (PassTest.Any(e => e == true))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		//if any are false return false
+		return !PassTest.Any(b => b == false);
 	}
 
 	public override void RuleInitialize(IWFCManager manager, IWFCCell Cell)
@@ -72,9 +72,26 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 					if (targetCells == null)
 						targetCells = new System.Collections.Generic.List<IWFCCell>();
 					targetCells.Add(targetCell);
+
+					// targetCell.OnCellUpdate += TargetCellUpdated;
+					targetCell.OnCellUpdate += (WFCCellUpdate u) => cell.DomainCheck(true);
 				}
 			}
 		}
+
+		// string toPrint = "Pos: " + cell.Position;
+
+		// if (targetCells != null)
+		// {
+		// 	toPrint += ", TargetCells.Count " + targetCells.Count;
+		// }
+		// else
+		// {
+		// 	toPrint += ", No Target Cells.";
+		// }
+
+		// Debug.Log(toPrint);
+
 	}
 
 }
