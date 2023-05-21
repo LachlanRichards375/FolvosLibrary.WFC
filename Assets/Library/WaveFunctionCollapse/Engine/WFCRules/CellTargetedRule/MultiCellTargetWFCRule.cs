@@ -8,6 +8,10 @@ namespace FolvosLibrary.WFC
 	{
 		[SerializeField] public List<IWFCCell> targetCells;
 
+		protected MultiCellTargetWFCRule(WFCRule rule) : base(rule)
+		{
+		}
+
 		public void TargetCellUpdated(WFCCellUpdate cellUpdate)
 		{
 			// Debug.Log("Targeted cell was updated, position: " + ((WFCCell_2D)cellUpdate.UpdatedCell).Position);

@@ -22,14 +22,28 @@ namespace FolvosLibrary.WFC
 		{
 			if (CollapsedTile == null)
 			{
-				string returner = "Undecided";
-				// foreach (WFCTile tile in Domain)
-				// {
-				// 	returner += tile.Name + " ";
-				// }
+				string returner = "Undecided (" + GetActualDomainSize() + ")";
+				foreach (WFCTile tile in Domain)
+				{
+					returner += tile.Name + " ";
+				}
 				return returner;
 			}
 			return CollapsedTile.Name;
+		}
+
+		int GetActualDomainSize()
+		{
+			int domainSize = 0;
+			for (int i = 0; i < Domain.Length; i++)
+			{
+				if (Domain[i] != null)
+				{
+					domainSize++;
+				}
+			}
+
+			return domainSize;
 		}
 	}
 }

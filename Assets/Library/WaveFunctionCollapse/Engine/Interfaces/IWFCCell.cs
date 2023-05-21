@@ -37,7 +37,7 @@ namespace FolvosLibrary.WFC
 			// 	}
 			// }
 			//return number of tiles - domain Length + 1 because 0 is bad
-			return manager.GetDomain().Length - Domain.Length + 1;
+			return Domain.Length;
 		}
 
 		public void Collapse()
@@ -80,7 +80,7 @@ namespace FolvosLibrary.WFC
 				i++;
 			}
 
-			if (fromRule)
+			if (fromRule && toRemove.Count > 0)
 			{
 				Debug.Log("Attempting to remove " + toRemove.Count + " tiles from domain");
 			}

@@ -31,4 +31,4 @@ MonoBehaviour:
       type: {class: MultiCellIsTarget2D, ns: , asm: Assembly-CSharp}
       data:
         goal: {fileID: 11400000, guid: 3ee41d799c6fbbf40987ce9acd11a4ec, type: 2}
-        direction: 448
+        direction: -1

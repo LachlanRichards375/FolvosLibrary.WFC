@@ -7,6 +7,12 @@ public class CellIsTarget2D : CellTargetWFCRule
 	[SerializeField] public WFCTile goal;
 	public Vector2Int offset;
 
+	public CellIsTarget2D(CellIsTarget2D rule) : base(rule)
+	{
+		goal = rule.goal;
+		offset = rule.offset;
+	}
+
 	public override void DrawRuleProperties()
 	{
 		EditorGUILayout.LabelField("Drawing from WFCRule");
@@ -17,7 +23,7 @@ public class CellIsTarget2D : CellTargetWFCRule
 		IWFCCell cell = (IWFCCell)targetCell;
 
 		//IF cell has collapsed and is equal to our goal
-		if (cell.HasCollapsed())
+		if (cell.CollapsedTile != null)
 		{
 			return cell.CollapsedTile == goal;
 		}

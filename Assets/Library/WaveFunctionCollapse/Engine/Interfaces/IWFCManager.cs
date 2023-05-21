@@ -9,8 +9,8 @@ namespace FolvosLibrary.WFC
 	{
 
 		public void SetImporter(IWFCImporter importer);
-		public WFCError? Collapse();
 		public void SetExporter(IWFCExporter exporter);
+		public WFCError? Collapse();
 
 		public bool HasInitialized();
 

@@ -9,10 +9,21 @@ namespace FolvosLibrary.WFC
 	[System.Serializable]
 	public abstract class WFCRule
 	{
+		public WFCRule(WFCRule rule)
+		{
+			OwnerCell = rule.OwnerCell;
+		}
+
 		public abstract void DrawRuleProperties();
 		public abstract bool Test();
-		public event Action OnRuleFail;
-
 		public abstract void RuleInitialize(IWFCManager manager, IWFCCell Cell);
+
+		public event Action<WFCRule> OnRuleFail;
+		protected IWFCCell OwnerCell;
+
+		protected virtual void InvokeOnRuleFail()
+		{
+			OnRuleFail?.Invoke(this);
+		}
 	}
 }

@@ -79,7 +79,7 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		size = newSize;
 	}
 
-	void GetEntropyQueue()
+	void LoadGrid()
 	{
 		Debug.Log("Getting Entropy Queue");
 		for (int x = 0; x < size.x; x++)
@@ -88,23 +88,68 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 			{
 				WFCCell_2D tile = (WFCCell_2D)grid[x][y];
 				EntropyQueue.Add(tile);
-				tile.Domain = tiles;
+				tile.Domain = GetDomain();
 				tile.OnCellUpdate += OnCellUpdate;
 				tile.Position = new Vector2Int(x, y);
 			}
 		}
 
-		SortQueue();
-	}
+		for (int x = 0; x < size.x; x++)
+		{
+			for (int y = 0; y < size.y; y++)
+			{
+				WFCCell_2D tile = (WFCCell_2D)grid[x][y];
+				tile.RuleSetup();
+				tile.DomainCheck();
+			}
+		}
 
-	void OnCellUpdate(WFCCellUpdate update)
-	{
 		SortQueue();
+		ShuffleLowestEntropy();
 	}
 
 	void SortQueue()
 	{
 		EntropyQueue.Sort();
+	}
+
+	void ShuffleLowestEntropy()
+	{
+		SortQueue();
+
+		float lowestEntropy = EntropyQueue[0].CalculateEntropy();
+		int endIndex;
+		for (endIndex = 0; endIndex < EntropyQueue.Count; endIndex++)
+		{
+			if (EntropyQueue[endIndex].CalculateEntropy() > lowestEntropy)
+			{
+				break;
+			}
+		}
+
+		Debug.Log("EntropyQueue Length pre shuffle: " + EntropyQueue.Count);
+		List<IWFCCell> toShuffle = EntropyQueue.GetRange(0, endIndex);
+
+		int n = toShuffle.Count;
+		while (n > 1)
+		{
+			n--;
+			// int k = rng.Next(n + 1);
+			int k = UnityEngine.Random.Range(0, toShuffle.Count);
+			IWFCCell value = toShuffle[k];
+			toShuffle[k] = toShuffle[n];
+			toShuffle[n] = value;
+		}
+
+		EntropyQueue.RemoveRange(0, endIndex);
+		Debug.Log("EntropyQueue Length post remove: " + EntropyQueue.Count);
+		EntropyQueue.InsertRange(0, toShuffle);
+		Debug.Log("EntropyQueue Length post re-addition: " + EntropyQueue.Count);
+	}
+
+	void OnCellUpdate(WFCCellUpdate update)
+	{
+		SortQueue();
 	}
 
 	public void SetImporter(IWFCImporter importer)
@@ -120,20 +165,23 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 	public void Initialize()
 	{
 		tiles = importer.Import<string>("https://www.reddit.com/r/196/comments/10nfwvk/boy_likerule/");
+
 		String print = "INITIALIZING \t Domain: ";
 		for (int i = 0; i < tiles.Length; i++)
 		{
 			print += tiles[i].ToString() + ", ";
 		}
 		Debug.Log(print);
+
 		int yLength = -1;
 		if (grid.Length > 0)
 		{
 			yLength = grid[0].Length;
 		}
+
 		Debug.Log("grid size: [" + grid.Length + "," + yLength + "]");
 
-		GetEntropyQueue();
+		LoadGrid();
 
 		OnInitialize?.Invoke();
 	}
@@ -245,7 +293,7 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 			string toAppend = $"{row}\t>";
 			for (int column = 0; column < grid[0].Length; column++)
 			{
-				toAppend += String.Format("{0,15}", grid[column][row].ToString());
+				toAppend += String.Format("{0,30}", grid[column][row].ToString());
 			}
 			s += toAppend + "\n";
 		}

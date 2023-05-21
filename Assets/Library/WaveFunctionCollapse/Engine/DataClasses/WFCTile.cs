@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Xml;
+using System.Linq;
 using UnityEngine;
 
 namespace FolvosLibrary.WFC
@@ -14,29 +11,63 @@ namespace FolvosLibrary.WFC
 		public TileData TileData;
 		[SerializeReference] public WFCRule[] Rules = new WFCRule[1];
 
-
 		public void RuleSetup(IWFCManager manager, IWFCCell cell)
 		{
-			foreach (WFCRule rule in Rules)
+			for (int i = 0; i < Rules.Length; i++)
 			{
-				// Debug.Log("Rule setup");
+
+				WFCRule rule = (WFCRule)System.Activator.CreateInstance(Rules[i].GetType(), Rules[i]);  //new typeof(Rules[i])(Rules[i]);
 				rule.RuleInitialize(manager, cell);
+				rule.OnRuleFail += RemoveRule;
+				Rules[i] = rule;
 			}
 		}
 
-		public override bool Equals(object other)
+		public void RemoveRule(WFCRule toRemove)
 		{
-			if (other is WFCTile)
+			for (int i = 0; i < Rules.Length; i++)
 			{
-				WFCTile otherTile = (WFCTile)other;
-				return otherTile.Name == this.Name;
+				if (Rules[i] == toRemove)
+				{
+					Rules = RemoveAt(i);
+				}
 			}
-			return false;
 		}
 
-		public override int GetHashCode()
+		WFCRule[] RemoveAt(int index)
 		{
-			return base.GetHashCode();
+			if (index < 0 || index >= Rules.Length)
+			{
+				return null;
+			}
+
+			WFCRule[] returner = new WFCRule[Rules.Length - 1];
+
+			int RulesCount = 0, returnerCount = 0;
+			while (RulesCount < Rules.Length)
+			{
+
+				if (RulesCount != index)
+				{
+					returner[returnerCount] = Rules[RulesCount];
+					returnerCount++;
+				}
+
+				RulesCount++;
+			}
+
+			return returner;
+		}
+
+		public bool PassesRules()
+		{
+			bool[] PassesTest = new bool[Rules.Length];
+			for (int i = 0; i < Rules.Length; i++)
+			{
+				PassesTest[i] = Rules[i].Test();
+			}
+
+			return PassesTest.Any(t => t == true);
 		}
 	}
 

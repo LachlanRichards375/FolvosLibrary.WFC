@@ -17,24 +17,24 @@ MonoBehaviour:
   TileData:
     Sprite: {fileID: 1393356836, guid: 21969dd09df65e143b6f12d9a18b1522, type: 3}
   Rules:
-  - rid: 4320938177337753601
-  - rid: 4320938192439083008
-  - rid: 4320938192439083013
+  - rid: 4320938243090022430
+  - rid: 4320938243090022431
+  - rid: 4320938243090022432
   references:
     version: 2
     RefIds:
-    - rid: 4320938177337753601
+    - rid: 4320938243090022430
       type: {class: MultiCellIsTarget2D, ns: , asm: Assembly-CSharp}
       data:
         goal: {fileID: 11400000}
         direction: -1
-    - rid: 4320938192439083008
+    - rid: 4320938243090022431
       type: {class: MultiCellIsTarget2D, ns: , asm: Assembly-CSharp}
       data:
         goal: {fileID: 11400000, guid: d1637cbfd533a624599eeabddfd90d36, type: 2}
-        direction: 448
-    - rid: 4320938192439083013
+        direction: -1
+    - rid: 4320938243090022432
       type: {class: MultiCellIsTarget2D, ns: , asm: Assembly-CSharp}
       data:
         goal: {fileID: 11400000, guid: dd71be7ad22618c45baf4d1ff8effb88, type: 2}
-        direction: 28
+        direction: -1
