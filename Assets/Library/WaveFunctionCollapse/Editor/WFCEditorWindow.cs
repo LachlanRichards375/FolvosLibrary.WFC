@@ -26,9 +26,11 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		manager = (IWFCManager)EditorGUILayout.ObjectField("Manager: ", (Object)manager, typeof(IWFCManager), true);
 		exporter = (IWFCExporter)EditorGUILayout.ObjectField("Exporter: ", (Object)exporter, typeof(IWFCExporter), true);
 
+		int stepCount = 1;
 		if (manager != null)
 		{
 			manager.DrawSize();
+			stepCount = EditorGUILayout.IntSlider(stepCount, 1, 50);
 		}
 
 		// if (GUILayout.Button("Clear Manager Domain"))
@@ -65,7 +67,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		}
 		GUILayout.BeginHorizontal();
 
-		if (GUILayout.Button("Generate!"))
+		if (GUILayout.Button("Generate!") && mapParent != null)
 		{
 			if (manager == null)
 			{
@@ -86,7 +88,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 			}
 		}
 
-		if (GUILayout.Button("Generate Step!"))
+		if (GUILayout.Button("Generate Step!") && mapParent != null)
 		{
 			if (manager == null)
 			{
@@ -107,7 +109,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 
 					manager.OnResult += OnGenerateResult;
 				}
-				manager.GenerateStep(2);
+				manager.GenerateStep(stepCount);
 			}
 		}
 
