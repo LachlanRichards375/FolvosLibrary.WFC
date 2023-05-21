@@ -40,27 +40,26 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 			//return targetCell.CollapsedTile == goal
 			if (targetCell.CollapsedTile != null)
 			{
-				// Debug.Log($"Cell {((WFCCell_2D)OwnerCell).Position} targeting {targetCell.Position}");
-				// Debug.Log($"Target cell is collapsed, {targetCell.CollapsedTile.Name} == {goal.Name}? {targetCell.CollapsedTile == goal}");
+				Debug.Log($"Cell {((WFCCell_2D)OwnerCell).Position} targeting {targetCell.Position} didPass? {targetCell.CollapsedTile == goal}\n" +
+							$"Target cell is collapsed, {targetCell.CollapsedTile.Name} == {goal.Name}? {targetCell.CollapsedTile == goal}");
 				PassTest[i] = targetCell.CollapsedTile == goal;
 				continue;
 			}
 
 			// Debug.Log("TargetCell is not collapsed, searching target domain");
 			PassTest[i] = false;
+			string toPrint = "";
 			//If our target's domain contains our goal
 			for (int target = 0; target < targetCell.Domain.Length; target++)
 			{
-				// Debug.Log($"TargetCell.Domain {targetCell.Domain[target].Name} == {goal.Name}? {targetCell.Domain[target] == goal}");
+				toPrint += $"> TargetCell.Domain {targetCell.Domain[target].Name} == {goal.Name}? {targetCell.Domain[target] == goal}\n";
 				if (targetCell.Domain[target] == goal)
 				{
 					PassTest[i] = true;
 					break; //break out of for target loop, continue to next target cell
 				}
 			}
-			// Debug.Log($"Cell {((WFCCell_2D)OwnerCell).Position} targeting {targetCell.Position}");
-			// Debug.Log($"PassTest == {PassTest[i]}");
-
+			Debug.Log($"Cell {((WFCCell_2D)OwnerCell).Position} targeting {targetCell.Position} didPass? {PassTest[i]}\n" + toPrint);
 			i++;
 		}
 
@@ -92,10 +91,6 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 					if (targetCells == null)
 						targetCells = new System.Collections.Generic.List<IWFCCell>();
 
-					if (cell.Position == new Vector2Int(2, 2))
-					{
-						Debug.Log($"Target Cell {((WFCCell_2D)targetCell).Position}");
-					}
 					targetCells.Add(targetCell);
 
 					// When the target cell is updated cause our cell to do a domain check
@@ -104,33 +99,5 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 				}
 			}
 		}
-
-		if (cell.Position == new Vector2Int(2, 2) && targetCells != null)
-		{
-			Debug.Log("Printing target cells from (2,2)");
-			foreach (IWFCCell target in targetCells)
-			{
-				Debug.Log($"Targeting Cell at position: {((WFCCell_2D)target).Position}");
-			}
-		}
-		else if (cell.Position == new Vector2Int(2, 2) && targetCells == null)
-		{
-			Debug.Log("Target Cells is null");
-		}
-
-
-		// string toPrint = "Pos: " + cell.Position;
-
-		// if (targetCells != null)
-		// {
-		// 	toPrint += ", TargetCells.Count " + targetCells.Count;
-		// }
-		// else
-		// {
-		// 	toPrint += ", No Target Cells.";
-		// }
-
-		// Debug.Log(toPrint);
-
 	}
 }

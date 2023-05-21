@@ -11,7 +11,6 @@ namespace FolvosLibrary.WFC
 	{
 		public WFCRule(WFCRule rule)
 		{
-			OwnerCell = rule.OwnerCell;
 		}
 
 		public abstract void DrawRuleProperties();

@@ -36,6 +36,8 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
 		cell.Collapse();
 		EntropyQueue.RemoveAt(0);
+
+		ShuffleLowestEntropy();
 		return null;
 	}
 
@@ -61,7 +63,7 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 				//If outside bounds of old grid we can skip
 				if (grid.Length == 0 || x >= grid.Length || y >= grid[0].Length || grid[x] == null || grid[x][y] == null)
 				{
-					newGrid[x][y] = new WFCCell_2D(this);
+					newGrid[x][y] = new WFCCell_2D(this, new Vector2Int(x, y));
 				}
 				else
 				{
@@ -81,11 +83,10 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		{
 			for (int y = 0; y < size.y; y++)
 			{
-				WFCCell_2D tile = (WFCCell_2D)grid[x][y];
+				IWFCCell tile = grid[x][y];
 				EntropyQueue.Add(tile);
 				tile.Domain = GetDomain();
 				tile.OnCellUpdate += OnCellUpdate;
-				tile.Position = new Vector2Int(x, y);
 			}
 		}
 
@@ -93,7 +94,7 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		{
 			for (int y = 0; y < size.y; y++)
 			{
-				WFCCell_2D tile = (WFCCell_2D)grid[x][y];
+				IWFCCell tile = grid[x][y];
 				tile.RuleSetup();
 				tile.DomainCheck();
 			}

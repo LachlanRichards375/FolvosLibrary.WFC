@@ -5,8 +5,9 @@ namespace FolvosLibrary.WFC
 {
 	public class WFCCell_2D : IWFCCell
 	{
-		public WFCCell_2D(IWFCManager manager) : base(manager)
+		public WFCCell_2D(IWFCManager manager, Vector2Int Position) : base(manager)
 		{
+			this.Position = Position;
 		}
 
 		public Vector2Int Position;
