@@ -75,10 +75,9 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 		OwnerCell = cell;
 
 		//For each possible direction
-		for (int i = 0; i < Enum.GetNames(typeof(CellDirection.Direction)).Length; i++)
-		{
+		foreach(CellDirection.Direction currentDirection in CellDirection.Direction){
+
 			//Test if we've set the flag for the given direction
-			CellDirection.Direction currentDirection = (CellDirection.Direction)(Enum.GetValues(typeof(CellDirection.Direction))).GetValue(i);
 			if (FlagsHelper.IsSet<CellDirection.Direction>(direction, currentDirection))
 			{
 
@@ -97,6 +96,7 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 					// targetCell.OnCellUpdate += TargetCellUpdated;
 					targetCell.OnCellUpdate += (WFCCellUpdate u) => cell.DomainCheck();
 				}
+			}
 			}
 		}
 	}
