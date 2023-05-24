@@ -15,8 +15,8 @@ namespace FolvosLibrary.WFC
 		{
 			for (int i = 0; i < Rules.Length; i++)
 			{
-
-				WFCRule rule = (WFCRule)System.Activator.CreateInstance(Rules[i].GetType(), Rules[i]);  //new typeof(Rules[i])(Rules[i]);
+				//Do a method overload to return new objects?
+				WFCRule rule = (WFCRule)System.Activator.CreateInstance(Rules[i].GetType(), Rules[i]);
 				rule.RuleInitialize(manager, cell);
 				rule.OnRuleFail += RemoveRule;
 				Rules[i] = rule;

@@ -1,0 +1,18 @@
+{
+    "name": "WaveFunctionCollapse",
+    "rootNamespace": "",
+    "references": [
+        "GUID:71602abc2bbb6374e8a62dad30f96ac3",
+        "GUID:76c24da601e606e4cb2476b308659bdf",
+        "GUID:7f15e569e22b1ea489783fc288c62fed"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
