@@ -8,6 +8,10 @@ namespace FolvosLibrary.WFC
 	{
 		[SerializeField] public List<IWFCCell> targetCells;
 
+		protected MultiCellTargetWFCRule(): base(){
+			
+		}
+
 		protected MultiCellTargetWFCRule(WFCRule rule) : base(rule)
 		{
 		}

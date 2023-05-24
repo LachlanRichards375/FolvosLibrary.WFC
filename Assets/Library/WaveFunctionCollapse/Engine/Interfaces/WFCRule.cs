@@ -9,6 +9,10 @@ namespace FolvosLibrary.WFC
 	[System.Serializable]
 	public abstract class WFCRule
 	{
+		public WFCRule(){
+			
+		}
+
 		public WFCRule(WFCRule rule)
 		{
 		}

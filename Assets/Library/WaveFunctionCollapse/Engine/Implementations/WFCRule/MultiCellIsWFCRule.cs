@@ -9,6 +9,10 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 	[SerializeField] public WFCTile goal;
 	public CellDirection.Direction direction;
 
+	public MultiCellIsTarget2D() : base(){
+
+	}
+
 	public MultiCellIsTarget2D(MultiCellIsTarget2D multiCellIsTarget2D) : base(multiCellIsTarget2D)
 	{
 		goal = multiCellIsTarget2D.goal;
@@ -75,11 +79,11 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 		OwnerCell = cell;
 
 		//For each possible direction
-		foreach(CellDirection.Direction currentDirection in CellDirection.Direction){
+		foreach(CellDirection.Direction currentDirection in (CellDirection.Direction[]) Enum.GetValues(typeof(CellDirection.Direction))){
 
-			//Test if we've set the flag for the given direction
-			if (FlagsHelper.IsSet<CellDirection.Direction>(direction, currentDirection))
-			{
+			// //Test if we've set the flag for the given direction
+			// if (FlagsHelper.IsSet<CellDirection.Direction>(direction, currentDirection))
+			// {
 
 				//If there is a cell in this direction add it to targetCells
 				Vector2Int direction = cell.Position + CellDirection.CellDirectionToVector2Int(currentDirection);
@@ -96,8 +100,7 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 					// targetCell.OnCellUpdate += TargetCellUpdated;
 					targetCell.OnCellUpdate += (WFCCellUpdate u) => cell.DomainCheck();
 				}
-			}
-			}
+			// }
 		}
 	}
 }
