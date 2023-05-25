@@ -18,7 +18,8 @@ public class CellIsTarget2D : CellTargetWFCRule
 		EditorGUILayout.LabelField("Drawing from WFCRule");
 	}
 
-	public override bool Test(){
+	public override bool Test()
+	{
 		Debug.LogError("Test() is not implemented for CellIsWFCRule.cs 22");
 		return false;
 	}
@@ -34,7 +35,7 @@ public class CellIsTarget2D : CellTargetWFCRule
 		}
 
 		//If our target's domain contains our goal
-		for (int i = 0; i < cell.Domain.Length; i++)
+		for (int i = 0; i < cell.Domain.Count; i++)
 		{
 			if (cell.Domain[i] == goal)
 			{

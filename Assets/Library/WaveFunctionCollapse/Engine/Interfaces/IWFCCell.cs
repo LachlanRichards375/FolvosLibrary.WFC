@@ -8,7 +8,7 @@ namespace FolvosLibrary.WFC
 	public abstract class IWFCCell : IComparable
 	{
 		public WFCTile CollapsedTile { get; protected set; }
-		public WFCTile[] Domain;
+		public List<WFCTile> Domain;
 		public event Action<WFCCellUpdate> OnCellUpdate;
 
 		protected IWFCManager manager;
@@ -29,23 +29,15 @@ namespace FolvosLibrary.WFC
 
 		public float CalculateEntropy()
 		{
-			// float entropy = calcDomain();
-			// foreach (WFCTile tile in Domain)
-			// {
-			// 	if (tile.TileWeight > 0)
-			// 	{
-			// 		entropy -= (tile.TileWeight / calcDomain()) * Mathf.Log10((tile.TileWeight / calcDomain()));
-			// 	}
-			// }
 			//return domain Length without weighting
-			return Domain.Length;
+			return Domain.Count;
 		}
 
 		public void Collapse()
 		{
 			float tileNo = UnityEngine.Random.Range(0f, calcDomain());
 			int index = 0;
-			for (index = 0; index < Domain.Length; index++)
+			for (index = 0; index < Domain.Count; index++)
 			{
 				tileNo -= Domain[index].TileWeight;
 				if (tileNo <= 0f)
@@ -85,7 +77,7 @@ namespace FolvosLibrary.WFC
 
 			if (tilesToRemove.Count > 0)
 			{
-				string toPrint = ("Attempting to remove " + tilesToRemove.Count + " tiles from domain(" + Domain.Length + ")");
+				string toPrint = ("Attempting to remove " + tilesToRemove.Count + " tiles from domain(" + Domain.Count + ")");
 				if (this is WFCCell_2D)
 				{
 					WFCCell_2D cell = this as WFCCell_2D;
@@ -101,50 +93,13 @@ namespace FolvosLibrary.WFC
 				for (i = 0; i < tilesToRemove.Count; i++)
 				{
 					updateMessage.DomainChanges.Add(new DomainChange(tilesToRemove[i], DomainUpdate.RemovedFromDomain));
-					Debug.Log($"Removing {tilesToRemove.Count} tiles from domain: {Domain.Length}");
+					Debug.Log($"Removing {tilesToRemove.Count} tiles from domain: {Domain.Count}");
 					//Remove tile
-					Domain = RemoveFromDomain(tilesToRemove[i]);
+					Domain.Remove(tilesToRemove[i]);
 				}
 
 				OnCellUpdate.Invoke(updateMessage);
 			}
-		}
-
-		WFCTile[] RemoveFromDomain(WFCTile toRemove)
-		{
-			List<WFCTile> returner = new List<WFCTile>(Domain);
-			returner.Remove(toRemove);
-			if (returner.Count == 0)
-			{
-				returner.Add(null);
-			}
-			return returner.ToArray();
-		}
-
-		WFCTile[] RemoveAt(int index)
-		{
-			if (index < 0 || index >= Domain.Length)
-			{
-				return null;
-			}
-
-			int size = Mathf.Max(Domain.Length - 1, 0);
-			WFCTile[] returner = new WFCTile[size];
-
-			int RulesCount = 0, returnerCount = 0;
-			while (RulesCount < Domain.Length)
-			{
-
-				if (RulesCount != index)
-				{
-					returner[returnerCount] = Domain[RulesCount];
-					returnerCount++;
-				}
-
-				RulesCount++;
-			}
-
-			return returner;
 		}
 
 		protected int calcDomain()

@@ -22,7 +22,7 @@ namespace FolvosLibrary.WFC
 		public override WFCError GetError()
 		{
 			WFCError e = new WFCError();
-			e.Message = $"Error on cell at position {Position}, Domain has {Domain.Length} remaining elements";
+			e.Message = $"Error on cell at position {Position}, Domain has {Domain.Count} remaining elements";
 			return e;
 		}
 
@@ -54,7 +54,7 @@ namespace FolvosLibrary.WFC
 			int domainSize = 0;
 			if (Domain != null)
 			{
-				for (int i = 0; i < Domain.Length; i++)
+				for (int i = 0; i < Domain.Count; i++)
 				{
 					if (Domain[i] != null)
 					{
