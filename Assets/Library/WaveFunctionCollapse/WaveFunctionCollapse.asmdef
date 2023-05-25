@@ -2,9 +2,9 @@
     "name": "WaveFunctionCollapse",
     "rootNamespace": "",
     "references": [
-        "GUID:71602abc2bbb6374e8a62dad30f96ac3",
-        "GUID:76c24da601e606e4cb2476b308659bdf",
-        "GUID:7f15e569e22b1ea489783fc288c62fed"
+        "GUID:0921e550998619f4d8abce4a3e08bf6d",
+        "GUID:484d0c28bc14a534782082bc7c6d8e15",
+        "GUID:f3999866d9777944ca0cd7dc4676ccb7"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
