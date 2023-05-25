@@ -30,7 +30,7 @@ namespace FolvosLibrary.WFC
 		public event Action OnCleanup;
 
 		//EditorWindow
-		public void DrawSize();
+		public void DrawSize(bool ForceReset = false);
 
 		//Logging
 		public void PrintCells();

@@ -29,14 +29,10 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		int stepCount = 1;
 		if (manager != null)
 		{
-			manager.DrawSize();
+			//When we have initialized we don't want to force update
+			manager.DrawSize(!hasInitialized);
 			stepCount = EditorGUILayout.IntSlider(stepCount, 1, 50);
 		}
-
-		// if (GUILayout.Button("Clear Manager Domain"))
-		// {
-
-		// }
 
 		if (GUILayout.Button("Reset!"))
 		{
@@ -63,6 +59,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 				{
 					importer.Reset();
 				}
+
 			}
 		}
 		GUILayout.BeginHorizontal();

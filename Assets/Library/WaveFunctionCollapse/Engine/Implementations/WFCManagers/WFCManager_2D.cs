@@ -25,7 +25,7 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 	public WFCError? Collapse()
 	{
 		ShuffleLowestEntropy();
-	
+
 		WFCCell_2D cell = EntropyQueue[0] as WFCCell_2D;
 		Vector2Int nextTile = cell.Position;
 
@@ -39,19 +39,10 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		cell.Collapse();
 		EntropyQueue.RemoveAt(0);
 
-		string s = "";
-		foreach(WFCCell_2D debugcell in EntropyQueue){
-			if(grid[debugcell.Position.x][debugcell.Position.y] == null){
-				s += "Null " + debugcell.Position;
-			} else {
-				s += grid[debugcell.Position.x][debugcell.Position.y] + " " + debugcell.Position + " ";
-			}
-		}
-		Debug.Log("Entropy queue size: " + EntropyQueue.Count + " elements: " + s);
-
 		return null;
 	}
 
+	bool midGeneration = false;
 	public void SetSize(Vector2Int newSize)
 	{
 		if (newSize.x < 0 || newSize.y < 0)
@@ -64,22 +55,9 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		{
 			newGrid[x] = new IWFCCell[newSize.y];
 
-			//If outside bounds of old grid we can skip
-			// if (x > grid.Length)
-			// {
-			// 	continue;
-			// }
 			for (int y = 0; y < newSize.y; y++)
 			{
-					newGrid[x][y] = new WFCCell_2D(this, new Vector2Int(x, y));
-				// //If outside bounds of old grid we can skip
-				// if (grid.Length == 0 || x >= grid.Length || y >= grid[0].Length || grid[x] == null || grid[x][y] == null)
-				// {
-				// }
-				// else
-				// {
-				// 	newGrid[x][y] = grid[x][y];
-				// }
+				newGrid[x][y] = new WFCCell_2D(this, new Vector2Int(x, y));
 			}
 		}
 
@@ -96,7 +74,7 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 			{
 				IWFCCell tile = grid[x][y];
 				EntropyQueue.Add(tile);
-				tile.Domain = GetDomain();
+				tile.Domain = new List<WFCTile>(GetDomain());
 				tile.OnCellUpdate += OnCellUpdate;
 			}
 		}
@@ -188,11 +166,16 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
 		LoadGrid();
 
+		//On result or error we want to unlock resizing
+		OnResult += () => midGeneration = false;
+		OnError += (WFCError e) => midGeneration = false;
+
 		OnInitialize?.Invoke();
 	}
 
 	public void Generate()
 	{
+		midGeneration = true;
 		while (EntropyQueue.Count > 0)
 		{
 			GenerateOnce();
@@ -202,6 +185,10 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
 	void GenerateOnce()
 	{
+		Debug.Log("/*~~~~~~~~~~~~~~~~~~~~~*\\\n" +
+				  "|*        NEW STEP     *|\n" +
+				  "\\*~~~~~~~~~~~~~~~~~~~~~*/");
+		midGeneration = true;
 		WFCError? error = Collapse();
 		if (error != null)
 		{
@@ -253,9 +240,13 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		return tiles == null || tiles.Length == 0;
 	}
 
-	public void DrawSize()
+	public void DrawSize(bool ForceReset = false)
 	{
-		SetSize(UnityEditor.EditorGUILayout.Vector2IntField("Map Size", size));
+		Vector2Int newSize = UnityEditor.EditorGUILayout.Vector2IntField("Map Size", size);
+		if (ForceReset || newSize != size)
+		{
+			SetSize(newSize);
+		}
 	}
 
 	public IWFCCell[][] GetCells()
