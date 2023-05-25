@@ -24,6 +24,8 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
 	public WFCError? Collapse()
 	{
+		ShuffleLowestEntropy();
+	
 		WFCCell_2D cell = EntropyQueue[0] as WFCCell_2D;
 		Vector2Int nextTile = cell.Position;
 
@@ -37,7 +39,16 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		cell.Collapse();
 		EntropyQueue.RemoveAt(0);
 
-		ShuffleLowestEntropy();
+		string s = "";
+		foreach(WFCCell_2D debugcell in EntropyQueue){
+			if(grid[debugcell.Position.x][debugcell.Position.y] == null){
+				s += "Null " + debugcell.Position;
+			} else {
+				s += grid[debugcell.Position.x][debugcell.Position.y] + " " + debugcell.Position + " ";
+			}
+		}
+		Debug.Log("Entropy queue size: " + EntropyQueue.Count + " elements: " + s);
+
 		return null;
 	}
 
@@ -100,7 +111,6 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		}
 
 		SortQueue();
-		ShuffleLowestEntropy();
 	}
 
 	void SortQueue()
@@ -233,7 +243,9 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
 	public WFCTile[] GetDomain()
 	{
-		return tiles;
+		WFCTile[] returner = new WFCTile[tiles.Length];
+		tiles.CopyTo(returner, 0);
+		return returner;
 	}
 
 	public bool HasInitialized()
@@ -265,7 +277,9 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
 		// Debug.Log($"grid.Length: {grid.Length}, grid[0].length: {grid[0].Length}, position: {position}");
 
-		return grid[position.x][position.y];
+		Type t = grid[position.x][position.y].GetType();
+		IWFCCell toCopy = grid[position.x][position.y];
+		return (IWFCCell)System.Activator.CreateInstance(t, toCopy);
 	}
 
 	public void PrintCells()

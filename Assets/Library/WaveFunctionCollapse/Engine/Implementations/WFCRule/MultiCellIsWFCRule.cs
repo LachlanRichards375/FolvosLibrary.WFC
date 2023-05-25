@@ -27,7 +27,8 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
     }
 
 	public override bool Test(){
-		 if (targetCells == null)
+		Debug.Log("Running Test(), targetCells: " + targetCells);
+		if (targetCells == null)
         {
             return false;
         }
@@ -68,8 +69,10 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 
     public override bool Test(WFCCellUpdate? cellUpdate)
     {
+		Debug.Log("Testing Rule, has cell Update: " + (cellUpdate is null));
 		if(cellUpdate == null){
-			return false;
+			Debug.Log("Rule.Test was not provided a cell update");
+			return Test();
 		}
 
 		WFCCellUpdate update = cellUpdate.Value;
@@ -80,7 +83,6 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 				Debug.Log($"Cell {((WFCCell_2D)OwnerCell).Position} targeting {targetCell.Position} didPass? {targetCell.CollapsedTile == goal}\n" +
                             $"Target cell is collapsed, {targetCell.CollapsedTile.Name} == {goal.Name}? {targetCell.CollapsedTile == goal}");
 				return targetCell.CollapsedTile == goal;
-			break;
 
 			case(CellUpdateType.DomainUpdate):
 				bool result = false;
@@ -99,7 +101,6 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 				Debug.Log($"Cell {((WFCCell_2D)OwnerCell).Position} targeting {targetCell.Position} didPass? {result}\n" + toPrint);
 
 				return result;
-			break;
 
 			default:
 				Debug.LogError("Uncaught cell update type: " + update.UpdateType);

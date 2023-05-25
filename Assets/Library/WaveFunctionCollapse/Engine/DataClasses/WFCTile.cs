@@ -64,7 +64,7 @@ namespace FolvosLibrary.WFC
 			bool[] PassesTest = new bool[Rules.Length];
 			for (int i = 0; i < Rules.Length; i++)
 			{
-				PassesTest[i] = Rules[i].Test(null);
+				PassesTest[i] = Rules[i].Test();
 			}
 
 			return PassesTest.Any(t => t == true);

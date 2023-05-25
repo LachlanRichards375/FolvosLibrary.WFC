@@ -70,20 +70,21 @@ namespace FolvosLibrary.WFC
                 return;
             }
 
-            List<int> toRemove = new List<int>();
+			List<WFCTile> tilesToRemove = new List<WFCTile>();
             int i = 0;
             foreach (WFCTile tile in Domain)
             {
                 if (!tile.PassesRules())
                 {
-                    toRemove.Add(i);
+                    // toRemove.Add(i);
+					tilesToRemove.Add(tile);
                 }
                 i++;
             }
 
-            if (toRemove.Count > 0)
+            if (tilesToRemove.Count > 0)
             {
-                string toPrint = ("Attempting to remove " + toRemove.Count + " tiles from domain(" + Domain.Length + ")");
+                string toPrint = ("Attempting to remove " + tilesToRemove.Count + " tiles from domain(" + Domain.Length + ")");
                 if (this is WFCCell_2D)
                 {
                     WFCCell_2D cell = this as WFCCell_2D;
@@ -95,14 +96,24 @@ namespace FolvosLibrary.WFC
                 updateMessage.UpdateType = CellUpdateType.DomainUpdate;
                 updateMessage.UpdatedCell = this;
 
-                for (i = 0; i < toRemove.Count; i++)
+                for (i = 0; i < tilesToRemove.Count; i++)
                 {
-					updateMessage.DomainChanges.Add(new DomainChange(Domain[toRemove[i]-i], DomainUpdate.RemovedFromDomain));
-                    Domain = RemoveAt(toRemove[i] - i);
+					updateMessage.DomainChanges.Add(new DomainChange(tilesToRemove[i], DomainUpdate.RemovedFromDomain));
+					//Remove tile
+					Domain = RemoveFromDomain(tilesToRemove[i]);
                 }
                 OnCellUpdate.Invoke(updateMessage);
             }
         }
+
+		WFCTile[] RemoveFromDomain(WFCTile toRemove){
+			List<WFCTile> returner = new List<WFCTile>(Domain);
+			returner.Remove(toRemove);
+			if(returner.Count == 0){
+				returner.Add(null);
+			}
+			return returner.ToArray();
+		}
 
         WFCTile[] RemoveAt(int index)
         {
