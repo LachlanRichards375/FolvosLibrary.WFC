@@ -24,9 +24,13 @@ namespace FolvosLibrary.WFC
 			if (CollapsedTile == null)
 			{
 				string returner = "Undecided (" + GetActualDomainSize() + ")";
+				if(Domain == null ){
+					returner += "  NULL?  ";
+				} else {
 				foreach (WFCTile tile in Domain)
 				{
 					returner += tile.Name + " ";
+				}
 				}
 				return returner;
 			}
@@ -36,12 +40,14 @@ namespace FolvosLibrary.WFC
 		int GetActualDomainSize()
 		{
 			int domainSize = 0;
+			if(Domain != null){
 			for (int i = 0; i < Domain.Length; i++)
 			{
 				if (Domain[i] != null)
 				{
 					domainSize++;
 				}
+			}
 			}
 
 			return domainSize;

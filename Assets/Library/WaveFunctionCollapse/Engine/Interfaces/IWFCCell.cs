@@ -111,7 +111,8 @@ namespace FolvosLibrary.WFC
                 return null;
             }
 
-            WFCTile[] returner = new WFCTile[Domain.Length - 1];
+			int size = Mathf.Max(Domain.Length - 1, 0);
+            WFCTile[] returner = new WFCTile[size];
 
             int RulesCount = 0, returnerCount = 0;
             while (RulesCount < Domain.Length)

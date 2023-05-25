@@ -96,7 +96,6 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 			{
 				IWFCCell tile = grid[x][y];
 				tile.RuleSetup();
-				tile.DomainCheck();
 			}
 		}
 
