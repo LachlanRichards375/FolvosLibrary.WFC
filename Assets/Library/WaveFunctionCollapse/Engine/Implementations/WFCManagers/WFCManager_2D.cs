@@ -185,9 +185,7 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
 	void GenerateOnce()
 	{
-		Debug.Log("/*~~~~~~~~~~~~~~~~~~~~~*\\\n" +
-				  "|*        NEW STEP     *|\n" +
-				  "\\*~~~~~~~~~~~~~~~~~~~~~*/");
+		Debug.Log("|*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*|");
 		midGeneration = true;
 		WFCError? error = Collapse();
 		if (error != null)
@@ -267,10 +265,7 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		}
 
 		// Debug.Log($"grid.Length: {grid.Length}, grid[0].length: {grid[0].Length}, position: {position}");
-
-		Type t = grid[position.x][position.y].GetType();
-		IWFCCell toCopy = grid[position.x][position.y];
-		return (IWFCCell)System.Activator.CreateInstance(t, toCopy);
+		return grid[position.x][position.y];
 	}
 
 	public void PrintCells()
