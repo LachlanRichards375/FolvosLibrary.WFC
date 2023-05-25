@@ -52,7 +52,7 @@ namespace FolvosLibrary.WFC
 			updateMessage.UpdateType = CellUpdateType.Collapsed;
 			updateMessage.UpdatedCell = this;
 
-			OnCellUpdate?.Invoke(updateMessage);
+			InvokeCellUpdate(updateMessage);
 		}
 
 		public void DomainCheck()
@@ -89,17 +89,30 @@ namespace FolvosLibrary.WFC
 
 				updateMessage.UpdateType = CellUpdateType.DomainUpdate;
 				updateMessage.UpdatedCell = this;
+				if (tilesToRemove.Count > 0)
+				{
+					updateMessage.DomainChanges = new List<DomainChange>();
+				}
 
 				for (i = 0; i < tilesToRemove.Count; i++)
 				{
 					updateMessage.DomainChanges.Add(new DomainChange(tilesToRemove[i], DomainUpdate.RemovedFromDomain));
 					Debug.Log($"Removing {tilesToRemove.Count} tiles from domain: {Domain.Count}");
 					//Remove tile
-					Domain.Remove(tilesToRemove[i]);
 				}
 
-				OnCellUpdate.Invoke(updateMessage);
+				for (i = 0; i < tilesToRemove.Count; i++)
+				{
+					Domain.Remove(tilesToRemove[i]);
+				}
+				InvokeCellUpdate(updateMessage);
 			}
+		}
+
+		protected void InvokeCellUpdate(WFCCellUpdate update)
+		{
+			Debug.Log($"Invoking cell update on {OnCellUpdate.GetInvocationList().Length} listeners");
+			OnCellUpdate.Invoke(update);
 		}
 
 		protected int calcDomain()
