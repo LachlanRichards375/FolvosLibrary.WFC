@@ -9,6 +9,27 @@ namespace FolvosLibrary.WFC
 		public CellUpdateType UpdateType;
 		public IWFCCell UpdatedCell;
 		public List<DomainChange> DomainChanges;
+
+		public override string ToString()
+		{
+			string s = "CellUpdateType: " + UpdateType;
+
+			if (UpdatedCell is WFCCell_2D)
+			{
+				s += " at " + (UpdatedCell as WFCCell_2D).Position;
+			}
+
+
+			if (DomainChanges != null && DomainChanges.Count > 0)
+			{
+				foreach (DomainChange change in DomainChanges)
+				{
+					s += " tile: " + change.UpdatedTile + " was " + change.DomainUpdate;
+				}
+			}
+
+			return s;
+		}
 	}
 
 	public enum CellUpdateType
@@ -19,7 +40,8 @@ namespace FolvosLibrary.WFC
 
 	public struct DomainChange
 	{
-		public DomainChange(WFCTile tile, DomainUpdate update){
+		public DomainChange(WFCTile tile, DomainUpdate update)
+		{
 			UpdatedTile = tile;
 			DomainUpdate = update;
 		}
