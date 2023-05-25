@@ -19,8 +19,12 @@ namespace FolvosLibrary.WFC
 
 	public struct DomainChange
 	{
-		WFCTile UpdatedTile;
-		DomainUpdate DomainUpdate;
+		public DomainChange(WFCTile tile, DomainUpdate update){
+			UpdatedTile = tile;
+			DomainUpdate = update;
+		}
+		public WFCTile UpdatedTile;
+		public DomainUpdate DomainUpdate;
 	}
 
 	public enum DomainUpdate

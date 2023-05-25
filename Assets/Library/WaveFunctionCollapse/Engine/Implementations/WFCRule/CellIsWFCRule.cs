@@ -18,7 +18,12 @@ public class CellIsTarget2D : CellTargetWFCRule
 		EditorGUILayout.LabelField("Drawing from WFCRule");
 	}
 
-	public override bool Test()
+	public override bool Test(){
+		Debug.LogError("Test() is not implemented for CellIsWFCRule.cs 22");
+		return false;
+	}
+
+	public override bool Test(WFCCellUpdate? cellUpdate)
 	{
 		IWFCCell cell = (IWFCCell)targetCell;
 

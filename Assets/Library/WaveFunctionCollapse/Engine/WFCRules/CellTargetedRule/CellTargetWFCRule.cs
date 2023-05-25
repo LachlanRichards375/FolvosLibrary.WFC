@@ -13,7 +13,7 @@ namespace FolvosLibrary.WFC
 
 		public void TargetCellUpdated(WFCCellUpdate cellUpdate)
 		{
-			Test();
+			Test(cellUpdate);
 		}
 	}
 }

@@ -19,6 +19,7 @@ namespace FolvosLibrary.WFC
 
 		public abstract void DrawRuleProperties();
 		public abstract bool Test();
+		public abstract bool Test(WFCCellUpdate? cellUpdate);
 		public abstract void RuleInitialize(IWFCManager manager, IWFCCell Cell);
 
 		public event Action<WFCRule> OnRuleFail;
