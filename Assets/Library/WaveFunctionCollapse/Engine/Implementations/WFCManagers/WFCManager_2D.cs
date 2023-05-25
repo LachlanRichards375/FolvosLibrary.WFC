@@ -54,21 +54,21 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 			newGrid[x] = new IWFCCell[newSize.y];
 
 			//If outside bounds of old grid we can skip
-			if (x > grid.Length)
-			{
-				continue;
-			}
+			// if (x > grid.Length)
+			// {
+			// 	continue;
+			// }
 			for (int y = 0; y < newSize.y; y++)
 			{
-				//If outside bounds of old grid we can skip
-				if (grid.Length == 0 || x >= grid.Length || y >= grid[0].Length || grid[x] == null || grid[x][y] == null)
-				{
 					newGrid[x][y] = new WFCCell_2D(this, new Vector2Int(x, y));
-				}
-				else
-				{
-					newGrid[x][y] = grid[x][y];
-				}
+				// //If outside bounds of old grid we can skip
+				// if (grid.Length == 0 || x >= grid.Length || y >= grid[0].Length || grid[x] == null || grid[x][y] == null)
+				// {
+				// }
+				// else
+				// {
+				// 	newGrid[x][y] = grid[x][y];
+				// }
 			}
 		}
 
