@@ -15,28 +15,35 @@ MonoBehaviour:
   Name: Water
   TileWeight: 1
   TileData:
-    Sprite: {fileID: 2013179604, guid: 21969dd09df65e143b6f12d9a18b1522, type: 3}
+    Sprite: {fileID: -1850867006, guid: 21969dd09df65e143b6f12d9a18b1522, type: 3}
   Rules:
-  - rid: 4320938351279210812
-  - rid: 4320938351279210813
+  - rid: 4320938351279210973
+  - rid: 4320938351279210974
+  - rid: 4320938351279210980
   references:
     version: 2
     RefIds:
-    - rid: 4320938351279210812
+    - rid: 4320938351279210973
       type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
       data:
         targetCells:
-        - {x: 2, y: 1}
-        - {x: 1, y: 1}
-        - {x: 1, y: 2}
+        - {x: 14, y: 13}
+        - {x: 13, y: 13}
+        - {x: 13, y: 14}
         goal: {fileID: 11400000, guid: 3ee41d799c6fbbf40987ce9acd11a4ec, type: 2}
         direction: -1
-    - rid: 4320938351279210813
+    - rid: 4320938351279210974
       type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
       data:
         targetCells:
-        - {x: 2, y: 1}
-        - {x: 1, y: 1}
-        - {x: 1, y: 2}
+        - {x: 14, y: 13}
+        - {x: 13, y: 13}
+        - {x: 13, y: 14}
         goal: {fileID: 11400000}
+        direction: -1
+    - rid: 4320938351279210980
+      type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
+      data:
+        targetCells: []
+        goal: {fileID: 11400000, guid: c6a4fd71e9e02a64bacf01f4a46159d6, type: 2}
         direction: -1

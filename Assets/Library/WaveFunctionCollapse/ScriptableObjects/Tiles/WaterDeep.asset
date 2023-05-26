@@ -10,43 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a466f86a19776f740aa9cbab4fbbc1e2, type: 3}
-  m_Name: Sand
+  m_Name: WaterDeep
   m_EditorClassIdentifier: 
-  Name: Sand
+  Name: DeepWater
   TileWeight: 1
   TileData:
-    Sprite: {fileID: 2013179604, guid: 21969dd09df65e143b6f12d9a18b1522, type: 3}
+    Sprite: {fileID: -925901423, guid: 21969dd09df65e143b6f12d9a18b1522, type: 3}
   Rules:
-  - rid: 4320938351279210968
-  - rid: 4320938351279210969
-  - rid: 4320938351279210970
+  - rid: 4320938351279210978
+  - rid: 4320938351279210979
   references:
     version: 2
     RefIds:
-    - rid: 4320938351279210968
+    - rid: 4320938351279210978
       type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
       data:
-        targetCells:
-        - {x: 14, y: 13}
-        - {x: 13, y: 13}
-        - {x: 13, y: 14}
-        goal: {fileID: 11400000, guid: d1637cbfd533a624599eeabddfd90d36, type: 2}
-        direction: -1
-    - rid: 4320938351279210969
-      type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
-      data:
-        targetCells:
-        - {x: 14, y: 13}
-        - {x: 13, y: 13}
-        - {x: 13, y: 14}
+        targetCells: []
         goal: {fileID: 11400000}
         direction: -1
-    - rid: 4320938351279210970
+    - rid: 4320938351279210979
       type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
       data:
-        targetCells:
-        - {x: 14, y: 13}
-        - {x: 13, y: 13}
-        - {x: 13, y: 14}
+        targetCells: []
         goal: {fileID: 11400000, guid: dd71be7ad22618c45baf4d1ff8effb88, type: 2}
         direction: -1

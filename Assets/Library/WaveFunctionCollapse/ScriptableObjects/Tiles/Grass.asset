@@ -15,20 +15,35 @@ MonoBehaviour:
   Name: Grass
   TileWeight: 1
   TileData:
-    Sprite: {fileID: 1619685780, guid: 21969dd09df65e143b6f12d9a18b1522, type: 3}
+    Sprite: {fileID: 1393356836, guid: 21969dd09df65e143b6f12d9a18b1522, type: 3}
   Rules:
-  - rid: 4320938243090022428
-  - rid: 4320938243090022429
+  - rid: 4320938351279210971
+  - rid: 4320938351279210972
+  - rid: 4320938351279210975
   references:
     version: 2
     RefIds:
-    - rid: 4320938243090022428
-      type: {class: MultiCellIsTarget2D, ns: , asm: Assembly-CSharp}
+    - rid: 4320938351279210971
+      type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
       data:
+        targetCells:
+        - {x: 14, y: 13}
+        - {x: 13, y: 13}
+        - {x: 13, y: 14}
         goal: {fileID: 11400000}
         direction: -1
-    - rid: 4320938243090022429
-      type: {class: MultiCellIsTarget2D, ns: , asm: Assembly-CSharp}
+    - rid: 4320938351279210972
+      type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
       data:
-        goal: {fileID: 11400000, guid: 3ee41d799c6fbbf40987ce9acd11a4ec, type: 2}
+        targetCells:
+        - {x: 14, y: 13}
+        - {x: 13, y: 13}
+        - {x: 13, y: 14}
+        goal: {fileID: 11400000, guid: 4b80a1102d96b2940bf959e104e96aab, type: 2}
         direction: -1
+    - rid: 4320938351279210975
+      type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
+      data:
+        targetCells: []
+        goal: {fileID: 11400000, guid: 3ee41d799c6fbbf40987ce9acd11a4ec, type: 2}
+        direction: 0
