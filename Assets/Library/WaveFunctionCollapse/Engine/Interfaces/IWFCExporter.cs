@@ -7,6 +7,7 @@ namespace FolvosLibrary.WFC
 	public interface IWFCExporter
 	{
 		public void Export();
+		public void SetParent(Transform parent);
 		public void Reset();
 	}
 }

@@ -5,7 +5,7 @@ using FolvosLibrary.WFC;
 using UnityEngine;
 
 
-[CreateAssetMenu(menuName = "WFC/Exporter/BeachExporter")]
+[CreateAssetMenu(menuName = "WFC/Exporter/BeachExporter"), System.Serializable]
 public class BeachWFCExporter : ScriptableObject, IWFCExporter
 {
 	public void Export()
@@ -13,6 +13,7 @@ public class BeachWFCExporter : ScriptableObject, IWFCExporter
 		Debug.LogError("Export should not be called, use Export(IWFCCell[][]) instead");
 	}
 
+	Transform parent;
 	GameObject[][] Exported = new GameObject[0][];
 
 	public GameObject[][] Export(IWFCCell[][] input)
@@ -38,6 +39,10 @@ public class BeachWFCExporter : ScriptableObject, IWFCExporter
 				if (createGameObjects)
 				{
 					Exported[x][y] = new GameObject($"{{{x},{y}}}", typeof(SpriteRenderer));
+					if (parent != null)
+					{
+						Exported[x][y].transform.SetParent(parent);
+					}
 				}
 				target = Exported[x][y];
 				Transform t = target.transform;
@@ -56,6 +61,18 @@ public class BeachWFCExporter : ScriptableObject, IWFCExporter
 
 	public void Reset()
 	{
+		foreach (GameObject[] row in Exported)
+		{
+			foreach (GameObject g in row)
+			{
+				DestroyImmediate(g);
+			}
+		}
 		Exported = new GameObject[0][];
+	}
+
+	public void SetParent(Transform parent)
+	{
+		this.parent = parent;
 	}
 }

@@ -4,6 +4,7 @@ using FolvosLibrary.WFC;
 using UnityEditor;
 using UnityEngine;
 
+[System.Serializable]
 public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 {
 	[SerializeField] public WFCTile goal;
@@ -28,7 +29,7 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 
 	public override bool Test()
 	{
-		Debug.Log("Running Test(), targetCells: " + targetCells);
+		// Debug.Log("Running Test(), targetCells: " + targetCells);
 		if (targetCells == null)
 		{
 			return false;
@@ -36,15 +37,21 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 
 		bool[] PassTest = new bool[targetCells.Count];
 		int i = 0;
-		foreach (IWFCCell ICell in targetCells)
+		// foreach (IWFCCell ICell in targetCells)
+		foreach (Vector2Int pos in targetCells)
 		{
-			WFCCell_2D targetCell = (WFCCell_2D)ICell;
 
-			if (targetCell.CollapsedTile != null)
+			WFCCell_2D targetCell = (WFCCell_2D)GetTargetCell(pos);
+
+			Debug.Log($"Target cell({targetCell.Position},{targetCell.GetHashCode()}) is collapsed: {(manager as WFCManager_2D).HasCollapsed(targetCell.Position)}, == null? {targetCell.CollapsedTile == null}, is null? {targetCell.CollapsedTile is null}, is same as manager? || EQUAL TO MANAGER VERSION? {(manager as WFCManager_2D).GetCell(targetCell.Position).Equals(targetCell)}");
+
+			// if (targetCell.CollapsedTile != null)
+			if ((manager as WFCManager_2D).HasCollapsed(targetCell.Position))
 			{
 				Debug.Log($"Cell {((WFCCell_2D)OwnerCell).Position} targeting {targetCell.Position} didPass? {targetCell.CollapsedTile == goal}\n" +
-							$"Target cell is collapsed, {targetCell.CollapsedTile.Name} == {goal.Name}? {targetCell.CollapsedTile == goal}");
+				$"Target cell is collapsed, {targetCell.CollapsedTile.Name} == {goal.Name}? {targetCell.CollapsedTile == goal}");
 				PassTest[i] = targetCell.CollapsedTile == goal;
+				i++;
 				continue;
 			}
 
@@ -53,7 +60,10 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 			//If our target's domain contains our goal
 			for (int target = 0; target < targetCell.Domain.Count; target++)
 			{
-				toPrint += $"> TargetCell.Domain {targetCell.Domain[target].Name} == {goal.Name}? {targetCell.Domain[target] == goal}\n";
+				if (targetCell.Domain != null)
+				{
+					toPrint += $"> TargetCell.Domain {targetCell.Domain[target].Name} == {goal.Name}? {targetCell.Domain[target] == goal}\n";
+				}
 				if (targetCell.Domain[target] == goal)
 				{
 					PassTest[i] = true;
@@ -64,16 +74,20 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 			i++;
 		}
 
-		//if any are false return false
-		return !PassTest.Any(b => b == false);
+		String s = "> PassTest:[";
+		foreach (bool b in PassTest)
+		{
+			s += b.ToString() + ", ";
+		}
+		Debug.Log(s + "]");
+		//if all are true, return true
+		return PassTest.All(b => b == true);
 	}
 
 	public override bool Test(WFCCellUpdate? cellUpdate)
 	{
-		Debug.Log("Testing Rule, has cell Update: " + (cellUpdate is null));
 		if (cellUpdate == null)
 		{
-			Debug.Log("Rule.Test was not provided a cell update");
 			return Test();
 		}
 
@@ -83,30 +97,33 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 		switch (update.UpdateType)
 		{
 			case (CellUpdateType.Collapsed):
-				Debug.Log($"Cell {((WFCCell_2D)OwnerCell).Position} targeting {targetCell.Position} didPass? {targetCell.CollapsedTile == goal}\n" +
-							$"Target cell is collapsed, {targetCell.CollapsedTile.Name} == {goal.Name}? {targetCell.CollapsedTile == goal}");
+				// Debug.Log($"Cell {((WFCCell_2D)OwnerCell).Position} targeting {targetCell.Position} had goal {goal.Name} didPass? {targetCell.CollapsedTile == goal}\n" +
+				// 			$"Target cell is collapsed, {targetCell.CollapsedTile.Name} == {goal.Name}? {targetCell.CollapsedTile == goal}");
 				return targetCell.CollapsedTile == goal;
 
 			case (CellUpdateType.DomainUpdate):
 				bool result = false;
-				string toPrint = "";
 				//If our target's domain contains our goal
 
+				bool[] PassTest = new bool[update.DomainChanges.Count];
+				int i = 0;
 				foreach (DomainChange domainChange in update.DomainChanges)
 				{
 					if (domainChange.UpdatedTile == goal)
 					{
 						if (domainChange.DomainUpdate == DomainUpdate.RemovedFromDomain)
 						{
-							result = false;
-						}
-						else
-						{
-							result = true;
+							PassTest[i] = false;
+							continue;
 						}
 					}
+
+					PassTest[i] = true;
+
+					i++;
 				}
-				Debug.Log($"Cell {((WFCCell_2D)OwnerCell).Position} targeting {targetCell.Position} didPass? {result}\n" + toPrint);
+				result = PassTest.All(t => t == true);
+				// Debug.Log($"Cell {((WFCCell_2D)OwnerCell).Position} targeting {targetCell.Position} didPass? {result}");
 
 				return result;
 
@@ -123,6 +140,8 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 		WFCManager_2D m = manager as WFCManager_2D;
 		WFCCell_2D cell = Cell as WFCCell_2D;
 
+		this.manager = manager;
+
 		OwnerCell = cell;
 
 		//For each possible direction
@@ -136,14 +155,21 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 			{
 				// Debug.Log($"cellPos = {cell.Position} + {currentDirection} {CellDirection.CellDirectionToVector2Int(currentDirection)} = {direction} ");
 				if (targetCells == null)
-					targetCells = new System.Collections.Generic.List<IWFCCell>();
+					// targetCells = new System.Collections.Generic.List<IWFCCell>();
+					targetCells = new System.Collections.Generic.List<Vector2Int>();
 
-				targetCells.Add(targetCell);
+				// targetCells.Add(targetCell);
+				targetCells.Add(direction);
 
 				// When the target cell is updated cause our cell to do a domain check
-				targetCell.OnCellUpdate += TargetCellUpdated;
-				// targetCell.OnCellUpdate += (WFCCellUpdate u) => cell.DomainCheck();
+				// targetCell.OnCellUpdate += TargetCellUpdated;
+				targetCell.OnCellUpdate += (WFCCellUpdate update) => InvokeRuleActivated(update);
 			}
 		}
+	}
+
+	IWFCCell GetTargetCell(Vector2Int pos)
+	{
+		return ((WFCManager_2D)manager).GetCell(pos);
 	}
 }

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using FolvosLibrary.Logging;
 using FolvosLibrary.WFC;
 using UnityEngine;
-[CreateAssetMenu(menuName = "WFC/Manager/2DManager")]
+
+[CreateAssetMenu(menuName = "WFC/Manager/2DManager"), System.Serializable]
 public class WFCManager_2D : ScriptableObject, IWFCManager
 {
 	IWFCExporter exporter;

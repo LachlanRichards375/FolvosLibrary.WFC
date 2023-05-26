@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace FolvosLibrary.WFC
 {
-	[CreateAssetMenu(menuName = "WFC/Tile")]
+	[CreateAssetMenu(menuName = "WFC/Tile"), System.Serializable]
 	public class WFCTile : ScriptableObject
 	{
 		public string Name;

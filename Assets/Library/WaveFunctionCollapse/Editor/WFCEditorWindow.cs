@@ -2,6 +2,7 @@ using FolvosLibrary.WFC;
 using UnityEditor;
 using UnityEngine;
 
+[System.Serializable]
 public class WFCEditorWindow : ExtendedEditorWindow
 {
 	[MenuItem("Folvos Library/WFC Editor Window")]
@@ -72,15 +73,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 			}
 			else
 			{
-				hasInitialized = true;
-				Debug.Log("Generate map");
-
-				manager.SetImporter(importer);
-				manager.SetExporter(exporter);
-
-				manager.Initialize();
-
-				manager.OnResult += OnGenerateResult;
+				Initialize();
 				manager.Generate();
 			}
 		}
@@ -94,23 +87,30 @@ public class WFCEditorWindow : ExtendedEditorWindow
 			else
 			{
 
-				if (!hasInitialized)
-				{
-					hasInitialized = true;
-					Debug.Log("Generate map");
-
-					manager.SetImporter(importer);
-					manager.SetExporter(exporter);
-
-					manager.Initialize();
-
-					manager.OnResult += OnGenerateResult;
-				}
+				Initialize();
 				manager.GenerateStep(stepCount);
 			}
 		}
 
 		GUILayout.EndHorizontal();
+	}
+
+	void Initialize()
+	{
+		if (!hasInitialized)
+		{
+			hasInitialized = true;
+			Debug.Log("Generate map");
+
+			manager.SetImporter(importer);
+			manager.SetExporter(exporter);
+
+			exporter.SetParent(mapParent.transform);
+
+			manager.Initialize();
+
+			manager.OnResult += OnGenerateResult;
+		}
 	}
 
 	void OnGenerateResult()

@@ -1,7 +1,7 @@
 using FolvosLibrary.WFC;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "WFC/Importer/BeachImporter")]
+[CreateAssetMenu(menuName = "WFC/Importer/BeachImporter"), System.Serializable]
 class BeachImporter : ScriptableObject, IWFCImporter
 {
 	[SerializeField] WFCTile[] returner;

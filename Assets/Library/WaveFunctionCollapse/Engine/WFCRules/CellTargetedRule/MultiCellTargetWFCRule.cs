@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace FolvosLibrary.WFC
 {
+	[System.Serializable]
 	public abstract class MultiCellTargetWFCRule : WFCRule
 	{
 		[SerializeField] public List<IWFCCell> targetCells;
