@@ -17,18 +17,26 @@ MonoBehaviour:
   TileData:
     Sprite: {fileID: 2013179604, guid: 21969dd09df65e143b6f12d9a18b1522, type: 3}
   Rules:
-  - rid: 4320938192439083011
-  - rid: 4320938192439083012
+  - rid: 4320938351279210812
+  - rid: 4320938351279210813
   references:
     version: 2
     RefIds:
-    - rid: 4320938192439083011
-      type: {class: MultiCellIsTarget2D, ns: , asm: Assembly-CSharp}
+    - rid: 4320938351279210812
+      type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
       data:
-        goal: {fileID: 11400000}
-        direction: -1
-    - rid: 4320938192439083012
-      type: {class: MultiCellIsTarget2D, ns: , asm: Assembly-CSharp}
-      data:
+        targetCells:
+        - {x: 2, y: 1}
+        - {x: 1, y: 1}
+        - {x: 1, y: 2}
         goal: {fileID: 11400000, guid: 3ee41d799c6fbbf40987ce9acd11a4ec, type: 2}
+        direction: -1
+    - rid: 4320938351279210813
+      type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
+      data:
+        targetCells:
+        - {x: 2, y: 1}
+        - {x: 1, y: 1}
+        - {x: 1, y: 2}
+        goal: {fileID: 11400000}
         direction: -1

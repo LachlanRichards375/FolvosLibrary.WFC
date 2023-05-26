@@ -54,13 +54,14 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 				i++;
 				continue;
 			}
+			Debug.Log("Cell was not collapsed");
 
 			PassTest[i] = false;
 			string toPrint = "";
 			//If our target's domain contains our goal
 			for (int target = 0; target < targetCell.Domain.Count; target++)
 			{
-				if (targetCell.Domain != null)
+				if (targetCell.Domain != null && targetCell.Domain[target] != null)
 				{
 					toPrint += $"> TargetCell.Domain {targetCell.Domain[target].Name} == {goal.Name}? {targetCell.Domain[target] == goal}\n";
 				}

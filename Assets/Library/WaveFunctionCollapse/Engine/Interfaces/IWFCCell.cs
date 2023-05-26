@@ -20,10 +20,11 @@ namespace FolvosLibrary.WFC
 
 		public void RuleSetup()
 		{
-			OnCellUpdate += (WFCCellUpdate update) => Debug.Log("Cell called OnCellUpdate: " + update.ToString());
+			// OnCellUpdate += (WFCCellUpdate update) => Debug.Log("Cell called OnCellUpdate: " + update.ToString());
 			foreach (WFCTile tile in Domain)
 			{
-				tile.RuleSetup(manager, this);
+				IWFCCell local = this;
+				tile.RuleSetup(manager, local);
 			}
 		}
 
@@ -69,21 +70,48 @@ namespace FolvosLibrary.WFC
 			{
 				if (!tile.PassesRules())
 				{
-					// toRemove.Add(i);
 					tilesToRemove.Add(tile);
 				}
 				i++;
 			}
 
+			RemoveFromDomain(tilesToRemove);
+		}
+
+		public void DomainCheck(WFCCellUpdate update)
+		{
+			//If we've collapsed we don't care
+			if (CollapsedTile != null)
+			{
+				return;
+			}
+
+			List<WFCTile> tilesToRemove = new List<WFCTile>();
+			int i = 0;
+			foreach (WFCTile tile in Domain)
+			{
+				if (!tile.PassesRules(update))
+				{
+					tilesToRemove.Add(tile);
+				}
+				i++;
+			}
+
+			RemoveFromDomain(tilesToRemove);
+		}
+
+		void RemoveFromDomain(List<WFCTile> tilesToRemove)
+		{
 			if (tilesToRemove.Count > 0)
 			{
+				int i = 0;
 				string toPrint = ("Attempting to remove " + tilesToRemove.Count + " tiles from domain(" + Domain.Count + ")");
 				if (this is WFCCell_2D)
 				{
 					WFCCell_2D cell = this as WFCCell_2D;
 					toPrint += (" in cell at position " + cell.Position);
 				}
-				Debug.Log(toPrint);
+				// Debug.Log(toPrint);
 
 				WFCCellUpdate updateMessage = new WFCCellUpdate();
 
@@ -97,7 +125,6 @@ namespace FolvosLibrary.WFC
 				for (i = 0; i < tilesToRemove.Count; i++)
 				{
 					updateMessage.DomainChanges.Add(new DomainChange(tilesToRemove[i], DomainUpdate.RemovedFromDomain));
-					Debug.Log($"Removing {tilesToRemove.Count} tiles from domain: {Domain.Count}");
 					//Remove tile
 				}
 
@@ -111,7 +138,6 @@ namespace FolvosLibrary.WFC
 
 		protected void InvokeCellUpdate(WFCCellUpdate update)
 		{
-			Debug.Log($"Invoking cell update on {OnCellUpdate.GetInvocationList().Length} listeners");
 			OnCellUpdate.Invoke(update);
 		}
 

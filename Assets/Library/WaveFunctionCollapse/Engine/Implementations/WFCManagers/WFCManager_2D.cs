@@ -43,7 +43,6 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		return null;
 	}
 
-	bool midGeneration = false;
 	public void SetSize(Vector2Int newSize)
 	{
 		if (newSize.x < 0 || newSize.y < 0)
@@ -141,7 +140,7 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		this.importer = importer;
 	}
 
-	void IWFCManager.SetExporter(IWFCExporter exporter)
+	public void SetExporter(IWFCExporter exporter)
 	{
 		this.exporter = exporter;
 	}
@@ -168,15 +167,11 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		LoadGrid();
 
 		//On result or error we want to unlock resizing
-		OnResult += () => midGeneration = false;
-		OnError += (WFCError e) => midGeneration = false;
-
 		OnInitialize?.Invoke();
 	}
 
 	public void Generate()
 	{
-		midGeneration = true;
 		while (EntropyQueue.Count > 0)
 		{
 			GenerateOnce();
@@ -187,7 +182,6 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 	void GenerateOnce()
 	{
 		Debug.Log("|*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*|");
-		midGeneration = true;
 		WFCError? error = Collapse();
 		if (error != null)
 		{
@@ -267,6 +261,21 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
 		// Debug.Log($"grid.Length: {grid.Length}, grid[0].length: {grid[0].Length}, position: {position}");
 		return grid[position.x][position.y];
+	}
+
+	public bool HasCollapsed(Vector2Int position)
+	{
+		if (position.x < 0 || position.y < 0)
+		{
+			return false;
+		}
+
+		if (position.x >= grid.Length || position.y >= grid[0].Length)
+		{
+			return false;
+		}
+		Debug.Log($"Checking if {position} has collapsed: hash {grid[position.x][position.y].GetHashCode()}");
+		return !(grid[position.x][position.y].CollapsedTile is null);
 	}
 
 	public void PrintCells()

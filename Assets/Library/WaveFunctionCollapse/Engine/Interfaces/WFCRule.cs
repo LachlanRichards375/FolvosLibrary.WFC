@@ -9,8 +9,8 @@ namespace FolvosLibrary.WFC
 	[System.Serializable]
 	public abstract class WFCRule
 	{
-		public WFCRule(){
-			
+		public WFCRule()
+		{
 		}
 
 		public WFCRule(WFCRule rule)
@@ -22,11 +22,20 @@ namespace FolvosLibrary.WFC
 		public abstract bool Test(WFCCellUpdate? cellUpdate);
 		public abstract void RuleInitialize(IWFCManager manager, IWFCCell Cell);
 
+		//Rule activates when something 'trigers' this tile to check it's domain
+		public event Action<WFCCellUpdate> OnRuleActivated;
 		public event Action<WFCRule> OnRuleFail;
 		protected IWFCCell OwnerCell;
+		protected IWFCManager manager;
+
+		protected virtual void InvokeRuleActivated(WFCCellUpdate update)
+		{
+			OnRuleActivated?.Invoke(update);
+		}
 
 		protected virtual void InvokeOnRuleFail()
 		{
+			Debug.Log("Invoking On Rule Fail");
 			OnRuleFail?.Invoke(this);
 		}
 	}

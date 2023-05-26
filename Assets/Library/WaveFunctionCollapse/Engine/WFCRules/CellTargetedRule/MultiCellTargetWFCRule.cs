@@ -7,10 +7,11 @@ namespace FolvosLibrary.WFC
 	[System.Serializable]
 	public abstract class MultiCellTargetWFCRule : WFCRule
 	{
-		[SerializeField] public List<IWFCCell> targetCells;
+		[SerializeField] public List<Vector2Int> targetCells;
 
-		protected MultiCellTargetWFCRule(): base(){
-			
+		protected MultiCellTargetWFCRule() : base()
+		{
+
 		}
 
 		protected MultiCellTargetWFCRule(WFCRule rule) : base(rule)
