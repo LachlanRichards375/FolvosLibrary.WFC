@@ -1,8 +1,8 @@
 namespace FolvosLibrary.WFC
 {
-	public interface IWFCImporter
+	public abstract class IWFCImporter : UnityEngine.ScriptableObject
 	{
-		public WFCTile[] Import<Input>(Input input);
-		public void Reset();
+		public abstract WFCTile[] Import<Input>(Input input);
+		public abstract void Reset();
 	}
 }

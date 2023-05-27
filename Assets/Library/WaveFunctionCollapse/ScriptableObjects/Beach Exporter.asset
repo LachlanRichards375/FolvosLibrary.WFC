@@ -10,5 +10,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36d6711ab47d1054695831257b66bcb1, type: 3}
-  m_Name: Exporter
+  m_Name: Beach Exporter
   m_EditorClassIdentifier: 

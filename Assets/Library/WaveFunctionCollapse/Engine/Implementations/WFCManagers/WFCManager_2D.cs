@@ -5,25 +5,14 @@ using FolvosLibrary.WFC;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Folvos/WFC/Manager/2DManager"), System.Serializable]
-public class WFCManager_2D : ScriptableObject, IWFCManager
+public class WFCManager_2D : IWFCManager
 {
-	IWFCExporter exporter;
-	IWFCImporter importer;
 
 	IWFCCell[][] grid = new IWFCCell[0][];
-	[SerializeField] WFCTile[] tiles;
 	Vector2Int size = new Vector2Int(0, 0);
 
-	// SortedList<Vector2Int, IWFCCell> EntropyQueue = new SortedList<Vector2Int, IWFCCell>();
-	List<IWFCCell> EntropyQueue = new List<IWFCCell>();
 
-	public event Action OnResult;
-	public event Action<WFCError> OnError;
-	public event Action OnInitialize;
-
-	public event Action OnCleanup;
-
-	public WFCError? Collapse()
+	public override WFCError? Collapse()
 	{
 		WFCCell_2D cell = EntropyQueue[0] as WFCCell_2D;
 		Vector2Int nextTile = cell.Position;
@@ -96,68 +85,14 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		PrintEntropyQueue();
 	}
 
-	void SortQueue()
+	public override void Initialize()
 	{
-		EntropyQueue.Sort();
-	}
-
-	void ShuffleLowestEntropy()
-	{
-		SortQueue();
-
-		float lowestEntropy = EntropyQueue[0].CalculateEntropy();
-		int endIndex;
-		for (endIndex = 0; endIndex < EntropyQueue.Count; endIndex++)
-		{
-			if (EntropyQueue[endIndex].CalculateEntropy() > lowestEntropy)
-			{
-				break;
-			}
-		}
-
-		Debug.Log("EntropyQueue Length pre shuffle: " + EntropyQueue.Count);
-		List<IWFCCell> toShuffle = EntropyQueue.GetRange(0, endIndex);
-
-		int n = toShuffle.Count;
-		while (n > 1)
-		{
-			n--;
-			// int k = rng.Next(n + 1);
-			int k = UnityEngine.Random.Range(0, toShuffle.Count);
-			IWFCCell value = toShuffle[k];
-			toShuffle[k] = toShuffle[n];
-			toShuffle[n] = value;
-		}
-
-		EntropyQueue.RemoveRange(0, endIndex);
-		Debug.Log("EntropyQueue Length post remove: " + EntropyQueue.Count);
-		EntropyQueue.InsertRange(0, toShuffle);
-		Debug.Log("EntropyQueue Length post re-addition: " + EntropyQueue.Count);
-	}
-
-	void OnCellUpdate(WFCCellUpdate update)
-	{
-		SortQueue();
-	}
-
-	public void SetImporter(IWFCImporter importer)
-	{
-		this.importer = importer;
-	}
-
-	public void SetExporter(IWFCExporter exporter)
-	{
-		this.exporter = exporter;
-	}
-
-	public void Initialize()
-	{
-		tiles = importer.Import<string>("https://www.reddit.com/r/196/comments/10nfwvk/boy_likerule/");
+		domain = importer.Import<string>("https://www.reddit.com/r/196/comments/10nfwvk/boy_likerule/");
 
 		String print = "INITIALIZING \t Domain: ";
-		for (int i = 0; i < tiles.Length; i++)
+		for (int i = 0; i < domain.Length; i++)
 		{
-			print += tiles[i].ToString() + ", ";
+			print += domain[i].ToString() + ", ";
 		}
 		Debug.Log(print);
 
@@ -172,33 +107,10 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		LoadGrid();
 
 		//On result or error we want to unlock resizing
-		OnInitialize?.Invoke();
+		InvokeOnInitialize();
 	}
 
-	public void Generate()
-	{
-		while (EntropyQueue.Count > 0)
-		{
-			GenerateOnce();
-		}
-		OnResult?.Invoke();
-	}
-
-	void GenerateOnce()
-	{
-		Debug.Log("|*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*|");
-		WFCError? error = Collapse();
-		if (error != null)
-		{
-			//Handle error
-			Debug.LogError("Error occured : " + error.Value.Message);
-		}
-		//Try print cells after each step.
-		//Logger will tell us if not allowed
-		PrintCells();
-	}
-
-	public void GenerateStep(int step = 1)
+	public override void GenerateStep(int step = 1)
 	{
 		for (int i = 0; i < step && EntropyQueue.Count > 0; i++)
 		{
@@ -211,34 +123,12 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		}
 		else
 		{
-			OnResult?.Invoke();
+			InvokeOnResult();
 		}
 
 	}
 
-	public void ClearQueue()
-	{
-		EntropyQueue = new List<IWFCCell>();
-	}
-
-	public void Cleanup()
-	{
-		OnCleanup?.Invoke();
-	}
-
-	public WFCTile[] GetDomain()
-	{
-		WFCTile[] returner = new WFCTile[tiles.Length];
-		tiles.CopyTo(returner, 0);
-		return returner;
-	}
-
-	public bool HasInitialized()
-	{
-		return tiles == null || tiles.Length == 0;
-	}
-
-	public void DrawSize(bool ForceReset = false)
+	public override void DrawSize(bool ForceReset = false)
 	{
 		Vector2Int newSize = UnityEditor.EditorGUILayout.Vector2IntField("Map Size", size);
 		if (ForceReset || newSize != size)
@@ -283,7 +173,7 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		return !(grid[position.x][position.y].CollapsedTile is null);
 	}
 
-	public void PrintCells()
+	public override void PrintCells()
 	{
 		Logging.LogMessage message = new Logging.LogMessage();
 

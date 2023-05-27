@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace FolvosLibrary.WFC
 {
-	public interface IWFCExporter
+	public abstract class IWFCExporter : ScriptableObject
 	{
-		public void Export();
-		public void SetParent(Transform parent);
-		public void Reset();
+		public abstract void Export();
+		public abstract void SetParent(Transform parent);
+		public abstract void Reset();
 	}
 }

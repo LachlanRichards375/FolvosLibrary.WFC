@@ -6,9 +6,9 @@ using UnityEngine;
 
 
 [CreateAssetMenu(menuName = "Folvos/WFC/Exporter/BeachExporter"), System.Serializable]
-public class BeachWFCExporter : ScriptableObject, IWFCExporter
+public class BeachWFCExporter : IWFCExporter
 {
-	public void Export()
+	public override void Export()
 	{
 		Debug.LogError("Export should not be called, use Export(IWFCCell[][]) instead");
 	}
@@ -59,7 +59,7 @@ public class BeachWFCExporter : ScriptableObject, IWFCExporter
 		return Exported;
 	}
 
-	public void Reset()
+	public override void Reset()
 	{
 		foreach (GameObject[] row in Exported)
 		{
@@ -71,7 +71,7 @@ public class BeachWFCExporter : ScriptableObject, IWFCExporter
 		Exported = new GameObject[0][];
 	}
 
-	public void SetParent(Transform parent)
+	public override void SetParent(Transform parent)
 	{
 		this.parent = parent;
 	}
