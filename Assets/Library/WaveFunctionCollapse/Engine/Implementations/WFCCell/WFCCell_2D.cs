@@ -41,10 +41,10 @@ namespace FolvosLibrary.WFC
 			}
 			else
 			{
-				foreach (WFCTile tile in Domain)
-				{
-					returner += tile.Name + " ";
-				}
+				// foreach (WFCTile tile in Domain)
+				// {
+				// 	returner += tile.Name + " ";
+				// }
 			}
 			return returner;
 		}

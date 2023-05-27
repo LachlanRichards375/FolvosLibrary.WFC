@@ -154,17 +154,13 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 			IWFCCell targetCell = m.GetCell(direction);
 			if (targetCell != null)
 			{
-				// Debug.Log($"cellPos = {cell.Position} + {currentDirection} {CellDirection.CellDirectionToVector2Int(currentDirection)} = {direction} ");
 				if (targetCells == null)
-					// targetCells = new System.Collections.Generic.List<IWFCCell>();
 					targetCells = new System.Collections.Generic.List<Vector2Int>();
 
-				// targetCells.Add(targetCell);
 				targetCells.Add(direction);
 
 				// When the target cell is updated cause our cell to do a domain check
-				// targetCell.OnCellUpdate += TargetCellUpdated;
-				targetCell.OnCellUpdate += (WFCCellUpdate update) => InvokeRuleActivated(update);
+				targetCell.OnCellUpdate += InvokeRuleActivated;
 			}
 		}
 	}
