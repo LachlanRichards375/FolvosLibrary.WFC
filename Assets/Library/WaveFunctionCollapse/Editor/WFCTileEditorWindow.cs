@@ -17,6 +17,11 @@ public class WFCTileEditorWindow : ExtendedEditorWindow
 
 	private void OnGUI()
 	{
+		if (serializedObject == null)
+		{
+			EditorGUILayout.LabelField("Select a tile to edit");
+			return;
+		}
 		serializedObject.Update();
 		DrawField("Name", false);
 		DrawField("TileWeight", false);
