@@ -98,6 +98,20 @@ public class WFCEditorWindow : ExtendedEditorWindow
 			}
 		}
 
+		if (GUILayout.Button("Generate Timelapse") && mapParent != null)
+		{
+			if (manager == null)
+			{
+				Debug.LogError("Tried to generate when no manager is selected");
+			}
+			else
+			{
+
+				Initialize();
+				manager.GenerateTimeLapse();
+			}
+		}
+
 		GUILayout.EndHorizontal();
 	}
 
