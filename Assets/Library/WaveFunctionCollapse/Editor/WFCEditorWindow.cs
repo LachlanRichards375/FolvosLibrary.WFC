@@ -1,3 +1,4 @@
+using FolvosLibrary.Logging;
 using FolvosLibrary.WFC;
 using UnityEditor;
 using UnityEngine;
@@ -16,7 +17,6 @@ public class WFCEditorWindow : ExtendedEditorWindow
 	[SerializeField] IWFCManager manager;
 	[SerializeField] IWFCExporter exporter;
 
-
 	bool hasInitialized = false;
 
 	private void OnGUI()
@@ -26,6 +26,9 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		importer = (IWFCImporter)EditorGUILayout.ObjectField("Importer: ", (Object)importer, typeof(IWFCImporter), true);
 		manager = (IWFCManager)EditorGUILayout.ObjectField("Manager: ", (Object)manager, typeof(IWFCManager), true);
 		exporter = (IWFCExporter)EditorGUILayout.ObjectField("Exporter: ", (Object)exporter, typeof(IWFCExporter), true);
+
+		Logging.LoggingLevel = (Logging.Priority)EditorGUILayout.EnumPopup("Logging Level", Logging.LoggingLevel);
+		Logging.LoggingGroups = (Logging.ProjectGroups)EditorGUILayout.EnumFlagsField("Messages to display", Logging.LoggingGroups);
 
 		int stepCount = 1;
 		if (manager != null)
@@ -119,7 +122,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		GameObject[][] map = (exporter as BeachWFCExporter).Export((manager as WFCManager_2D).GetCells());
 		int rowNumber = 0;
 
-		Debug.Log($"Map.Length: {map.Length}");//, Map[0].Length: {map[0].Length}");
+		Debug.Log($"Map.Length: {map.Length}");
 
 		foreach (GameObject[] row in map)
 		{

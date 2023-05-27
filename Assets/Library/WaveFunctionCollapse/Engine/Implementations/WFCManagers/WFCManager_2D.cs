@@ -285,9 +285,6 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
 	public void PrintCells()
 	{
-		Logging.LoggingLevel = Logging.Priority.Low;
-		Logging.LoggingGroups = Logging.ProjectGroups.WFCManager;
-
 		Logging.LogMessage message = new Logging.LogMessage();
 
 		message.MessageFrom = Logging.ProjectGroups.WFCManager;

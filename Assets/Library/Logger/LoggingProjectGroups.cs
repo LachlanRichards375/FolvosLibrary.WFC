@@ -9,9 +9,10 @@ namespace FolvosLibrary.Logging
 		[System.Flags]
 		public enum ProjectGroups
 		{
+			Nothing = 0,
 			Debug = 1,
 			Test = 2,
-			WFCManager = 3,
+			WFCManager = 4,
 		}
 	}
 }
