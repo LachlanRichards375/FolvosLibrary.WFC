@@ -5,7 +5,7 @@ using FolvosLibrary.WFC;
 using UnityEngine;
 
 
-[CreateAssetMenu(menuName = "WFC/Exporter/BeachExporter"), System.Serializable]
+[CreateAssetMenu(menuName = "Folvos/WFC/Exporter/BeachExporter"), System.Serializable]
 public class BeachWFCExporter : ScriptableObject, IWFCExporter
 {
 	public void Export()
