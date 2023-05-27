@@ -42,11 +42,6 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		{
 			if (mapParent != null)
 			{
-				for (int i = 0; i < mapParent.transform.childCount; i++)
-				{
-					DestroyImmediate(mapParent.transform.GetChild(0).gameObject);
-				}
-
 				hasInitialized = false;
 
 				if (manager != null)
@@ -64,6 +59,10 @@ public class WFCEditorWindow : ExtendedEditorWindow
 					importer.Reset();
 				}
 
+				while (mapParent.transform.childCount > 0)
+				{
+					DestroyImmediate(mapParent.transform.GetChild(0).gameObject);
+				}
 			}
 		}
 		GUILayout.BeginHorizontal();
@@ -118,6 +117,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 
 	void OnGenerateResult()
 	{
+		manager.OnResult -= OnGenerateResult;
 		Debug.Log("Reached On Generate Result");
 		GameObject[][] map = (exporter as BeachWFCExporter).Export((manager as WFCManager_2D).GetCells());
 		int rowNumber = 0;
