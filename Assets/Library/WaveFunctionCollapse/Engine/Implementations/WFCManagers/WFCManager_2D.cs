@@ -25,8 +25,6 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 
 	public WFCError? Collapse()
 	{
-		ShuffleLowestEntropy();
-
 		WFCCell_2D cell = EntropyQueue[0] as WFCCell_2D;
 		Vector2Int nextTile = cell.Position;
 
@@ -38,7 +36,8 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 		}
 
 		cell.Collapse();
-		EntropyQueue.RemoveAt(0);
+		EntropyQueue.Remove(cell);
+		SortQueue();
 
 		return null;
 	}
@@ -88,7 +87,13 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 			}
 		}
 
-		SortQueue();
+		Debug.Log("Pre Shuffle");
+		PrintEntropyQueue();
+
+		ShuffleLowestEntropy();
+
+		Debug.Log("Post Shuffle");
+		PrintEntropyQueue();
 	}
 
 	void SortQueue()
@@ -302,8 +307,35 @@ public class WFCManager_2D : ScriptableObject, IWFCManager
 			}
 			s += toAppend + "\n";
 		}
-		message.Message = s;
 
+		message.Message = s;
+		Logging.Message(message);
+
+		PrintEntropyQueue();
+	}
+
+	public void PrintEntropyQueue()
+	{
+
+		Logging.LoggingLevel = Logging.Priority.Low;
+		Logging.LoggingGroups = Logging.ProjectGroups.WFCManager;
+
+		Logging.LogMessage message = new Logging.LogMessage();
+
+		message.MessageFrom = Logging.ProjectGroups.WFCManager;
+		message.Priority = Logging.Priority.Low;
+
+		string s = $"> Entropy Queue: \n";
+
+		int i = 0;
+		foreach (IWFCCell cell in EntropyQueue)
+		{
+			s += i + ">\t" + cell.GetPosition() + " " + cell.ToString() + "\n";
+			i++;
+		}
+
+
+		message.Message = s;
 		Logging.Message(message);
 	}
 }

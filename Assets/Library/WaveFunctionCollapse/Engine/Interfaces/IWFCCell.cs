@@ -155,6 +155,8 @@ namespace FolvosLibrary.WFC
 
 		public override abstract string ToString();
 
+		public abstract string GetPosition();
+
 		public int CompareTo(object obj)
 		{
 			if (obj == null) return 1;
@@ -173,6 +175,5 @@ namespace FolvosLibrary.WFC
 
 			return otherCell.CompareTo(y);
 		}
-
 	}
 }

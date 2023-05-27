@@ -65,5 +65,10 @@ namespace FolvosLibrary.WFC
 
 			return domainSize;
 		}
+
+		public override string GetPosition()
+		{
+			return Position.ToString();
+		}
 	}
 }
