@@ -11,7 +11,6 @@ public class WFCManager_2D : IWFCManager
 	IWFCCell[][] grid = new IWFCCell[0][];
 	Vector2Int size = new Vector2Int(0, 0);
 
-
 	public override WFCError? Collapse()
 	{
 		WFCCell_2D cell = EntropyQueue[0] as WFCCell_2D;
@@ -76,13 +75,7 @@ public class WFCManager_2D : IWFCManager
 			}
 		}
 
-		Debug.Log("Pre Shuffle");
-		PrintEntropyQueue();
-
 		ShuffleLowestEntropy();
-
-		Debug.Log("Post Shuffle");
-		PrintEntropyQueue();
 	}
 
 	public override void Initialize()
@@ -125,7 +118,6 @@ public class WFCManager_2D : IWFCManager
 		{
 			InvokeOnResult();
 		}
-
 	}
 
 	public override void DrawSize(bool ForceReset = false)
@@ -199,30 +191,5 @@ public class WFCManager_2D : IWFCManager
 		Logging.Message(message);
 
 		PrintEntropyQueue();
-	}
-
-	public void PrintEntropyQueue()
-	{
-
-		Logging.LoggingLevel = Logging.Priority.Low;
-		Logging.LoggingGroups = Logging.ProjectGroups.WFCManager;
-
-		Logging.LogMessage message = new Logging.LogMessage();
-
-		message.MessageFrom = Logging.ProjectGroups.WFCManager;
-		message.Priority = Logging.Priority.Low;
-
-		string s = $"> Entropy Queue: \n";
-
-		int i = 0;
-		foreach (IWFCCell cell in EntropyQueue)
-		{
-			s += i + ">\t" + cell.GetPosition() + " " + cell.ToString() + "\n";
-			i++;
-		}
-
-
-		message.Message = s;
-		Logging.Message(message);
 	}
 }
