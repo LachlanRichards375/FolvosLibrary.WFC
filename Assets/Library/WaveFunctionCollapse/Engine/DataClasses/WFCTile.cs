@@ -11,11 +11,8 @@ namespace FolvosLibrary.WFC
 		public TileData TileData;
 		[SerializeReference] public WFCRule[] Rules = new WFCRule[1];
 
-		IWFCManager manager;
-
 		public void RuleSetup(IWFCManager manager, IWFCCell cell)
 		{
-			this.manager = manager;
 			for (int i = 0; i < Rules.Length; i++)
 			{
 				//Do a method overload to return new objects?
@@ -82,21 +79,6 @@ namespace FolvosLibrary.WFC
 				RulesCount++;
 			}
 
-			return returner;
-		}
-
-		public bool PassesRules()
-		{
-			bool returner = true;
-			bool[] PassesTest = new bool[Rules.Length];
-			for (int i = 0; i < Rules.Length; i++)
-			{
-				returner = Rules[i].Test();
-				if (returner == false)
-				{
-					break;
-				}
-			}
 			return returner;
 		}
 

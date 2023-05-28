@@ -56,28 +56,6 @@ namespace FolvosLibrary.WFC
 			InvokeCellUpdate(updateMessage);
 		}
 
-		public void DomainCheck()
-		{
-			//If we've collapsed we don't care
-			if (CollapsedTile != null)
-			{
-				return;
-			}
-
-			List<WFCTile> tilesToRemove = new List<WFCTile>();
-			int i = 0;
-			foreach (WFCTile tile in Domain)
-			{
-				if (!tile.PassesRules())
-				{
-					tilesToRemove.Add(tile);
-				}
-				i++;
-			}
-
-			RemoveFromDomain(tilesToRemove);
-		}
-
 		public void DomainCheck(WFCCellUpdate update)
 		{
 			//If we've collapsed we don't care
