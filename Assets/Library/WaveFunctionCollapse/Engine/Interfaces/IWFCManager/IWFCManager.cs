@@ -1,19 +1,52 @@
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace FolvosLibrary.WFC
 {
-	public abstract class IWFCManager : ScriptableObject
+	public abstract partial class IWFCManager : ScriptableObject
 	{
 		protected IWFCExporter exporter;
 		protected IWFCImporter importer;
 		[SerializeField] protected WFCTile[] domain;
 
 		public abstract WFCError? Collapse();
-
 		public abstract void Initialize();
+
+		//Generation
+		public virtual void Generate()
+		{
+			while (EntropyQueue.Count > 0)
+			{
+				GenerateOnce();
+			}
+			InvokeOnResult();
+		}
+		public virtual void GenerateStep(int step = 1)
+		{
+			for (int i = 0; i < step && EntropyQueue.Count > 0; i++)
+			{
+				GenerateOnce();
+			}
+
+			if (EntropyQueue.Count <= 0)
+			{
+				InvokeOnResult();
+			}
+		}
+		protected void GenerateOnce()
+		{
+			Debug.Log("|*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*|");
+			WFCError? error = Collapse();
+			if (error != null)
+			{
+				//Handle error
+				Debug.LogError("Error occured : " + error.Value.Message);
+			}
+			//Try print cells after each step.
+			//Logger will tell us if not allowed
+			this.PrintCells();
+		}
 
 		#region One Line Functions
 		public virtual void SetImporter(IWFCImporter importer)
@@ -48,76 +81,6 @@ namespace FolvosLibrary.WFC
 			SortQueue();
 		}
 		#endregion
-
-		public virtual void Generate()
-		{
-			while (EntropyQueue.Count > 0)
-			{
-				GenerateOnce();
-			}
-			InvokeOnResult();
-		}
-
-		public virtual void GenerateStep(int step = 1)
-		{
-			for (int i = 0; i < step && EntropyQueue.Count > 0; i++)
-			{
-				GenerateOnce();
-			}
-
-			if (EntropyQueue.Count <= 0)
-			{
-				InvokeOnResult();
-			}
-		}
-
-		protected void GenerateOnce()
-		{
-			Debug.Log("|*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*|");
-			WFCError? error = Collapse();
-			if (error != null)
-			{
-				//Handle error
-				Debug.LogError("Error occured : " + error.Value.Message);
-			}
-			//Try print cells after each step.
-			//Logger will tell us if not allowed
-			this.PrintCells();
-		}
-
-		#region Lifecycle
-		//Lifecycle
-		public event Action OnInitialize;
-		public event Action OnResult;
-		public event Action<WFCError> OnError;
-		public event Action OnCleanup;
-
-		protected void InvokeOnInitialize()
-		{
-			OnInitialize?.Invoke();
-		}
-
-		protected void InvokeOnResult()
-		{
-			OnResult?.Invoke();
-		}
-
-		protected void InvokeOnError(WFCError error)
-		{
-			OnError?.Invoke(error);
-		}
-
-		protected void InvokeOnCleanup()
-		{
-			OnCleanup?.Invoke();
-		}
-		#endregion
-
-		//EditorWindow
-		public abstract void DrawSize(bool ForceReset = false);
-
-		//Logging
-		public abstract void PrintCells();
 
 		#region Entropy Queue
 		//Entropy Queue
@@ -162,27 +125,6 @@ namespace FolvosLibrary.WFC
 
 			EntropyQueue.RemoveRange(0, endIndex);
 			EntropyQueue.InsertRange(0, toShuffle);
-		}
-
-		//For some reason it needs Package.Class.Static method()
-		public void PrintEntropyQueue()
-		{
-			Logging.Logging.LogMessage message = new Logging.Logging.LogMessage();
-
-			message.MessageFrom = Logging.Logging.ProjectGroups.WFCManager;
-			message.Priority = Logging.Logging.Priority.Low;
-
-			string s = $"> Entropy Queue: \n";
-
-			int i = 0;
-			foreach (IWFCCell cell in EntropyQueue)
-			{
-				s += i + ">\t" + cell.GetPosition() + " " + cell.ToString() + "\n";
-				i++;
-			}
-
-			message.Message = s;
-			Logging.Logging.Message(message);
 		}
 		#endregion
 	}
