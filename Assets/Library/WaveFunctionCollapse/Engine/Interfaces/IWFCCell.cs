@@ -36,7 +36,7 @@ namespace FolvosLibrary.WFC
 
 		public void Collapse()
 		{
-			float tileNo = UnityEngine.Random.Range(0f, calcDomain());
+			float tileNo = UnityEngine.Random.Range(0f, CalcDomain());
 			int index = 0;
 			for (index = 0; index < Domain.Count; index++)
 			{
@@ -119,7 +119,7 @@ namespace FolvosLibrary.WFC
 			OnCellUpdate.Invoke(update);
 		}
 
-		protected int calcDomain()
+		protected int CalcDomain()
 		{
 			int sum = 0;
 			foreach (WFCTile tile in Domain)
@@ -130,8 +130,6 @@ namespace FolvosLibrary.WFC
 		}
 
 		public abstract WFCError GetError();
-
-		public override abstract string ToString();
 
 		public abstract string GetPosition();
 
