@@ -20,7 +20,7 @@ namespace FolvosLibrary.WFC
 		public abstract void DrawRuleProperties();
 		public abstract bool Test();
 		public abstract bool Test(WFCCellUpdate? cellUpdate);
-		public abstract void RuleInitialize(IWFCManager manager, IWFCCell Cell);
+		public abstract void RuleInitialize(IWFCManager manager, Vector2Int CellPos);
 
 		//Rule activates when something 'trigers' this tile to check it's domain
 		public event Action<WFCCellUpdate> OnRuleActivated;
@@ -37,6 +37,11 @@ namespace FolvosLibrary.WFC
 		{
 			Debug.Log("Invoking On Rule Fail");
 			OnRuleFail?.Invoke(this);
+		}
+
+		internal void PrintListeners()
+		{
+			Debug.Log($"OnRuleActivated length: {OnRuleActivated.GetInvocationList().Length}");
 		}
 	}
 }

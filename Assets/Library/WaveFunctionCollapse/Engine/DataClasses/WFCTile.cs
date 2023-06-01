@@ -11,24 +11,35 @@ namespace FolvosLibrary.WFC
 		public TileData TileData;
 		[SerializeReference] public WFCRule[] Rules = new WFCRule[1];
 
+		public void Copy(WFCTile other)
+		{
+			Name = other.Name;
+			TileWeight = other.TileWeight;
+			TileData = other.TileData;
+			Rules = other.Rules;
+		}
+
 		public void RuleSetup(IWFCManager manager, IWFCCell cell)
 		{
 			for (int i = 0; i < Rules.Length; i++)
 			{
 				//Do a method overload to return new objects?
 				//This is needed so we aren't using the same Rule Objects as other tiles
-				WFCRule rule = (WFCRule)System.Activator.CreateInstance(Rules[i].GetType(), Rules[i]);
-				rule.RuleInitialize(manager, cell);
-				rule.OnRuleActivated += (WFCCellUpdate update) =>
+				Rules[i] = (WFCRule)System.Activator.CreateInstance(Rules[i].GetType(), Rules[i]);
+				Rules[i].RuleInitialize(manager, (cell as WFCCell_2D).Position);
+				Rules[i].OnRuleActivated += (WFCCellUpdate update) =>
 				{
 					bool passesTest = PassesRules(update);
+					Debug.Log($"Testing on {cell.GetPosition()}");
 					if (!passesTest)
 					{
 						cell.DomainCheck(update);
 					}
 				};
-				Rules[i] = rule;
+
 			}
+			// Rules[0].PrintListeners();
+			Debug.Log($"Cell {cell.GetPosition()} update listeners: {cell.CellUpdateListeners()}");
 		}
 
 		public bool PassesRules(WFCCellUpdate update)

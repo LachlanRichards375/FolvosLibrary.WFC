@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d558ed3e1062ff442a79e1cf463d9777, type: 3}
   m_Name: TestImporter
   m_EditorClassIdentifier: 
-  returner: []
+  returner:
+  - {fileID: 11400000, guid: ca3986b0fb98d014ebbeedc0e58bd781, type: 2}
+  - {fileID: 11400000, guid: 193ec38722dfb054baef0dfc1c796c45, type: 2}

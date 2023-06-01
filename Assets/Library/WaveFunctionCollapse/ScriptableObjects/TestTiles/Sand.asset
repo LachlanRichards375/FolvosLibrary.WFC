@@ -10,30 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a466f86a19776f740aa9cbab4fbbc1e2, type: 3}
-  m_Name: Grass
+  m_Name: Sand
   m_EditorClassIdentifier: 
-  Name: Grass
-  TileWeight: 0
+  Name: Sand
+  TileWeight: 1
   TileData:
-    Sprite: {fileID: 1393356836, guid: 21969dd09df65e143b6f12d9a18b1522, type: 3}
+    Sprite: {fileID: 2013179604, guid: 21969dd09df65e143b6f12d9a18b1522, type: 3}
   Rules:
-  - rid: 7759094157900251151
-  - rid: 7759094157900251154
+  - rid: 7759094157900251152
+  - rid: 7759094157900251153
   references:
     version: 2
     RefIds:
-    - rid: 7759094157900251151
-      type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
-      data:
-        targetCells:
-        - {x: 2, y: 1}
-        - {x: 1, y: 1}
-        - {x: 1, y: 2}
-        goal: {fileID: 11400000}
-        direction: -1
-    - rid: 7759094157900251154
+    - rid: 7759094157900251152
       type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
       data:
         targetCells: []
-        goal: {fileID: 11400000, guid: 193ec38722dfb054baef0dfc1c796c45, type: 2}
+        goal: {fileID: 11400000, guid: ca3986b0fb98d014ebbeedc0e58bd781, type: 2}
+        direction: -1
+    - rid: 7759094157900251153
+      type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
+      data:
+        targetCells: []
+        goal: {fileID: 11400000}
         direction: -1

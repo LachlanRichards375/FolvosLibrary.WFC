@@ -46,10 +46,10 @@ public class CellIsTarget2D : CellTargetWFCRule
 		return false;
 	}
 
-	public override void RuleInitialize(IWFCManager manager, IWFCCell Cell)
+	public override void RuleInitialize(IWFCManager manager, Vector2Int CellPos)
 	{
-		WFCManager_2D m = manager as WFCManager_2D;
-		WFCCell_2D cell = Cell as WFCCell_2D;
-		targetCell = m.GetCell(offset + cell.Position);
+		// WFCManager_2D m = manager as WFCManager_2D;
+		// WFCCell_2D cell = Cell as WFCCell_2D;
+		// targetCell = m.GetCell(offset + cell.Position);
 	}
 }

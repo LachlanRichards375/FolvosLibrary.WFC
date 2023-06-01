@@ -26,6 +26,15 @@ namespace FolvosLibrary.WFC
 				IWFCCell local = this;
 				tile.RuleSetup(manager, local);
 			}
+
+			// for (int i = 0; i < Domain.Count; i++)
+			// {
+			// 	// Domain[i] = (WFCTile)System.Activator.CreateInstance(Domain[i].GetType());
+			// 	WFCTile tile = (WFCTile)ScriptableObject.CreateInstance(Domain[i].GetType());
+			// 	tile.Copy(Domain[i]);
+			// 	Domain[i] = tile;
+			// 	Domain[i].RuleSetup(manager, this);
+			// }
 		}
 
 		public float CalculateEntropy()
@@ -58,6 +67,9 @@ namespace FolvosLibrary.WFC
 
 		public void DomainCheck(WFCCellUpdate update)
 		{
+			Debug.Log($"Domain check called on {this.GetPosition()}");
+
+
 			//If we've collapsed we don't care
 			if (CollapsedTile != null)
 			{
@@ -150,6 +162,11 @@ namespace FolvosLibrary.WFC
 			if (otherCell == null) throw new ArgumentException("Object is not a FWCTile");
 
 			return otherCell.CompareTo(y);
+		}
+
+		public int CellUpdateListeners()
+		{
+			return OnCellUpdate.GetInvocationList().Length;
 		}
 	}
 }

@@ -95,6 +95,8 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 		WFCCellUpdate update = cellUpdate.Value;
 		WFCCell_2D targetCell = (WFCCell_2D)update.UpdatedCell;
 
+		Debug.Log($"Cell {((WFCCell_2D)OwnerCell).Position} targeting {targetCell.Position}. Rule Hash: {GetHashCode()}, OwnerCell.HashCode: {OwnerCell.GetHashCode()}");
+
 		switch (update.UpdateType)
 		{
 			case (CellUpdateType.Collapsed):
@@ -124,7 +126,6 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 					i++;
 				}
 				result = PassTest.All(t => t == true);
-				// Debug.Log($"Cell {((WFCCell_2D)OwnerCell).Position} targeting {targetCell.Position} didPass? {result}");
 
 				return result;
 
@@ -136,14 +137,15 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 		return false;
 	}
 
-	public override void RuleInitialize(IWFCManager manager, IWFCCell Cell)
+	public override void RuleInitialize(IWFCManager manager, Vector2Int CellPos)
 	{
 		WFCManager_2D m = manager as WFCManager_2D;
-		WFCCell_2D cell = Cell as WFCCell_2D;
+		WFCCell_2D cell = m.GetCell(CellPos) as WFCCell_2D;
 
 		this.manager = manager;
 
 		OwnerCell = cell;
+		// Debug.Log($"Rule at {cell.Position},{GetHashCode()}, OwnerCell.HashCode: {OwnerCell.GetHashCode()}");
 
 		//For each possible direction
 		foreach (CellDirection.Direction currentDirection in (CellDirection.Direction[])Enum.GetValues(typeof(CellDirection.Direction)))
@@ -154,6 +156,7 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 			IWFCCell targetCell = m.GetCell(direction);
 			if (targetCell != null)
 			{
+
 				if (targetCells == null)
 					targetCells = new System.Collections.Generic.List<Vector2Int>();
 
@@ -164,6 +167,39 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 			}
 		}
 	}
+
+	// public override void RuleInitialize(IWFCManager manager, IWFCCell Cell)
+	// {
+	// 	WFCManager_2D m = manager as WFCManager_2D;
+	// 	WFCCell_2D cell = Cell as WFCCell_2D;
+
+	// 	this.manager = manager;
+
+	// 	OwnerCell = cell;
+	// 	Debug.Log($"Rule at {cell.Position},{GetHashCode()}, OwnerCell.HashCode: {OwnerCell.GetHashCode()}");
+
+	// 	//For each possible direction
+	// 	foreach (CellDirection.Direction currentDirection in (CellDirection.Direction[])Enum.GetValues(typeof(CellDirection.Direction)))
+	// 	{
+
+	// 		//If there is a cell in this direction add it to targetCells
+	// 		Vector2Int direction = cell.Position + CellDirection.CellDirectionToVector2Int(currentDirection);
+	// 		IWFCCell targetCell = m.GetCell(direction);
+	// 		if (targetCell != null)
+	// 		{
+
+	// 			Debug.Log($"Target cell at {direction} from {cell.Position} is not null");
+
+	// 			if (targetCells == null)
+	// 				targetCells = new System.Collections.Generic.List<Vector2Int>();
+
+	// 			targetCells.Add(direction);
+
+	// 			// When the target cell is updated cause our cell to do a domain check
+	// 			targetCell.OnCellUpdate += InvokeRuleActivated;
+	// 		}
+	// 	}
+	// }
 
 	IWFCCell GetTargetCell(Vector2Int pos)
 	{

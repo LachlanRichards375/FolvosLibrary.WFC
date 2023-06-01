@@ -59,10 +59,10 @@ public class WFCManager_2D : IWFCManager
 		{
 			for (int y = 0; y < size.y; y++)
 			{
-				IWFCCell tile = grid[x][y];
-				EntropyQueue.Add(tile);
-				tile.Domain = new List<WFCTile>(GetDomain());
-				tile.OnCellUpdate += OnCellUpdate;
+				IWFCCell cell = grid[x][y];
+				EntropyQueue.Add(cell);
+				cell.Domain = new List<WFCTile>(GetDomain());
+				cell.OnCellUpdate += OnCellUpdate;
 			}
 		}
 
@@ -70,8 +70,18 @@ public class WFCManager_2D : IWFCManager
 		{
 			for (int y = 0; y < size.y; y++)
 			{
-				IWFCCell tile = grid[x][y];
-				tile.RuleSetup();
+				IWFCCell cell = grid[x][y];
+				cell.RuleSetup();
+			}
+		}
+
+		//Print cell, delete in final
+		for (int x = 0; x < size.x; x++)
+		{
+			for (int y = 0; y < size.y; y++)
+			{
+				IWFCCell cell = grid[x][y];
+				Debug.Log($"Cell {cell.GetPosition()} update listeners: {cell.CellUpdateListeners()}");
 			}
 		}
 
