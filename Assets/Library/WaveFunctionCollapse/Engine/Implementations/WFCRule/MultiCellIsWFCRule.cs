@@ -40,11 +40,9 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 		// foreach (IWFCCell ICell in targetCells)
 		foreach (Vector2Int pos in targetCells)
 		{
+			IWFCCell targetCell = GetTargetCell(pos);
 
-			WFCCell_2D targetCell = (WFCCell_2D)GetTargetCell(pos);
-
-			// if (targetCell.CollapsedTile != null)
-			if ((manager as WFCManager_2D).HasCollapsed(targetCell.Position))
+			if (manager.HasCollapsed(new IWFCPosition(targetCell.GetPosition())))
 			{
 				PassTest[i] = targetCell.CollapsedTile == goal;
 				i++;
@@ -88,12 +86,11 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 		}
 
 		WFCCellUpdate update = cellUpdate.Value;
-		WFCCell_2D targetCell = (WFCCell_2D)update.UpdatedCell;
 
 		switch (update.UpdateType)
 		{
 			case (CellUpdateType.Collapsed):
-				return targetCell.CollapsedTile == goal;
+				return update.UpdatedCell.CollapsedTile == goal;
 
 			case (CellUpdateType.DomainUpdate):
 				bool result = false;
@@ -130,8 +127,7 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 
 	public override void RuleInitialize(IWFCManager manager, Vector2Int CellPos)
 	{
-		WFCManager_2D m = manager as WFCManager_2D;
-		this.manager = m;
+		this.manager = manager;
 
 		//For each possible direction
 		foreach (CellDirection.Direction currentDirection in (CellDirection.Direction[])Enum.GetValues(typeof(CellDirection.Direction)))
@@ -139,7 +135,7 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 
 			//If there is a cell in this direction add it to targetCells
 			Vector2Int direction = CellPos + CellDirection.CellDirectionToVector2Int(currentDirection);
-			IWFCCell targetCell = m.GetCell(direction);
+			IWFCCell targetCell = manager.GetCell(new IWFCPosition(direction));
 			if (targetCell != null)
 			{
 
@@ -156,6 +152,6 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 
 	IWFCCell GetTargetCell(Vector2Int pos)
 	{
-		return ((WFCManager_2D)manager).GetCell(pos);
+		return manager.GetCell(new IWFCPosition(pos));
 	}
 }

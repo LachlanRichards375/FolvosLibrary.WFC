@@ -12,13 +12,7 @@ namespace FolvosLibrary.WFC
 
 		public override string ToString()
 		{
-			string s = "CellUpdateType: " + UpdateType;
-
-			if (UpdatedCell is WFCCell_2D)
-			{
-				s += " at " + (UpdatedCell as WFCCell_2D).Position;
-			}
-
+			string s = $"CellUpdateType: {UpdateType} at {UpdatedCell.GetPositionString()}";
 
 			if (DomainChanges != null && DomainChanges.Count > 0)
 			{

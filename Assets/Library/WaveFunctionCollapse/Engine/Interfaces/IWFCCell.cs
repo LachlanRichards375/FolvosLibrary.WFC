@@ -5,36 +5,36 @@ using UnityEngine;
 
 namespace FolvosLibrary.WFC
 {
-	public abstract class IWFCCell : IComparable
+	public class IWFCCell : IComparable
 	{
 		public WFCTile CollapsedTile { get; protected set; }
 		public List<WFCTile> Domain;
 		public event Action<WFCCellUpdate> OnCellUpdate;
 
 		protected IWFCManager manager;
+		protected IWFCPosition position;
 
-		public IWFCCell(IWFCManager manager)
+		public IWFCCell(IWFCManager m, IWFCPosition p)
 		{
-			this.manager = manager;
+			manager = m;
+			position = p;
+		}
+
+		public IWFCCell(IWFCCell other)
+		{
+			this.manager = other.manager;
+			this.position = other.position;
+			this.Domain = other.Domain;
+			this.CollapsedTile = other.CollapsedTile;
 		}
 
 		public void RuleSetup()
 		{
-			// OnCellUpdate += (WFCCellUpdate update) => Debug.Log("Cell called OnCellUpdate: " + update.ToString());
 			foreach (WFCTile tile in Domain)
 			{
 				IWFCCell local = this;
 				tile.RuleSetup(manager, local);
 			}
-
-			// for (int i = 0; i < Domain.Count; i++)
-			// {
-			// 	// Domain[i] = (WFCTile)System.Activator.CreateInstance(Domain[i].GetType());
-			// 	WFCTile tile = (WFCTile)ScriptableObject.CreateInstance(Domain[i].GetType());
-			// 	tile.Copy(Domain[i]);
-			// 	Domain[i] = tile;
-			// 	Domain[i].RuleSetup(manager, this);
-			// }
 		}
 
 		public float CalculateEntropy()
@@ -92,13 +92,7 @@ namespace FolvosLibrary.WFC
 			if (tilesToRemove.Count > 0)
 			{
 				int i = 0;
-				string toPrint = ("Attempting to remove " + tilesToRemove.Count + " tiles from domain(" + Domain.Count + ")");
-				if (this is WFCCell_2D)
-				{
-					WFCCell_2D cell = this as WFCCell_2D;
-					toPrint += (" in cell at position " + cell.Position);
-				}
-				// Debug.Log(toPrint);
+				// Debug.Log($"Attempting to remove {tilesToRemove.Count} tiles from domain({Domain.Count}) at {position.ToString()}");
 
 				WFCCellUpdate updateMessage = new WFCCellUpdate();
 
@@ -138,9 +132,22 @@ namespace FolvosLibrary.WFC
 			return sum;
 		}
 
-		public abstract WFCError GetError();
+		public virtual WFCError GetError()
+		{
+			WFCError e = new WFCError();
+			e.Message = $"Error on cell at position {position}, Domain has {Domain.Count} remaining elements";
+			return e;
+		}
 
-		public abstract string GetPosition();
+		public virtual string GetPositionString()
+		{
+			return position.ToString();
+		}
+
+		public virtual IWFCPosition GetPosition()
+		{
+			return new IWFCPosition(position);
+		}
 
 		public int CompareTo(object obj)
 		{
@@ -164,6 +171,46 @@ namespace FolvosLibrary.WFC
 		public int CellUpdateListeners()
 		{
 			return OnCellUpdate.GetInvocationList().Length;
+		}
+
+		public override String ToString()
+		{
+			if (CollapsedTile != null)
+			{
+				return CollapsedTile.Name;
+			}
+
+			string returner = "Undecided (" + GetActualDomainSize() + ")";
+			if (Domain == null)
+			{
+				// Debug.Log("Domain is null");
+				returner += "  NULL?  ";
+			}
+			else
+			{
+				// foreach (WFCTile tile in Domain)
+				// {
+				// 	returner += tile.Name + " ";
+				// }
+			}
+			return returner;
+		}
+
+		protected int GetActualDomainSize()
+		{
+			int domainSize = 0;
+			if (Domain != null)
+			{
+				for (int i = 0; i < Domain.Count; i++)
+				{
+					if (Domain[i] != null)
+					{
+						domainSize++;
+					}
+				}
+			}
+
+			return domainSize;
 		}
 	}
 }

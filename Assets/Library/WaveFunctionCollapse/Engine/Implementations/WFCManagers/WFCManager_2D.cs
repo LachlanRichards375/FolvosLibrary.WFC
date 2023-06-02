@@ -13,8 +13,8 @@ public class WFCManager_2D : IWFCManager
 
 	public override WFCError? Collapse()
 	{
-		WFCCell_2D cell = EntropyQueue[0] as WFCCell_2D;
-		Vector2Int nextTile = cell.Position;
+		IWFCCell cell = EntropyQueue[0];
+		Vector2Int nextTile = cell.GetPosition().AsVector2Int();
 
 		if (cell.CalculateEntropy() <= 0f)
 		{
@@ -30,8 +30,9 @@ public class WFCManager_2D : IWFCManager
 		return null;
 	}
 
-	public void SetSize(Vector2Int newSize)
+	public override void SetSize(IWFCPosition size)
 	{
+		Vector2Int newSize = size.AsVector2Int();
 		if (newSize.x < 0 || newSize.y < 0)
 		{
 			return;
@@ -44,15 +45,15 @@ public class WFCManager_2D : IWFCManager
 
 			for (int y = 0; y < newSize.y; y++)
 			{
-				newGrid[x][y] = new WFCCell_2D(this, new Vector2Int(x, y));
+				newGrid[x][y] = new IWFCCell(this, new IWFCPosition(x, y));
 			}
 		}
 
 		grid = newGrid;
-		size = newSize;
+		this.size = newSize;
 	}
 
-	void LoadGrid()
+	protected override void LoadGrid()
 	{
 		Debug.Log("Getting Entropy Queue");
 		for (int x = 0; x < size.x; x++)
@@ -125,7 +126,7 @@ public class WFCManager_2D : IWFCManager
 		Vector2Int newSize = UnityEditor.EditorGUILayout.Vector2IntField("Map Size", size);
 		if (ForceReset || newSize != size)
 		{
-			SetSize(newSize);
+			SetSize(new IWFCPosition(newSize));
 		}
 	}
 
@@ -134,7 +135,7 @@ public class WFCManager_2D : IWFCManager
 		return grid;
 	}
 
-	public IWFCCell GetCell(Vector2Int position)
+	public override IWFCCell GetCell(IWFCPosition position)
 	{
 		if (position.x < 0 || position.y < 0)
 		{
@@ -146,11 +147,11 @@ public class WFCManager_2D : IWFCManager
 			return null;
 		}
 
-		// Debug.Log($"grid.Length: {grid.Length}, grid[0].length: {grid[0].Length}, position: {position}");
-		return grid[position.x][position.y];
+		Vector2Int vec = position.AsVector2Int();
+		return grid[vec.x][vec.y];
 	}
 
-	public bool HasCollapsed(Vector2Int position)
+	public override bool HasCollapsed(IWFCPosition position)
 	{
 		if (position.x < 0 || position.y < 0)
 		{
@@ -161,8 +162,9 @@ public class WFCManager_2D : IWFCManager
 		{
 			return false;
 		}
-		Debug.Log($"Checking if {position} has collapsed: hash {grid[position.x][position.y].GetHashCode()}");
-		return !(grid[position.x][position.y].CollapsedTile is null);
+
+		Vector2Int vec = position.AsVector2Int();
+		return !(grid[vec.x][vec.y].CollapsedTile is null);
 	}
 
 	public override void PrintCells()

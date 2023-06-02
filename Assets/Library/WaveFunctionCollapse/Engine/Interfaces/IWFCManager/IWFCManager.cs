@@ -13,6 +13,11 @@ namespace FolvosLibrary.WFC
 		public abstract WFCError? Collapse();
 		public abstract void Initialize();
 
+		public abstract void SetSize(IWFCPosition newSize);
+		protected abstract void LoadGrid();
+		public abstract IWFCCell GetCell(IWFCPosition position);
+		public abstract bool HasCollapsed(IWFCPosition position);
+
 		//Generation
 		public virtual void Generate()
 		{

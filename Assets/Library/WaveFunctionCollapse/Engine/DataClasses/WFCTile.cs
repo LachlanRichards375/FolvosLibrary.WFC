@@ -26,7 +26,7 @@ namespace FolvosLibrary.WFC
 				//Do a method overload to return new objects?
 				//This is needed so we aren't using the same Rule Objects as other tiles
 				Rules[i] = (WFCRule)System.Activator.CreateInstance(Rules[i].GetType(), Rules[i]);
-				Rules[i].RuleInitialize(manager, (cell as WFCCell_2D).Position);
+				Rules[i].RuleInitialize(manager, cell.GetPosition().AsVector2Int());
 				Rules[i].OnRuleActivated += (WFCCellUpdate update) =>
 				{
 					bool passesTest = PassesRules(update, cell);
