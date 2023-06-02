@@ -19,6 +19,7 @@ MonoBehaviour:
   Rules:
   - rid: 7759094177134280849
   - rid: 7759094177134280850
+  - rid: 7759094177134280853
   references:
     version: 2
     RefIds:
@@ -40,3 +41,9 @@ MonoBehaviour:
         - {x: 1, y: 2}
         goal: {fileID: 11400000, guid: 193ec38722dfb054baef0dfc1c796c45, type: 2}
         direction: -1
+    - rid: 7759094177134280853
+      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
+      data:
+        targetCells: []
+        goal: {fileID: 11400000, guid: 193ec38722dfb054baef0dfc1c796c45, type: 2}
+        direction: 28

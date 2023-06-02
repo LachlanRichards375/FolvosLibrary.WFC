@@ -5,22 +5,21 @@ using UnityEditor;
 using UnityEngine;
 
 [System.Serializable]
-public class MultiCellIsTarget2D : MultiCellTargetWFCRule
+public class MultiCellIsNotTarget2D : MultiCellTargetWFCRule
 {
-
-	public MultiCellIsTarget2D() : base()
+	public MultiCellIsNotTarget2D() : base()
 	{
 
 	}
 
-	public MultiCellIsTarget2D(MultiCellIsTarget2D other) : base(other)
+	public MultiCellIsNotTarget2D(MultiCellIsNotTarget2D other) : base(other)
 	{
 
 	}
 
 	public override bool Test()
 	{
-		// Debug.Log("Running Test(), targetCells: " + targetCells);
+		Debug.Log("Test no params");
 		if (targetCells == null)
 		{
 			return false;
@@ -31,9 +30,11 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 		// foreach (IWFCCell ICell in targetCells)
 		foreach (Vector2Int pos in targetCells)
 		{
+
 			IWFCCell targetCell = GetTargetCell(pos);
 
-			if (manager.HasCollapsed(new IWFCPosition(targetCell.GetPosition())))
+			// if (targetCell.CollapsedTile != null)
+			if ((manager as WFCManager_2D).HasCollapsed(targetCell.GetPosition()))
 			{
 				PassTest[i] = targetCell.CollapsedTile == goal;
 				i++;
@@ -81,7 +82,7 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 		switch (update.UpdateType)
 		{
 			case (CellUpdateType.Collapsed):
-				return update.UpdatedCell.CollapsedTile == goal;
+				return update.UpdatedCell.CollapsedTile != goal;
 
 			case (CellUpdateType.DomainUpdate):
 				bool result = false;
@@ -91,12 +92,16 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 				int i = 0;
 				foreach (DomainChange domainChange in update.DomainChanges)
 				{
+
 					if (domainChange.UpdatedTile == goal)
 					{
-						if (domainChange.DomainUpdate == DomainUpdate.RemovedFromDomain)
+						if (domainChange.DomainUpdate == DomainUpdate.AddedToDomain)
 						{
 							PassTest[i] = false;
-							continue;
+						}
+						else if (domainChange.DomainUpdate == DomainUpdate.RemovedFromDomain)
+						{
+							PassTest[i] = true;
 						}
 					}
 
