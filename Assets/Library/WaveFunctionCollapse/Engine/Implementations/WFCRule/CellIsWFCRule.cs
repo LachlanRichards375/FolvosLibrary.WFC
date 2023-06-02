@@ -24,7 +24,7 @@ public class CellIsTarget2D : CellTargetWFCRule
 		return false;
 	}
 
-	public override bool Test(WFCCellUpdate? cellUpdate)
+	public override bool Test(WFCCellUpdate? cellUpdate, IWFCCell OwnerCell)
 	{
 		IWFCCell cell = (IWFCCell)targetCell;
 

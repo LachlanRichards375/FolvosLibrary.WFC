@@ -80,7 +80,7 @@ namespace FolvosLibrary.WFC
 			int i = 0;
 			foreach (WFCTile tile in Domain)
 			{
-				if (!tile.PassesRules(update))
+				if (!tile.PassesRules(update, this))
 				{
 					tilesToRemove.Add(tile);
 				}

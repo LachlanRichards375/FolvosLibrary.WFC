@@ -29,8 +29,7 @@ namespace FolvosLibrary.WFC
 				Rules[i].RuleInitialize(manager, (cell as WFCCell_2D).Position);
 				Rules[i].OnRuleActivated += (WFCCellUpdate update) =>
 				{
-					bool passesTest = PassesRules(update);
-					Debug.Log($"Testing on {cell.GetPosition()}");
+					bool passesTest = PassesRules(update, cell);
 					if (!passesTest)
 					{
 						cell.DomainCheck(update);
@@ -39,15 +38,14 @@ namespace FolvosLibrary.WFC
 
 			}
 			// Rules[0].PrintListeners();
-			Debug.Log($"Cell {cell.GetPosition()} update listeners: {cell.CellUpdateListeners()}");
 		}
 
-		public bool PassesRules(WFCCellUpdate update)
+		public bool PassesRules(WFCCellUpdate update, IWFCCell caller)
 		{
 			bool returner = false;
 			for (int i = 0; i < Rules.Length; i++)
 			{
-				returner = Rules[i].Test(update);
+				returner = Rules[i].Test(update, caller);
 				if (returner == true)
 				{
 					break;

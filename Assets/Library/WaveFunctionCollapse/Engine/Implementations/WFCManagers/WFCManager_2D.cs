@@ -75,16 +75,6 @@ public class WFCManager_2D : IWFCManager
 			}
 		}
 
-		//Print cell, delete in final
-		for (int x = 0; x < size.x; x++)
-		{
-			for (int y = 0; y < size.y; y++)
-			{
-				IWFCCell cell = grid[x][y];
-				Debug.Log($"Cell {cell.GetPosition()} update listeners: {cell.CellUpdateListeners()}");
-			}
-		}
-
 		ShuffleLowestEntropy();
 	}
 

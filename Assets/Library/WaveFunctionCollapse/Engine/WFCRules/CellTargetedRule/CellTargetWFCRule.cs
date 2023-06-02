@@ -11,9 +11,9 @@ namespace FolvosLibrary.WFC
 		{
 		}
 
-		public void TargetCellUpdated(WFCCellUpdate cellUpdate)
-		{
-			Test(cellUpdate);
-		}
+		// public void TargetCellUpdated(WFCCellUpdate cellUpdate)
+		// {
+		// 	Test(cellUpdate);
+		// }
 	}
 }

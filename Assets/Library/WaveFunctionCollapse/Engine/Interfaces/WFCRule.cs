@@ -19,13 +19,12 @@ namespace FolvosLibrary.WFC
 
 		public abstract void DrawRuleProperties();
 		public abstract bool Test();
-		public abstract bool Test(WFCCellUpdate? cellUpdate);
+		public abstract bool Test(WFCCellUpdate? cellUpdate, IWFCCell ownerCell);
 		public abstract void RuleInitialize(IWFCManager manager, Vector2Int CellPos);
 
 		//Rule activates when something 'trigers' this tile to check it's domain
 		public event Action<WFCCellUpdate> OnRuleActivated;
 		public event Action<WFCRule> OnRuleFail;
-		protected IWFCCell OwnerCell;
 		protected IWFCManager manager;
 
 		protected virtual void InvokeRuleActivated(WFCCellUpdate update)

@@ -18,13 +18,13 @@ namespace FolvosLibrary.WFC
 		{
 		}
 
-		public void TargetCellUpdated(WFCCellUpdate cellUpdate)
-		{
-			bool t = Test(cellUpdate);
-			if (t == false)
-			{
-				InvokeOnRuleFail();
-			}
-		}
+		// public void TargetCellUpdated(WFCCellUpdate cellUpdate)
+		// {
+		// 	bool t = Test(cellUpdate);
+		// 	if (t == false)
+		// 	{
+		// 		InvokeOnRuleFail();
+		// 	}
+		// }
 	}
 }
