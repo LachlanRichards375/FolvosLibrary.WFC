@@ -7,7 +7,7 @@ namespace FolvosLibrary.WFC
 	public class WFCTile : ScriptableObject
 	{
 		public string Name;
-		public int TileWeight;
+		[Min(1)] public int TileWeight = 1;
 		public TileData TileData;
 		[SerializeReference] public WFCRule[] Rules = new WFCRule[1];
 
