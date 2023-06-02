@@ -35,9 +35,7 @@ namespace FolvosLibrary.WFC
 						cell.DomainCheck(update);
 					}
 				};
-
 			}
-			// Rules[0].PrintListeners();
 		}
 
 		public bool PassesRules(WFCCellUpdate update, IWFCCell caller)

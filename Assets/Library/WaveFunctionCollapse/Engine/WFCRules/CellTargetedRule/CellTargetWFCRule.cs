@@ -10,10 +10,5 @@ namespace FolvosLibrary.WFC
 		protected CellTargetWFCRule(WFCRule rule) : base(rule)
 		{
 		}
-
-		// public void TargetCellUpdated(WFCCellUpdate cellUpdate)
-		// {
-		// 	Test(cellUpdate);
-		// }
 	}
 }

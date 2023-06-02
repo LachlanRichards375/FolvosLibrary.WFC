@@ -67,9 +67,6 @@ namespace FolvosLibrary.WFC
 
 		public void DomainCheck(WFCCellUpdate update)
 		{
-			Debug.Log($"Domain check called on {this.GetPosition()}");
-
-
 			//If we've collapsed we don't care
 			if (CollapsedTile != null)
 			{

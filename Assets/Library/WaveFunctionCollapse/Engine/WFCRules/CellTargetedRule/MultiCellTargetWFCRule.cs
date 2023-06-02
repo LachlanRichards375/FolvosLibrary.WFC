@@ -17,14 +17,5 @@ namespace FolvosLibrary.WFC
 		protected MultiCellTargetWFCRule(WFCRule rule) : base(rule)
 		{
 		}
-
-		// public void TargetCellUpdated(WFCCellUpdate cellUpdate)
-		// {
-		// 	bool t = Test(cellUpdate);
-		// 	if (t == false)
-		// 	{
-		// 		InvokeOnRuleFail();
-		// 	}
-		// }
 	}
 }

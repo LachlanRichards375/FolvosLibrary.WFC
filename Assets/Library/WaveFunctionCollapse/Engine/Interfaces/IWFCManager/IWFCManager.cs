@@ -36,7 +36,8 @@ namespace FolvosLibrary.WFC
 		}
 		protected void GenerateOnce()
 		{
-			Debug.Log("|*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*|");
+			PrintGenerationDivider();
+
 			WFCError? error = Collapse();
 			if (error != null)
 			{

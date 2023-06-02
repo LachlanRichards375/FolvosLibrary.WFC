@@ -34,13 +34,7 @@ namespace FolvosLibrary.WFC
 
 		protected virtual void InvokeOnRuleFail()
 		{
-			Debug.Log("Invoking On Rule Fail");
 			OnRuleFail?.Invoke(this);
-		}
-
-		internal void PrintListeners()
-		{
-			Debug.Log($"OnRuleActivated length: {OnRuleActivated.GetInvocationList().Length}");
 		}
 	}
 }
