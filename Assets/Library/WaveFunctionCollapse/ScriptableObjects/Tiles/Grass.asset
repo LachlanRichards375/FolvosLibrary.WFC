@@ -17,33 +17,27 @@ MonoBehaviour:
   TileData:
     Sprite: {fileID: 1393356836, guid: 21969dd09df65e143b6f12d9a18b1522, type: 3}
   Rules:
-  - rid: 4320938351279210971
-  - rid: 4320938351279210972
-  - rid: 4320938351279210975
+  - rid: 7759094251836932169
+  - rid: 7759094251836932171
+  - rid: 7759094251836932172
   references:
     version: 2
     RefIds:
-    - rid: 4320938351279210971
-      type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
+    - rid: 7759094251836932169
+      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
       data:
-        targetCells:
-        - {x: 14, y: 13}
-        - {x: 13, y: 13}
-        - {x: 13, y: 14}
-        goal: {fileID: 11400000}
-        direction: -1
-    - rid: 4320938351279210972
-      type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
-      data:
-        targetCells:
-        - {x: 14, y: 13}
-        - {x: 13, y: 13}
-        - {x: 13, y: 14}
-        goal: {fileID: 11400000, guid: 4b80a1102d96b2940bf959e104e96aab, type: 2}
-        direction: -1
-    - rid: 4320938351279210975
-      type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
-      data:
-        targetCells: []
+        InvalidateTileOnFail: 0
         goal: {fileID: 11400000, guid: 3ee41d799c6fbbf40987ce9acd11a4ec, type: 2}
-        direction: 0
+        direction: 448
+    - rid: 7759094251836932171
+      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
+      data:
+        InvalidateTileOnFail: 0
+        goal: {fileID: 11400000, guid: dd71be7ad22618c45baf4d1ff8effb88, type: 2}
+        direction: -1
+    - rid: 7759094251836932172
+      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
+      data:
+        InvalidateTileOnFail: 0
+        goal: {fileID: 11400000, guid: c6a4fd71e9e02a64bacf01f4a46159d6, type: 2}
+        direction: -1

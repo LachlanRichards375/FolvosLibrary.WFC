@@ -27,27 +27,24 @@ namespace FolvosLibrary.WFC
 				//This is needed so we aren't using the same Rule Objects as other tiles
 				Rules[i] = (WFCRule)System.Activator.CreateInstance(Rules[i].GetType(), Rules[i]);
 				Rules[i].RuleInitialize(manager, cell.GetPosition().AsVector2Int());
-				Rules[i].OnRuleActivated += (WFCCellUpdate update) =>
-				{
-					bool passesTest = PassesRules(update, cell);
-					if (!passesTest)
-					{
-						cell.DomainCheck(update);
-					}
-				};
+				Rules[i].OnRuleActivated += cell.DomainCheck;
 			}
 		}
 
 		public bool PassesRules(WFCCellUpdate update, IWFCCell caller)
 		{
-			bool returner = false;
+			int index = 0;
+			bool returner = true;
 			for (int i = 0; i < Rules.Length; i++)
 			{
-				returner = Rules[i].Test(update, caller);
-				if (returner == true)
+				returner = Rules[index].Test(update, caller);
+				if (returner == false)
 				{
+					Debug.Log($"Testing {Rules[index].GetType()}(index: {index}) from cell {caller.GetPositionString()} targeting {update.UpdatedCell.GetPositionString()} failed"
+					+ $" > {Rules[index].GetTargetCells()}");
 					break;
 				}
+				index++;
 			}
 
 			return returner;

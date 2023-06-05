@@ -17,36 +17,34 @@ MonoBehaviour:
   TileData:
     Sprite: {fileID: 2013179604, guid: 21969dd09df65e143b6f12d9a18b1522, type: 3}
   Rules:
-  - rid: 4320938351279210968
-  - rid: 4320938351279210969
-  - rid: 4320938351279210970
+  - rid: 7759094205233233990
+  - rid: 7759094205233233991
+  - rid: 7759094205233233992
+  - rid: 7759094205233233993
   references:
     version: 2
     RefIds:
-    - rid: 4320938351279210968
-      type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
+    - rid: 7759094205233233990
+      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
       data:
-        targetCells:
-        - {x: 14, y: 13}
-        - {x: 13, y: 13}
-        - {x: 13, y: 14}
+        InvalidateTileOnFail: 0
+        goal: {fileID: 11400000, guid: 4b80a1102d96b2940bf959e104e96aab, type: 2}
+        direction: -1
+    - rid: 7759094205233233991
+      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
+      data:
+        InvalidateTileOnFail: 0
         goal: {fileID: 11400000, guid: d1637cbfd533a624599eeabddfd90d36, type: 2}
-        direction: -1
-    - rid: 4320938351279210969
-      type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
+        direction: 28
+    - rid: 7759094205233233992
+      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
       data:
-        targetCells:
-        - {x: 14, y: 13}
-        - {x: 13, y: 13}
-        - {x: 13, y: 14}
-        goal: {fileID: 11400000}
-        direction: -1
-    - rid: 4320938351279210970
-      type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
-      data:
-        targetCells:
-        - {x: 14, y: 13}
-        - {x: 13, y: 13}
-        - {x: 13, y: 14}
+        InvalidateTileOnFail: 0
         goal: {fileID: 11400000, guid: dd71be7ad22618c45baf4d1ff8effb88, type: 2}
+        direction: 448
+    - rid: 7759094205233233993
+      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
+      data:
+        InvalidateTileOnFail: 0
+        goal: {fileID: 11400000, guid: c6a4fd71e9e02a64bacf01f4a46159d6, type: 2}
         direction: -1

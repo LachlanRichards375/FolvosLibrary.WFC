@@ -17,27 +17,13 @@ MonoBehaviour:
   TileData:
     Sprite: {fileID: 2013179604, guid: 21969dd09df65e143b6f12d9a18b1522, type: 3}
   Rules:
-  - rid: 7759094157900251152
-  - rid: 7759094157900251153
-  - rid: 7759094177134280854
+  - rid: 7759094205233233976
   references:
     version: 2
     RefIds:
-    - rid: 7759094157900251152
-      type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
-      data:
-        targetCells: []
-        goal: {fileID: 11400000, guid: ca3986b0fb98d014ebbeedc0e58bd781, type: 2}
-        direction: -1
-    - rid: 7759094157900251153
-      type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
-      data:
-        targetCells: []
-        goal: {fileID: 11400000}
-        direction: -1
-    - rid: 7759094177134280854
+    - rid: 7759094205233233976
       type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
       data:
-        targetCells: []
+        InvalidateTileOnFail: 0
         goal: {fileID: 11400000, guid: ca3986b0fb98d014ebbeedc0e58bd781, type: 2}
         direction: 448

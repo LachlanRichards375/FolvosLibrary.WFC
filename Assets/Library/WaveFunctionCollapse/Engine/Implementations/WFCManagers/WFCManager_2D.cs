@@ -184,7 +184,7 @@ public class WFCManager_2D : IWFCManager
 			string toAppend = $"{row}\t>";
 			for (int column = 0; column < grid[0].Length; column++)
 			{
-				toAppend += String.Format("{0,30}", grid[column][row].ToString());
+				toAppend += String.Format("{0,50}", grid[column][row].ToString());
 			}
 			s += toAppend + "\n";
 		}

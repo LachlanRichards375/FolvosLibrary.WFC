@@ -52,4 +52,9 @@ public class CellIsTarget2D : CellTargetWFCRule
 		// WFCCell_2D cell = Cell as WFCCell_2D;
 		// targetCell = m.GetCell(offset + cell.Position);
 	}
+
+	public override string GetTargetCells()
+	{
+		throw new System.NotImplementedException();
+	}
 }

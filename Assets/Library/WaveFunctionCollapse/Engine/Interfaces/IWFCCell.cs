@@ -79,6 +79,7 @@ namespace FolvosLibrary.WFC
 			{
 				if (!tile.PassesRules(update, this))
 				{
+					Debug.Log($"Testing {tile.Name} at {GetPositionString()} returned False");
 					tilesToRemove.Add(tile);
 				}
 				i++;
@@ -188,10 +189,10 @@ namespace FolvosLibrary.WFC
 			}
 			else
 			{
-				// foreach (WFCTile tile in Domain)
-				// {
-				// 	returner += tile.Name + " ";
-				// }
+				foreach (WFCTile tile in Domain)
+				{
+					returner += tile.Name + " ";
+				}
 			}
 			return returner;
 		}
