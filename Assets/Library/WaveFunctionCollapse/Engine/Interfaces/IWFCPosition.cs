@@ -127,5 +127,43 @@ namespace FolvosLibrary.WFC
 
 			return s + ")";
 		}
+
+		public static bool operator ==(IWFCPosition pos1, IWFCPosition pos2)
+		{
+			return (
+				pos1.x == pos2.x &&
+				pos1.y == pos2.y &&
+				pos1.z == pos2.z &&
+				pos1.w == pos2.w
+			);
+		}
+
+		public static bool operator !=(IWFCPosition pos1, IWFCPosition pos2)
+		{
+			return !(
+				pos1.x == pos2.x &&
+				pos1.y == pos2.y &&
+				pos1.z == pos2.z &&
+				pos1.w == pos2.w
+			);
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (obj == null || !this.GetType().Equals(obj.GetType()))
+			{
+				return false;
+			}
+			else
+			{
+				IWFCPosition other = (IWFCPosition)obj;
+				return this == other;
+			}
+		}
+
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
 	}
 }
