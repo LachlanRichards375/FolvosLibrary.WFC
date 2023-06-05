@@ -6,7 +6,9 @@
         "UnityEditor.TestRunner",
         "WaveFunctionCollapse"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,

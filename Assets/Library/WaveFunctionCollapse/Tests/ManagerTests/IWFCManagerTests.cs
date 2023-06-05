@@ -1,25 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
+using FolvosLibrary.WFC;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
 public class IWFCManagerTests
 {
-    // A Test behaves as an ordinary method
-    [Test]
-    public void IWFCManagerTestsSimplePasses()
-    {
-        // Use the Assert class to test conditions
-    }
+	WFCManager_2D manager;
+	BeachImporter importer;
+	BeachWFCExporter exporter;
+	IWFCPosition size = new IWFCPosition(3, 3);
 
-    // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
-    // `yield return null;` to skip a frame.
-    [UnityTest]
-    public IEnumerator IWFCManagerTestsWithEnumeratorPasses()
-    {
-        // Use the Assert class to test conditions.
-        // Use yield to skip a frame.
-        yield return null;
-    }
+	[OneTimeSetUp]
+	public void TestSetup()
+	{
+		manager = (WFCManager_2D)ScriptableObject.CreateInstance(typeof(WFCManager_2D));
+		importer = (BeachImporter)ScriptableObject.CreateInstance(typeof(BeachImporter));
+		exporter = (BeachWFCExporter)ScriptableObject.CreateInstance(typeof(BeachWFCExporter));
+	}
+
+	[Test]
+	public void TestAssignImporterToManager()
+	{
+		manager.SetImporter(importer);
+		Assert.That(manager.GetImporter() == importer, "Assigned importer is not the one provided");
+	}
+
+	[Test]
+	public void TestAssignExporterToManager()
+	{
+		manager.SetExporter(exporter);
+		Assert.That(manager.GetExporter() == exporter, "Assigned exporter is not the one provided");
+	}
+
+	[Test]
+	public void TestSetManagerSize()
+	{
+		manager.SetSize(size);
+		Assert.That(manager.GetSize() == size, "Manager did not set size correctly");
+	}
 }
