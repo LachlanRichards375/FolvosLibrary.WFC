@@ -9,7 +9,7 @@ namespace FolvosLibrary.WFC
 		public string Name;
 		[Min(1)] public int TileWeight = 1;
 		public TileData TileData;
-		[SerializeReference] public WFCRule[] Rules = new WFCRule[1];
+		[SerializeReference] public WFCRule[] Rules = new WFCRule[0];
 
 		public void Copy(WFCTile other)
 		{
