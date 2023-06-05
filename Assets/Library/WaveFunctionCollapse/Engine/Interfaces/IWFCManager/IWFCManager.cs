@@ -11,9 +11,15 @@ namespace FolvosLibrary.WFC
 		[SerializeField] protected WFCTile[] domain;
 
 		public abstract WFCError? Collapse();
+		public abstract WFCError? CollapseSpecificCell(IWFCPosition position, WFCTile toCollapseTo);
 		public abstract void Initialize();
 
+		protected IWFCPosition size;
 		public abstract void SetSize(IWFCPosition newSize);
+		public IWFCPosition GetSize()
+		{
+			return size;
+		}
 		protected abstract void LoadGrid();
 		public abstract IWFCCell GetCell(IWFCPosition position);
 		public abstract bool HasCollapsed(IWFCPosition position);
@@ -60,10 +66,14 @@ namespace FolvosLibrary.WFC
 			this.importer = importer;
 		}
 
+		public IWFCImporter GetImporter() { return importer; }
+
 		public virtual void SetExporter(IWFCExporter exporter)
 		{
 			this.exporter = exporter;
 		}
+
+		public IWFCExporter GetExporter() { return exporter; }
 
 		public virtual bool HasInitialized()
 		{

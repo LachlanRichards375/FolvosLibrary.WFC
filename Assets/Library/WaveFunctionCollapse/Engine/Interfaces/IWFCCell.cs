@@ -55,7 +55,14 @@ namespace FolvosLibrary.WFC
 					break;
 				}
 			}
-			CollapsedTile = Domain[index];
+			Collapse(Domain[index]);
+
+
+		}
+
+		public void Collapse(WFCTile toCollapseTo)
+		{
+			CollapsedTile = toCollapseTo;
 
 			WFCCellUpdate updateMessage = new WFCCellUpdate();
 

@@ -9,7 +9,6 @@ public class WFCManager_2D : IWFCManager
 {
 
 	IWFCCell[][] grid = new IWFCCell[0][];
-	Vector2Int size = new Vector2Int(0, 0);
 
 	public override WFCError? Collapse()
 	{
@@ -26,6 +25,31 @@ public class WFCManager_2D : IWFCManager
 		cell.Collapse();
 		EntropyQueue.Remove(cell);
 		SortQueue();
+
+		return null;
+	}
+
+	public override WFCError? CollapseSpecificCell(IWFCPosition position, WFCTile toCollapseTo)
+	{
+		Vector2Int pos = position.AsVector2Int();
+
+		if (pos.x < 0 || pos.x >= grid.Length)
+		{
+			// return WFCError out of bouds
+			Debug.LogError("Position out of bounds for manual collapse");
+			return null;
+		}
+
+		if (pos.y < 0 || pos.y >= grid[0].Length)
+		{
+			// return WFCError out of bouds
+			Debug.LogError("Position out of bounds for manual collapse");
+			return null;
+		}
+
+		IWFCCell toCollapse = grid[pos.x][pos.y];
+
+		toCollapse.Collapse(toCollapseTo);
 
 		return null;
 	}
@@ -50,7 +74,7 @@ public class WFCManager_2D : IWFCManager
 		}
 
 		grid = newGrid;
-		this.size = newSize;
+		this.size = size;
 	}
 
 	protected override void LoadGrid()
@@ -123,8 +147,8 @@ public class WFCManager_2D : IWFCManager
 
 	public override void DrawSize(bool ForceReset = false)
 	{
-		Vector2Int newSize = UnityEditor.EditorGUILayout.Vector2IntField("Map Size", size);
-		if (ForceReset || newSize != size)
+		Vector2Int newSize = UnityEditor.EditorGUILayout.Vector2IntField("Map Size", size.AsVector2Int());
+		if (ForceReset || newSize != size.AsVector2Int())
 		{
 			SetSize(new IWFCPosition(newSize));
 		}
