@@ -5,7 +5,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class IWFCCellTests
+public class IWFCCellTests : WFCTests
 {
 	WFCManager_2D manager;
 	BeachImporter importer;

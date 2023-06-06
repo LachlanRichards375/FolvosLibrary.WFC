@@ -5,12 +5,13 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class IWFCManagerTests
+public class IWFCManagerTests : WFCTests
 {
 	WFCManager_2D manager;
 	BeachImporter importer;
 	BeachWFCExporter exporter;
-	IWFCPosition size = new IWFCPosition(1, 3);
+	IWFCPosition size = new IWFCPosition(3, 3);
+	IWFCPosition SmallerLengthSize = new IWFCPosition(1, 3);
 
 	[OneTimeSetUp]
 	public void TestSetup()
@@ -19,22 +20,7 @@ public class IWFCManagerTests
 		importer = (BeachImporter)ScriptableObject.CreateInstance(typeof(BeachImporter));
 		exporter = (BeachWFCExporter)ScriptableObject.CreateInstance(typeof(BeachWFCExporter));
 
-		WFCTile[] Domain = new WFCTile[3]{
-			(WFCTile)ScriptableObject.CreateInstance(typeof(WFCTile)),
-			(WFCTile)ScriptableObject.CreateInstance(typeof(WFCTile)),
-			(WFCTile)ScriptableObject.CreateInstance(typeof(WFCTile)),
-		};
-
-		Domain[0].Name = "Sand";
-		Domain[0].TileWeight = 1;
-
-		Domain[1].Name = "Grass";
-		Domain[1].TileWeight = 1;
-
-		Domain[2].Name = "Water";
-		Domain[2].TileWeight = 1;
-
-		importer.returner = Domain;
+		importer.returner = GetDomain();
 	}
 
 	[Test]
@@ -56,6 +42,9 @@ public class IWFCManagerTests
 	{
 		manager.SetSize(size);
 		Assert.That(manager.GetSize() == size, "Manager did not set size correctly");
+	
+		manager.SetSize(SmallerLengthSize);
+		Assert.That(manager.GetSize() == SmallerLengthSize, "Manager did not set size with different lengths correctly");
 	}
 
 	[Test]
