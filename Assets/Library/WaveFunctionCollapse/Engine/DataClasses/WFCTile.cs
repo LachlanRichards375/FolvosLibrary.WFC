@@ -6,10 +6,18 @@ namespace FolvosLibrary.WFC
 	[CreateAssetMenu(menuName = "Folvos/WFC/Tile"), System.Serializable]
 	public class WFCTile : ScriptableObject
 	{
-		public string Name;
-		[Min(1)] public int TileWeight = 1;
+		public string Name {get => TileData.Name; set => TileData.Name = value;}
+		public int TileWeight {get => TileData.TileWeight; set => TileData.TileWeight = value;}
 		public TileData TileData;
 		[SerializeReference] public WFCRule[] Rules = new WFCRule[0];
+
+		//Needed for Unit Tests
+		public static WFCTile CreateTile(TileData data, WFCRule[] Rules){
+			WFCTile returner = (WFCTile)ScriptableObject.CreateInstance(typeof(WFCTile));
+			returner.TileData = data;
+			returner.Rules = Rules;
+			return returner;
+		}
 
 		public void Copy(WFCTile other)
 		{
@@ -96,6 +104,17 @@ namespace FolvosLibrary.WFC
 	[System.Serializable]
 	public partial class TileData
 	{
+		public TileData(){
+
+		}
+
+		public TileData(string Name, int TileWeight){
+			this.Name = Name;
+			this.TileWeight = TileWeight;
+		}
+		
+		public string Name;
+		[Min(1)] public int TileWeight = 1;
 		[SerializeField] public Sprite Sprite;
 		//Include other types if needed
 	}
