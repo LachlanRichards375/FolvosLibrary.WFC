@@ -7,25 +7,17 @@ using UnityEngine.TestTools;
 
 public class IWFCManagerTests : WFCTests
 {
-	WFCManager_2D manager;
-	BeachImporter importer;
-	BeachWFCExporter exporter;
-	IWFCPosition size = new IWFCPosition(3, 3);
-	IWFCPosition SmallerLengthSize = new IWFCPosition(1, 3);
 
 	[OneTimeSetUp]
 	public void TestSetup()
 	{
-		manager = (WFCManager_2D)ScriptableObject.CreateInstance(typeof(WFCManager_2D));
-		importer = (BeachImporter)ScriptableObject.CreateInstance(typeof(BeachImporter));
-		exporter = (BeachWFCExporter)ScriptableObject.CreateInstance(typeof(BeachWFCExporter));
-
-		importer.returner = GetDomain();
+		manager = GetManager();
 	}
 
 	[Test]
 	public void TestAssignImporterToManager()
 	{
+		IWFCImporter importer = (BeachImporter)ScriptableObject.CreateInstance(typeof(BeachImporter));
 		manager.SetImporter(importer);
 		Assert.That(manager.GetImporter() == importer, "Assigned importer is not the one provided");
 	}
@@ -33,10 +25,13 @@ public class IWFCManagerTests : WFCTests
 	[Test]
 	public void TestAssignExporterToManager()
 	{
+		IWFCExporter exporter = (BeachWFCExporter)ScriptableObject.CreateInstance(typeof(BeachWFCExporter));
+		Debug.Log($"manager is null? {manager is null} exporter is null? {exporter is null}");
 		manager.SetExporter(exporter);
 		Assert.That(manager.GetExporter() == exporter, "Assigned exporter is not the one provided");
 	}
 
+	IWFCPosition SmallerLengthSize = new IWFCPosition(1, 3);
 	[Test]
 	public void TestSetManagerSize()
 	{
