@@ -82,7 +82,7 @@ public class WFCTests
         {
             exporter = (BeachWFCExporter)ScriptableObject.CreateInstance(typeof(BeachWFCExporter));
         }
-        
+
         importer.returner = GetDomain();
 
         manager.SetImporter(importer);
@@ -91,5 +91,32 @@ public class WFCTests
         manager.Initialize();
 
         return manager;
+    }
+
+    public WFCTile GetGrass(){
+        if(importer is null){
+            Debug.LogError("Importer was not initialized idiot");
+            return null;
+        }
+
+        return importer.returner[0];
+    }
+
+    public WFCTile GetSand(){
+        if(importer is null){
+            Debug.LogError("Importer was not initialized idiot");
+            return null;
+        }
+
+        return importer.returner[1];
+    }
+
+    public WFCTile GetWater(){
+        if(importer is null){
+            Debug.LogError("Importer was not initialized idiot");
+            return null;
+        }
+
+        return importer.returner[2];
     }
 }
