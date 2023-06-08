@@ -148,4 +148,8 @@ public class MultiCellIsNotTarget2D : MultiCellTargetWFCRule
 
 		return result;
 	}
+
+	public Vector2Int[] GetTargetCellsArray(){
+		return targetCells;
+	}
 }

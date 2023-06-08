@@ -10,7 +10,7 @@ namespace FolvosLibrary.WFC
 	public abstract class MultiCellTargetWFCRule : WFCRule
 	{
 		// protected List<Vector2Int> targetCells = new List<Vector2Int>();
-		protected Vector2Int[] targetCells = new Vector2Int[0];
+		public Vector2Int[] targetCells = new Vector2Int[0];
 		public WFCTile goal;
 		public CellDirection.Direction direction;
 
