@@ -8,7 +8,7 @@ namespace FolvosLibrary.WFC
 	{
 		protected IWFCExporter exporter;
 		protected IWFCImporter importer;
-		[SerializeField] protected WFCTile[] domain;
+		[SerializeField] protected List<WFCTile> domain;
 
 		public abstract WFCError? Collapse();
 		public abstract WFCError? CollapseSpecificCell(IWFCPosition position, WFCTile toCollapseTo);
@@ -68,6 +68,22 @@ namespace FolvosLibrary.WFC
 
 		public IWFCImporter GetImporter() { return importer; }
 
+		
+		protected List<WFCTile> ImportDomain()
+		{
+			if(importer == null){
+				return null;
+			}
+
+			List<WFCTile> returner = new List<WFCTile>();
+			foreach(WFCTile tile in importer.Import<string>("You like kissing boys don't you?")){
+				returner.Add(WFCTile.CreateTile(tile));
+			}
+
+			return returner;
+		}
+
+
 		public virtual void SetExporter(IWFCExporter exporter)
 		{
 			this.exporter = exporter;
@@ -77,14 +93,12 @@ namespace FolvosLibrary.WFC
 
 		public virtual bool HasInitialized()
 		{
-			return domain == null || domain.Length == 0;
+			return domain == null || domain.Count == 0;
 		}
 
-		public virtual WFCTile[] GetDomain()
+		public virtual List<WFCTile> GetDomain()
 		{
-			WFCTile[] returner = new WFCTile[domain.Length];
-			domain.CopyTo(returner, 0);
-			return returner;
+			return domain;
 		}
 
 		public virtual void Cleanup()

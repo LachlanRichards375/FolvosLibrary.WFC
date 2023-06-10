@@ -9,7 +9,6 @@ namespace FolvosLibrary.WFC
 	[System.Serializable]
 	public abstract class MultiCellTargetWFCRule : WFCRule
 	{
-		// protected List<Vector2Int> targetCells = new List<Vector2Int>();
 		public Vector2Int[] targetCells = new Vector2Int[0];
 		public WFCTile goal;
 		public CellDirection.Direction direction;
@@ -21,7 +20,7 @@ namespace FolvosLibrary.WFC
 
 		public MultiCellTargetWFCRule(MultiCellTargetWFCRule other) : base(other)
 		{
-			targetCells = (Vector2Int[])other.targetCells.Clone();
+			// targetCells = (Vector2Int[])other.targetCells.Clone();
 			goal = other.goal;
 			direction = other.direction;
 		}
@@ -37,14 +36,14 @@ namespace FolvosLibrary.WFC
 		{
 			this.manager = manager;
 
-			List<Vector2Int> targetCells = new List<Vector2Int>();
+			List<Vector2Int> targetCells2 = new List<Vector2Int>();
 			//For each possible direction
 			foreach (CellDirection.Direction currentDirection in (CellDirection.Direction[])Enum.GetValues(typeof(CellDirection.Direction)))
 			{
 
 				//If there is a cell in this direction add it to targetCells
-				Vector2Int direction = CellPos + CellDirection.CellDirectionToVector2Int(currentDirection);
-				IWFCCell targetCell = manager.GetCell(new IWFCPosition(direction));
+				Vector2Int targetPos = CellPos + CellDirection.CellDirectionToVector2Int(currentDirection);
+				IWFCCell targetCell = manager.GetCell(new IWFCPosition(targetPos));
 				if (targetCell is null)
 				{
 					continue;
@@ -52,13 +51,15 @@ namespace FolvosLibrary.WFC
 
 				if (FlagsHelper.IsSet<CellDirection.Direction>(this.direction, currentDirection))
 				{
-					targetCells.Add(direction);
+					targetCells2.Add(targetPos);
 					// When the target cell is updated cause our cell to do a domain check
 					targetCell.OnCellUpdate += InvokeRuleActivated;
 				}
 			}
 
-			this.targetCells = targetCells.ToArray();
+			// PrintCellTargets(CellPos);
+
+			this.targetCells = targetCells2.ToArray();
 
 			// PrintCellTargets(CellPos);
 		}

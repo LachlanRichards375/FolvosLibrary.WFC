@@ -42,7 +42,7 @@ public class CellIsNotRule : WFCTests
     public void Setup()
     {
         FirstCell = manager.GetCell(new IWFCPosition(0, 0));
-        SecondCell = manager.GetCell(new IWFCPosition(0, 1));
+        SecondCell = manager.GetCell(new IWFCPosition(1, 1));
         FirstCell.RuleSetup();
         SecondCell.RuleSetup();
     }
@@ -64,17 +64,20 @@ public class CellIsNotRule : WFCTests
         MultiCellIsNotTarget2D SecondRule = (SecondCell.Domain[SecondCell.Domain.Count - 1].Rules[0] as MultiCellIsNotTarget2D);
         Vector2Int[] SecondTargetCellsArray = SecondRule.targetCells;
 
-        if (FirstTargetCellsArray.Length == SecondTargetCellsArray.Length)
-        {
-            for (int i = 0; i < FirstTargetCellsArray.Length; i++)
-            {
-                Assert.That(!ReferenceEquals(FirstTargetCellsArray[i].x, SecondTargetCellsArray[i].x), $"Cells Targeting array at {i}.x contains the same object");
-                Assert.That(!ReferenceEquals(FirstTargetCellsArray[i].y, SecondTargetCellsArray[i].y), $"Cells Targeting array at {i}.y contains the same object");
+        Assert.That(!ReferenceEquals(FirstCell, SecondCell), "Cells are the same object at position (0,0) and (1,1)");
+        Assert.That(!ReferenceEquals(FirstCell.Domain[0], SecondCell.Domain[0]), "Tiles in the cells are the same objects");
 
-                // Assert.That(!ReferenceEquals(FirstTargetCellsArray, SecondTargetCellsArray), "Cells Targeting array is the same object");
-                Debug.LogWarning($"Testing if FirstCellArray[{i}].x reference equals: {ReferenceEquals(FirstTargetCellsArray[i].x, SecondTargetCellsArray[i].x)}? how about .y: {ReferenceEquals(FirstTargetCellsArray[i].y, SecondTargetCellsArray[i].y)}?");
-            }
-        }
+        // if (FirstTargetCellsArray.Length == SecondTargetCellsArray.Length)
+        // {
+        //     for (int i = 0; i < FirstTargetCellsArray.Length; i++)
+        //     {
+        //         Assert.That(!ReferenceEquals(FirstTargetCellsArray[i].x, SecondTargetCellsArray[i].x), $"Cells Targeting array at {i}.x contains the same object");
+        //         Assert.That(!ReferenceEquals(FirstTargetCellsArray[i].y, SecondTargetCellsArray[i].y), $"Cells Targeting array at {i}.y contains the same object");
+
+        //         // Assert.That(!ReferenceEquals(FirstTargetCellsArray, SecondTargetCellsArray), "Cells Targeting array is the same object");
+        //         Debug.LogWarning($"Testing if FirstCellArray[{i}].x reference equals: {ReferenceEquals(FirstTargetCellsArray[i].x, SecondTargetCellsArray[i].x)}? how about .y: {ReferenceEquals(FirstTargetCellsArray[i].y, SecondTargetCellsArray[i].y)}?");
+        //     }
+        // }
 
         FirstTargetCellsArray = FirstRule.GetTargetCellsArray();
 

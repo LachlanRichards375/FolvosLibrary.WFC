@@ -86,7 +86,7 @@ public class WFCManager_2D : IWFCManager
 			{
 				IWFCCell cell = grid[x][y];
 				EntropyQueue.Add(cell);
-				cell.Domain = new List<WFCTile>(GetDomain());
+				cell.Domain = GetDomain();
 				cell.OnCellUpdate += OnCellUpdate;
 			}
 		}
@@ -105,10 +105,12 @@ public class WFCManager_2D : IWFCManager
 
 	public override void Initialize()
 	{
-		domain = importer.Import<string>("https://www.reddit.com/r/196/comments/10nfwvk/boy_likerule/");
+		// domain = importer.Import<string>("https://www.reddit.com/r/196/comments/10nfwvk/boy_likerule/");
+
+		domain = ImportDomain();
 
 		String print = "INITIALIZING \t Domain: ";
-		for (int i = 0; i < domain.Length; i++)
+		for (int i = 0; i < domain.Count; i++)
 		{
 			print += domain[i].ToString() + ", ";
 		}
@@ -127,8 +129,8 @@ public class WFCManager_2D : IWFCManager
 		//On result or error we want to unlock resizing
 		InvokeOnInitialize();
 	}
-
-	public override void GenerateStep(int step = 1)
+	
+    public override void GenerateStep(int step = 1)
 	{
 		for (int i = 0; i < step && EntropyQueue.Count > 0; i++)
 		{

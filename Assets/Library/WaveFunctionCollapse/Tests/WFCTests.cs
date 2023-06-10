@@ -90,6 +90,8 @@ public class WFCTests
         manager.SetSize(size);
         manager.Initialize();
 
+        Debug.Log("\n\n\n Manager has finished initializing \n\n\n");
+
         return manager;
     }
 

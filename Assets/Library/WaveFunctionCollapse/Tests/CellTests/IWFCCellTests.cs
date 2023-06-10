@@ -43,6 +43,7 @@ public class IWFCCellTests : WFCTests
 		Assert.That(clone.GetPosition() == CellInitialPosition, $"Should not be able to modify the cell position, result {clone.GetPosition().AsVector2Int()} != {CellInitialPosition}");
 	}
 
+	[Test]
 	public void Test_InitializedTileRuleNotReferenceToOriginal(){
 		IWFCCell initial = new IWFCCell(manager, CellInitialPosition);
 		initial.Domain = new List<WFCTile>(GetDomain());
@@ -50,5 +51,19 @@ public class IWFCCellTests : WFCTests
 
 		Assert.That(!ReferenceEquals(initial.Domain[0], GetDomain()[0]), "Initialized Tile is a reference to original Domain");
 		Assert.That(!ReferenceEquals(initial.Domain[0].Rules[0], GetDomain()[0].Rules[0]), "Initialized Tile Rule is a reference to original rules");
+	}
+
+	[Test]
+	public void Test_WFCTileCreateCreatesNewObject(){
+		IWFCCell inital = manager.GetCell(CellInitialPosition);
+		WFCTile tile = inital.Domain[0];
+		WFCTile tileCopy = WFCTile.CreateTile(tile);
+
+		Assert.That(!ReferenceEquals(tile, tileCopy), "WFCTile.Create(tile) is not returning a new instance of a tile object");
+	
+		IWFCCell cell = manager.GetCell(new IWFCPosition(0,0));
+		IWFCCell other = manager.GetCell(new IWFCPosition(0,1));
+
+		Assert.That(!ReferenceEquals(cell, other), "Cell is the same object at 0,0 and 0,1");
 	}
 }

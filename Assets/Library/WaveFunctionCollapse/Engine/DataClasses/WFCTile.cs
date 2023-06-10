@@ -19,6 +19,16 @@ namespace FolvosLibrary.WFC
 			return returner;
 		}
 
+		public static WFCTile CreateTile(WFCTile tile){
+			WFCTile returner = (WFCTile)ScriptableObject.CreateInstance(typeof(WFCTile));
+			returner.TileData = tile.TileData;
+			returner.Rules = tile.Rules;
+
+			Debug.Log($"Creating a new WFCTile Instance, was successful {ReferenceEquals(tile, returner) == false}");
+
+			return returner;
+		}
+
 		public void Copy(WFCTile other)
 		{
 			Name = other.Name;
