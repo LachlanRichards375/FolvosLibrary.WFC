@@ -1,7 +1,6 @@
-using System;
-using System.Collections.Generic;
 using FolvosLibrary.Logging;
 using FolvosLibrary.WFC;
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Folvos/WFC/Manager/2DManager"), System.Serializable]
@@ -129,8 +128,8 @@ public class WFCManager_2D : IWFCManager
 		//On result or error we want to unlock resizing
 		InvokeOnInitialize();
 	}
-	
-    public override void GenerateStep(int step = 1)
+
+	public override void GenerateStep(int step = 1)
 	{
 		for (int i = 0; i < step && EntropyQueue.Count > 0; i++)
 		{

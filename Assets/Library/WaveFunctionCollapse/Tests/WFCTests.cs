@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using FolvosLibrary.WFC;
-using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
 public class WFCTests
 {
 	protected WFCManager_2D manager;

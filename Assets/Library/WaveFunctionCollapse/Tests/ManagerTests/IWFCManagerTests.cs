@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using FolvosLibrary.WFC;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
 
 public class IWFCManagerTests : WFCTests
 {
@@ -37,7 +34,7 @@ public class IWFCManagerTests : WFCTests
 	{
 		manager.SetSize(size);
 		Assert.That(manager.GetSize() == size, "Manager did not set size correctly");
-	
+
 		manager.SetSize(SmallerLengthSize);
 		Assert.That(manager.GetSize() == SmallerLengthSize, "Manager did not set size with different lengths correctly");
 	}

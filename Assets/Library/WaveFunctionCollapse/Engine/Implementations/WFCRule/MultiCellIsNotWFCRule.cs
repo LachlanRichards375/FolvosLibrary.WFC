@@ -1,7 +1,6 @@
+using FolvosLibrary.WFC;
 using System;
 using System.Linq;
-using FolvosLibrary.WFC;
-using UnityEditor;
 using UnityEngine;
 
 [System.Serializable]
@@ -149,7 +148,8 @@ public class MultiCellIsNotTarget2D : MultiCellTargetWFCRule
 		return result;
 	}
 
-	public Vector2Int[] GetTargetCellsArray(){
+	public Vector2Int[] GetTargetCellsArray()
+	{
 		return targetCells;
 	}
 }

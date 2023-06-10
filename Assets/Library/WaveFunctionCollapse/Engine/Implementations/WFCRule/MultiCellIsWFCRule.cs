@@ -1,7 +1,6 @@
+using FolvosLibrary.WFC;
 using System;
 using System.Linq;
-using FolvosLibrary.WFC;
-using UnityEditor;
 using UnityEngine;
 
 [System.Serializable]

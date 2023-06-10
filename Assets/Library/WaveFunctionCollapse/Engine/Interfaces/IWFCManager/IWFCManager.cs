@@ -68,15 +68,17 @@ namespace FolvosLibrary.WFC
 
 		public IWFCImporter GetImporter() { return importer; }
 
-		
+
 		protected List<WFCTile> ImportDomain()
 		{
-			if(importer == null){
+			if (importer == null)
+			{
 				return null;
 			}
 
 			List<WFCTile> returner = new List<WFCTile>();
-			foreach(WFCTile tile in importer.Import<string>("You like kissing boys don't you?")){
+			foreach (WFCTile tile in importer.Import<string>("You like kissing boys don't you?"))
+			{
 				returner.Add(WFCTile.CreateTile(tile));
 			}
 
@@ -99,7 +101,7 @@ namespace FolvosLibrary.WFC
 		public virtual List<WFCTile> GetDomain()
 		{
 			List<WFCTile> returner = new List<WFCTile>();
-			foreach(WFCTile tile in domain)
+			foreach (WFCTile tile in domain)
 			{
 				returner.Add(WFCTile.CreateTile(tile));
 			}

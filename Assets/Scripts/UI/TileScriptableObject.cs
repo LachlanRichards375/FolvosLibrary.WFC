@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 
 // [CreateAssetMenu(fileName = "WFCTile", menuName = "ScriptableObjects/WFC_Tile", order = 1)]
 // public class TileScriptableObject : ScriptableObject{

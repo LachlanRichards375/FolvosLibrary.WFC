@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using FolvosLibrary.WFC;
 using UnityEditor;
 using UnityEditor.Callbacks;

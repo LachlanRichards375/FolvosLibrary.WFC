@@ -1,8 +1,3 @@
-using System.Linq;
-using System.Reflection;
-using UnityEditor;
-using UnityEngine;
-
 namespace FolvosLibrary.WFC
 {
 	// [CustomPropertyDrawer(typeof(WFCRule))]

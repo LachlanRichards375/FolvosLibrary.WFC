@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+using FolvosLibrary.WFC;
 using System.Linq;
 using System.Reflection;
-using FolvosLibrary.WFC;
 using UnityEditor;
 using UnityEngine;
 

@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using FolvosLibrary.WFC;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
-using FolvosLibrary.WFC;
 
 [TestFixture]
 public class CellIsNotRule : WFCTests
