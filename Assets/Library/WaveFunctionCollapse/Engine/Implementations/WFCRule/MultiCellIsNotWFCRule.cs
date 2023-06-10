@@ -1,6 +1,6 @@
-using FolvosLibrary.WFC;
 using System;
 using System.Linq;
+using FolvosLibrary.WFC;
 using UnityEngine;
 
 [System.Serializable]
@@ -96,29 +96,18 @@ public class MultiCellIsNotTarget2D : MultiCellTargetWFCRule
 
 	bool CellCollapsed(IWFCCell collapsedCell, IWFCCell owner)
 	{
-		// string s = $"Targeted cells for {goal.Name} at {owner.GetPositionString()} contains {collapsedCell.GetPosition().AsVector2Int()}? ";
-		// foreach (Vector2Int v in targetCells)
-		// {
-		// 	s += $"{v}, ";
-		// }
-		// Debug.Log(s);
-
-		// if (targetCells.Contains(collapsedCell.GetPosition().AsVector2Int()))
-		// {
-		// 	Debug.Log($"targeted cell at position {collapsedCell.GetPositionString()} collapsed. CollapsedTile: {collapsedCell.CollapsedTile.Name} is not {goal.Name}? {collapsedCell.CollapsedTile != goal}");
-		Debug.Log($"targetCells contains collapsedCell {collapsedCell.GetPosition().AsVector2Int()}? {targetCells.Contains(collapsedCell.GetPosition().AsVector2Int())}");
-		return collapsedCell.CollapsedTile != goal;
-		// }
-		// else
-		// {
-		// 	Debug.Log($"NON targeted cell at position {collapsedCell.GetPositionString()} collapsed. we don't care");
-		// 	return true;
-		// }
+		if (targetCells.Contains(collapsedCell.GetPosition().AsVector2Int()))
+		{
+			return !(collapsedCell.CollapsedTile.Equals(goal));
+		}
+		else
+		{
+			return true;
+		}
 	}
 
 	bool DomainUpdated(WFCCellUpdate update, IWFCCell owner)
 	{
-		// Debug.Log("Domain has been updated");
 		bool result = false;
 		//If our target's domain contains our goal
 

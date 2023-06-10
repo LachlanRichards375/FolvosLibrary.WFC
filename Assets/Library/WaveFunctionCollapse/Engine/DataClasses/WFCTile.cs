@@ -24,9 +24,6 @@ namespace FolvosLibrary.WFC
 			WFCTile returner = (WFCTile)ScriptableObject.CreateInstance(typeof(WFCTile));
 			returner.TileData = tile.TileData;
 			returner.Rules = tile.Rules;
-
-			Debug.Log($"Creating a new WFCTile Instance, was successful {ReferenceEquals(tile, returner) == false}");
-
 			return returner;
 		}
 
@@ -112,6 +109,16 @@ namespace FolvosLibrary.WFC
 			return this.Name;
 		}
 
+		public override bool Equals(object other)
+		{
+			if (other is null || !(other is WFCTile))
+			{
+				return false;
+			}
+			WFCTile otherTile = other as WFCTile;
+
+			return otherTile.Name == this.Name;
+		}
 	}
 
 	[System.Serializable]
