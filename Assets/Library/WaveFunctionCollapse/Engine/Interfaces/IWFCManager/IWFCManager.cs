@@ -98,7 +98,12 @@ namespace FolvosLibrary.WFC
 
 		public virtual List<WFCTile> GetDomain()
 		{
-			return domain;
+			List<WFCTile> returner = new List<WFCTile>();
+			foreach(WFCTile tile in domain)
+			{
+				returner.Add(WFCTile.CreateTile(tile));
+			}
+			return returner;
 		}
 
 		public virtual void Cleanup()

@@ -39,14 +39,16 @@ namespace FolvosLibrary.WFC
 
 		public void RuleSetup(IWFCManager manager, IWFCCell cell)
 		{
+			WFCRule[] NewRules = new WFCRule[Rules.Length];
 			for (int i = 0; i < Rules.Length; i++)
 			{
 				//Do a method overload to return new objects?
 				//This is needed so we aren't using the same Rule Objects as other tiles
-				Rules[i] = (WFCRule)System.Activator.CreateInstance(Rules[i].GetType(), Rules[i]);
-				Rules[i].RuleInitialize(manager, cell.GetPosition().AsVector2Int());
-				Rules[i].OnRuleActivated += cell.DomainCheck;
+				NewRules[i] = (WFCRule)System.Activator.CreateInstance(Rules[i].GetType(), Rules[i]);
+				NewRules[i].RuleInitialize(manager, cell.GetPosition().AsVector2Int());
+				NewRules[i].OnRuleActivated += cell.DomainCheck;
 			}
+			Rules = NewRules;
 		}
 
 		public bool PassesRules(WFCCellUpdate update, IWFCCell caller)
