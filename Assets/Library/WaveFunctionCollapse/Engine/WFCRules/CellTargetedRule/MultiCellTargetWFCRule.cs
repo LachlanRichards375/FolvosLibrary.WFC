@@ -56,12 +56,7 @@ namespace FolvosLibrary.WFC
 					targetCell.OnCellUpdate += InvokeRuleActivated;
 				}
 			}
-
-			// PrintCellTargets(CellPos);
-
 			this.targetCells = targetCells2.ToArray();
-
-			// PrintCellTargets(CellPos);
 		}
 
 		public void PrintCellTargets(Vector2Int cellPos)
