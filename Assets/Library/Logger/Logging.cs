@@ -42,7 +42,7 @@ namespace FolvosLibrary.Logging
 			}
 		}
 
-		static bool canLog(LogMessage message)
+		public static bool CanLog(LogMessage message)
 		{
 
 			if (message.Priority < LoggingLevel)
@@ -60,19 +60,19 @@ namespace FolvosLibrary.Logging
 
 		public static void Message(LogMessage message)
 		{
-			if (canLog(message))
+			if (CanLog(message))
 				Debug.Log(message);
 		}
 
 		public static void Warning(LogMessage message)
 		{
-			if (canLog(message))
+			if (CanLog(message))
 				Debug.LogWarning(message);
 		}
 
 		public static void Error(LogMessage message)
 		{
-			if (canLog(message))
+			if (CanLog(message))
 				Debug.LogError(message);
 		}
 	}

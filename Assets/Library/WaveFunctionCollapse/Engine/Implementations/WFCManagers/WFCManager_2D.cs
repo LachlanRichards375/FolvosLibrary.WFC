@@ -1,6 +1,6 @@
+using System;
 using FolvosLibrary.Logging;
 using FolvosLibrary.WFC;
-using System;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Folvos/WFC/Manager/2DManager"), System.Serializable]
@@ -199,24 +199,27 @@ public class WFCManager_2D : IWFCManager
 		message.MessageFrom = Logging.ProjectGroups.WFCManager;
 		message.Priority = Logging.Priority.Low;
 
-		string s = $"WFC Print Cells(): \n" +
-		$"\t> Grid size: ({grid.Length},{grid[0].Length}), Entropy Queue.Count: {EntropyQueue.Count}\n";
-
-		//This needs to be set out in this order so it
-		//prints to the console the same direction as the exporter output
-		for (int row = grid.Length - 1; row >= 0; row--)
+		if (Logging.CanLog(message))
 		{
-			string toAppend = $"{row}\t>";
-			for (int column = 0; column < grid[0].Length; column++)
+			string s = $"WFC Print Cells(): \n" +
+			$"\t> Grid size: ({grid.Length},{grid[0].Length}), Entropy Queue.Count: {EntropyQueue.Count}\n";
+
+			//This needs to be set out in this order so it
+			//prints to the console the same direction as the exporter output
+			for (int row = grid.Length - 1; row >= 0; row--)
 			{
-				toAppend += String.Format("{0,50}", grid[column][row].ToString());
+				string toAppend = $"{row}\t>";
+				for (int column = 0; column < grid[0].Length; column++)
+				{
+					toAppend += String.Format("{0,50}", grid[column][row].ToString());
+				}
+				s += toAppend + "\n";
 			}
-			s += toAppend + "\n";
+
+			message.Message = s;
+			Logging.Message(message);
+
+			PrintEntropyQueue();
 		}
-
-		message.Message = s;
-		Logging.Message(message);
-
-		PrintEntropyQueue();
 	}
 }
