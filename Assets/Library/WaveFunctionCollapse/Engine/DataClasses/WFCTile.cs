@@ -58,8 +58,6 @@ namespace FolvosLibrary.WFC
 				returner = Rules[index].Test(update, caller);
 				if (returner == false)
 				{
-					Debug.Log($"Testing {Rules[index].GetType()}(index: {index}) from cell {caller.GetPositionString()} targeting {update.UpdatedCell.GetPositionString()} failed"
-					+ $" > {Rules[index].GetTargetCells()}");
 					break;
 				}
 				index++;
@@ -118,6 +116,11 @@ namespace FolvosLibrary.WFC
 			WFCTile otherTile = other as WFCTile;
 
 			return otherTile.Name == this.Name;
+		}
+
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
 		}
 	}
 

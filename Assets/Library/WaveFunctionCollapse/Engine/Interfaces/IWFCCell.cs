@@ -85,7 +85,6 @@ namespace FolvosLibrary.WFC
 			{
 				if (!tile.PassesRules(update, this))
 				{
-					Debug.Log($"Testing {tile.Name} at {GetPositionString()} returned False");
 					tilesToRemove.Add(tile);
 				}
 				i++;
@@ -99,8 +98,6 @@ namespace FolvosLibrary.WFC
 			if (tilesToRemove.Count > 0)
 			{
 				int i = 0;
-				// Debug.Log($"Attempting to remove {tilesToRemove.Count} tiles from domain({Domain.Count}) at {position.ToString()}");
-
 				WFCCellUpdate updateMessage = new WFCCellUpdate();
 
 				updateMessage.UpdateType = CellUpdateType.DomainUpdate;
