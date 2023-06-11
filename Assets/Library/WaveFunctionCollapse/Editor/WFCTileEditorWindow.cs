@@ -1,6 +1,6 @@
-using FolvosLibrary.WFC;
 using System.Linq;
 using System.Reflection;
+using FolvosLibrary.WFC;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,8 +20,6 @@ public class WFCTileEditorWindow : ExtendedEditorWindow
 			return;
 		}
 		serializedObject.Update();
-		DrawField("Name", false);
-		DrawField("TileWeight", false);
 		DrawField("TileData", false);
 		DrawLine();
 
