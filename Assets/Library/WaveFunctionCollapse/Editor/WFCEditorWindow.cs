@@ -1,3 +1,4 @@
+using System;
 using FolvosLibrary.Logging;
 using FolvosLibrary.WFC;
 using UnityEditor;
@@ -18,14 +19,15 @@ public class WFCEditorWindow : ExtendedEditorWindow
 	[SerializeField] IWFCExporter exporter;
 
 	bool hasInitialized = false;
+	DateTime startTime;
 
 	private void OnGUI()
 	{
 		GUILayout.Label("Text on a screen");
 		mapParent = (GameObject)EditorGUILayout.ObjectField("Map Parent: ", mapParent, typeof(GameObject), true);
-		importer = (IWFCImporter)EditorGUILayout.ObjectField("Importer: ", (Object)importer, typeof(IWFCImporter), true);
-		manager = (IWFCManager)EditorGUILayout.ObjectField("Manager: ", (Object)manager, typeof(IWFCManager), true);
-		exporter = (IWFCExporter)EditorGUILayout.ObjectField("Exporter: ", (Object)exporter, typeof(IWFCExporter), true);
+		importer = (IWFCImporter)EditorGUILayout.ObjectField("Importer: ", (UnityEngine.Object)importer, typeof(IWFCImporter), true);
+		manager = (IWFCManager)EditorGUILayout.ObjectField("Manager: ", (UnityEngine.Object)manager, typeof(IWFCManager), true);
+		exporter = (IWFCExporter)EditorGUILayout.ObjectField("Exporter: ", (UnityEngine.Object)exporter, typeof(IWFCExporter), true);
 
 		Logging.LoggingLevel = (Logging.Priority)EditorGUILayout.EnumPopup("Logging Level", Logging.LoggingLevel);
 		Logging.LoggingGroups = (Logging.ProjectGroups)EditorGUILayout.EnumFlagsField("Messages to display", Logging.LoggingGroups);
@@ -76,6 +78,8 @@ public class WFCEditorWindow : ExtendedEditorWindow
 			else
 			{
 				Initialize();
+				startTime = DateTime.Now;
+				Debug.Log($"Time at generation start: {startTime.TimeOfDay}");
 				manager.Generate();
 			}
 		}
@@ -118,6 +122,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 	void OnGenerateResult()
 	{
 		manager.OnResult -= OnGenerateResult;
+		Debug.Log($"Time after generation: {DateTime.Now.TimeOfDay} ({(DateTime.Now - startTime).Seconds}.{(DateTime.Now - startTime).Milliseconds} seconds)");
 		Debug.Log("Reached On Generate Result");
 		GameObject[][] map = (exporter as BeachWFCExporter).Export((manager as WFCManager_2D).GetCells());
 		int rowNumber = 0;
