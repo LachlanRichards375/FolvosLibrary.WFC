@@ -12,38 +12,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a466f86a19776f740aa9cbab4fbbc1e2, type: 3}
   m_Name: Water
   m_EditorClassIdentifier: 
-  Name: Water
-  TileWeight: 1
   TileData:
+    Name: Water
+    TileWeight: 1
     Sprite: {fileID: -1850867006, guid: 21969dd09df65e143b6f12d9a18b1522, type: 3}
   Rules:
-  - rid: 4320938351279210973
-  - rid: 4320938351279210974
-  - rid: 4320938351279210980
+  - rid: 7759094378477387952
+  - rid: 7759094378477387953
+  - rid: 7759094378477387954
   references:
     version: 2
     RefIds:
-    - rid: 4320938351279210973
-      type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
+    - rid: 7759094378477387952
+      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
       data:
-        targetCells:
-        - {x: 14, y: 13}
-        - {x: 13, y: 13}
-        - {x: 13, y: 14}
-        goal: {fileID: 11400000, guid: 3ee41d799c6fbbf40987ce9acd11a4ec, type: 2}
-        direction: -1
-    - rid: 4320938351279210974
-      type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
-      data:
-        targetCells:
-        - {x: 14, y: 13}
-        - {x: 13, y: 13}
-        - {x: 13, y: 14}
-        goal: {fileID: 11400000}
-        direction: -1
-    - rid: 4320938351279210980
-      type: {class: MultiCellIsTarget2D, ns: , asm: WaveFunctionCollapse}
-      data:
+        InvalidateTileOnFail: 0
         targetCells: []
-        goal: {fileID: 11400000, guid: c6a4fd71e9e02a64bacf01f4a46159d6, type: 2}
+        goal: {fileID: 11400000, guid: d1637cbfd533a624599eeabddfd90d36, type: 2}
         direction: -1
+    - rid: 7759094378477387953
+      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
+      data:
+        InvalidateTileOnFail: 0
+        targetCells: []
+        goal: {fileID: 11400000, guid: 4b80a1102d96b2940bf959e104e96aab, type: 2}
+        direction: -1
+    - rid: 7759094378477387954
+      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
+      data:
+        InvalidateTileOnFail: 0
+        targetCells: []
+        goal: {fileID: 11400000, guid: 3ee41d799c6fbbf40987ce9acd11a4ec, type: 2}
+        direction: 28

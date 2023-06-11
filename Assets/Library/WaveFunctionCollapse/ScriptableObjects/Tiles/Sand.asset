@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a466f86a19776f740aa9cbab4fbbc1e2, type: 3}
   m_Name: Sand
   m_EditorClassIdentifier: 
-  Name: Sand
-  TileWeight: 1
   TileData:
+    Name: Sand
+    TileWeight: 1
     Sprite: {fileID: 2013179604, guid: 21969dd09df65e143b6f12d9a18b1522, type: 3}
   Rules:
   - rid: 7759094205233233990
@@ -28,23 +28,27 @@ MonoBehaviour:
       type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
       data:
         InvalidateTileOnFail: 0
+        targetCells: []
         goal: {fileID: 11400000, guid: 4b80a1102d96b2940bf959e104e96aab, type: 2}
         direction: -1
     - rid: 7759094205233233991
       type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
       data:
         InvalidateTileOnFail: 0
+        targetCells: []
         goal: {fileID: 11400000, guid: d1637cbfd533a624599eeabddfd90d36, type: 2}
         direction: 28
     - rid: 7759094205233233992
       type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
       data:
         InvalidateTileOnFail: 0
+        targetCells: []
         goal: {fileID: 11400000, guid: dd71be7ad22618c45baf4d1ff8effb88, type: 2}
         direction: 448
     - rid: 7759094205233233993
       type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
       data:
         InvalidateTileOnFail: 0
+        targetCells: []
         goal: {fileID: 11400000, guid: c6a4fd71e9e02a64bacf01f4a46159d6, type: 2}
         direction: -1
