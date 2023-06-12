@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using FolvosLibrary.Logging;
 using FolvosLibrary.WFC;
 using UnityEngine;
@@ -129,33 +130,9 @@ public class WFCManager_2D : IWFCManager
 		InvokeOnInitialize();
 	}
 
-	public override void GenerateStep(int step = 1)
+	public override void UpdateOutput()
 	{
-		for (int i = 0; i < step && EntropyQueue.Count > 0; i++)
-		{
-			GenerateOnce();
-		}
-
-		if (EntropyQueue.Count > 0)
-		{
-			((BeachWFCExporter)exporter).Export(GetCells());
-		}
-		else
-		{
-			InvokeOnResult();
-		}
-	}
-
-	public override async System.Threading.Tasks.Task GenerateTimeLapse()
-	{
-		while (EntropyQueue.Count > 0)
-		{
-			Debug.Log("Generating once from Timelapse");
-			GenerateOnce();
-			((BeachWFCExporter)exporter).Export(GetCells());
-			await System.Threading.Tasks.Task.Delay(1000);
-		}
-		InvokeOnResult();
+		((BeachWFCExporter)exporter).Export(GetCells());
 	}
 
 	public override void DrawSize(bool ForceReset = false)

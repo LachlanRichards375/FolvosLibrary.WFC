@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using FolvosLibrary.Logging;
 using FolvosLibrary.WFC;
 using UnityEditor;
@@ -23,7 +25,22 @@ public class WFCEditorWindow : ExtendedEditorWindow
 
 	private void OnGUI()
 	{
-		GUILayout.Label("Text on a screen");
+		DisplayVariableSetters();
+		DisplayResetButton();
+
+		//enable if we're not doing a timelapse AND MapParent is not null
+		GUI.enabled = (GenerateTimeLapseTask == null && mapParent != null);
+		DisplayGenerateButtons();
+		GUI.enabled = true;
+		if (GenerateTimeLapseTask != null)
+		{
+			DisplayTimelapseControls();
+		}
+	}
+
+	int stepCount = 1;
+	void DisplayVariableSetters()
+	{
 		mapParent = (GameObject)EditorGUILayout.ObjectField("Map Parent: ", mapParent, typeof(GameObject), true);
 		importer = (IWFCImporter)EditorGUILayout.ObjectField("Importer: ", (UnityEngine.Object)importer, typeof(IWFCImporter), true);
 		manager = (IWFCManager)EditorGUILayout.ObjectField("Manager: ", (UnityEngine.Object)manager, typeof(IWFCManager), true);
@@ -32,14 +49,16 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		Logging.LoggingLevel = (Logging.Priority)EditorGUILayout.EnumPopup("Logging Level", Logging.LoggingLevel);
 		Logging.LoggingGroups = (Logging.ProjectGroups)EditorGUILayout.EnumFlagsField("Messages to display", Logging.LoggingGroups);
 
-		int stepCount = 1;
 		if (manager != null)
 		{
 			//When we have initialized we don't want to force update
 			manager.DrawSize(!hasInitialized);
 			stepCount = EditorGUILayout.IntSlider(stepCount, 1, 50);
 		}
+	}
 
+	void DisplayResetButton()
+	{
 		if (GUILayout.Button("Reset!"))
 		{
 			if (mapParent != null)
@@ -66,7 +85,13 @@ public class WFCEditorWindow : ExtendedEditorWindow
 					DestroyImmediate(mapParent.transform.GetChild(0).gameObject);
 				}
 			}
+
+			ResetTimelapseVariables();
 		}
+	}
+
+	void DisplayGenerateButtons()
+	{
 		GUILayout.BeginHorizontal();
 
 		if (GUILayout.Button("Generate!") && mapParent != null)
@@ -108,11 +133,33 @@ public class WFCEditorWindow : ExtendedEditorWindow
 			{
 
 				Initialize();
-				manager.GenerateTimeLapse();
+				GenerateTimeLapseTask = manager.GenerateTimeLapse(CancelTimeLapseToken);
 			}
 		}
 
 		GUILayout.EndHorizontal();
+	}
+
+	Task GenerateTimeLapseTask;
+	CancellationTokenSource CancelTimeLapseToken = new CancellationTokenSource();
+	void DisplayTimelapseControls()
+	{
+		GUILayout.BeginHorizontal();
+
+		if (GUILayout.Button("Stop Generation"))
+		{
+			CancelTimeLapseToken.Cancel();
+		}
+
+		// if(GUILayout.Button("Pause Generation"))
+
+		GUILayout.EndHorizontal();
+	}
+
+	void ResetTimelapseVariables()
+	{
+		GenerateTimeLapseTask = null;
+		CancelTimeLapseToken = new CancellationTokenSource();
 	}
 
 	void Initialize()
@@ -136,8 +183,10 @@ public class WFCEditorWindow : ExtendedEditorWindow
 	void OnGenerateResult()
 	{
 		manager.OnResult -= OnGenerateResult;
+		ResetTimelapseVariables();
 		Debug.Log($"Time to Generate: {DateTime.Now.Subtract(startTime)}");
 		Debug.Log("Reached On Generate Result");
+
 		GameObject[][] map = (exporter as BeachWFCExporter).Export((manager as WFCManager_2D).GetCells());
 		int rowNumber = 0;
 

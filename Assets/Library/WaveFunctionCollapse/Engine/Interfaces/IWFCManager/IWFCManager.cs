@@ -40,6 +40,11 @@ namespace FolvosLibrary.WFC
 				GenerateOnce();
 			}
 
+			if (EntropyQueue.Count > 0)
+			{
+				UpdateOutput();
+			}
+
 			if (EntropyQueue.Count <= 0)
 			{
 				InvokeOnResult();
@@ -59,17 +64,27 @@ namespace FolvosLibrary.WFC
 			//Logger will tell us if not allowed
 			this.PrintCells();
 		}
-		public virtual async System.Threading.Tasks.Task GenerateTimeLapse()
+		public virtual async System.Threading.Tasks.Task GenerateTimeLapse(System.Threading.CancellationTokenSource cancellationToken)
 		{
 			while (EntropyQueue.Count > 0)
 			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					break;
+				}
 				Debug.Log("Generating once from Timelapse");
 				GenerateOnce();
-				//Put line to print cells here
+				UpdateOutput();
 				await System.Threading.Tasks.Task.Delay(1000);
+			}
+			if (EntropyQueue.Count > 0)
+			{
+
 			}
 			InvokeOnResult();
 		}
+
+		public abstract void UpdateOutput();
 
 		#region One Line Functions
 		public virtual void SetImporter(IWFCImporter importer)
