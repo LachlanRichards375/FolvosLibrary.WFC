@@ -31,6 +31,12 @@ public class WFCManager_2D : IWFCManager
 
 	public override WFCError? CollapseSpecificCell(IWFCPosition position, WFCTile toCollapseTo)
 	{
+		if (toCollapseTo == null)
+		{
+			Debug.LogError("Collapsing specific cell to null object");
+			return null;
+		}
+
 		Vector2Int pos = position.AsVector2Int();
 
 		if (pos.x < 0 || pos.x >= grid.Length)
@@ -50,6 +56,8 @@ public class WFCManager_2D : IWFCManager
 		IWFCCell toCollapse = grid[pos.x][pos.y];
 
 		toCollapse.Collapse(toCollapseTo);
+
+		EntropyQueue.Remove(toCollapse);
 
 		return null;
 	}
@@ -128,6 +136,23 @@ public class WFCManager_2D : IWFCManager
 
 		//On result or error we want to unlock resizing
 		InvokeOnInitialize();
+
+		CollapseFirstCellToSand();
+	}
+
+	void CollapseFirstCellToSand()
+	{
+		Debug.LogWarning("Force Collapsing first cell to sand");
+		WFCTile collapseTo = null;
+		foreach (WFCTile tile in domain)
+		{
+			if (tile.Name == "Sand")
+			{
+				collapseTo = tile;
+				break;
+			}
+		}
+		CollapseSpecificCell(EntropyQueue[0].GetPosition(), collapseTo);
 	}
 
 	public override void UpdateOutput()
