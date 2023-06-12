@@ -146,6 +146,18 @@ public class WFCManager_2D : IWFCManager
 		}
 	}
 
+	public override async System.Threading.Tasks.Task GenerateTimeLapse()
+	{
+		while (EntropyQueue.Count > 0)
+		{
+			Debug.Log("Generating once from Timelapse");
+			GenerateOnce();
+			((BeachWFCExporter)exporter).Export(GetCells());
+			await System.Threading.Tasks.Task.Delay(1000);
+		}
+		InvokeOnResult();
+	}
+
 	public override void DrawSize(bool ForceReset = false)
 	{
 		Vector2Int newSize = UnityEditor.EditorGUILayout.Vector2IntField("Map Size", size.AsVector2Int());

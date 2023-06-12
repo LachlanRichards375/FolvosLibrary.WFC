@@ -59,6 +59,17 @@ namespace FolvosLibrary.WFC
 			//Logger will tell us if not allowed
 			this.PrintCells();
 		}
+		public virtual async System.Threading.Tasks.Task GenerateTimeLapse()
+		{
+			while (EntropyQueue.Count > 0)
+			{
+				Debug.Log("Generating once from Timelapse");
+				GenerateOnce();
+				//Put line to print cells here
+				await System.Threading.Tasks.Task.Delay(1000);
+			}
+			InvokeOnResult();
+		}
 
 		#region One Line Functions
 		public virtual void SetImporter(IWFCImporter importer)

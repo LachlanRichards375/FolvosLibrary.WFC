@@ -136,7 +136,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 	void OnGenerateResult()
 	{
 		manager.OnResult -= OnGenerateResult;
-		Debug.Log($"Time after generation: {DateTime.Now.TimeOfDay} ({(DateTime.Now - startTime).Seconds}.{(DateTime.Now - startTime).Milliseconds} seconds)");
+		Debug.Log($"Time to Generate: {DateTime.Now.Subtract(startTime)}");
 		Debug.Log("Reached On Generate Result");
 		GameObject[][] map = (exporter as BeachWFCExporter).Export((manager as WFCManager_2D).GetCells());
 		int rowNumber = 0;
