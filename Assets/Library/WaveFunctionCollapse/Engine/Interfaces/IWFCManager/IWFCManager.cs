@@ -64,7 +64,7 @@ namespace FolvosLibrary.WFC
 			//Logger will tell us if not allowed
 			this.PrintCells();
 		}
-		public virtual async System.Threading.Tasks.Task GenerateTimeLapse(System.Threading.CancellationTokenSource cancellationToken)
+		public virtual async System.Threading.Tasks.Task GenerateTimeLapse(System.Threading.CancellationTokenSource cancellationToken, int millsBetweenStep)
 		{
 			while (EntropyQueue.Count > 0)
 			{
@@ -75,7 +75,7 @@ namespace FolvosLibrary.WFC
 				Debug.Log("Generating once from Timelapse");
 				GenerateOnce();
 				UpdateOutput();
-				await System.Threading.Tasks.Task.Delay(1000);
+				await System.Threading.Tasks.Task.Delay(millsBetweenStep);
 			}
 			if (EntropyQueue.Count > 0)
 			{

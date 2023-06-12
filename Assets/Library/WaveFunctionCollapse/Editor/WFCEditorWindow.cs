@@ -39,6 +39,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 	}
 
 	int stepCount = 1;
+	int millsBetweenStep = 500;
 	void DisplayVariableSetters()
 	{
 		mapParent = (GameObject)EditorGUILayout.ObjectField("Map Parent: ", mapParent, typeof(GameObject), true);
@@ -54,6 +55,12 @@ public class WFCEditorWindow : ExtendedEditorWindow
 			//When we have initialized we don't want to force update
 			manager.DrawSize(!hasInitialized);
 			stepCount = EditorGUILayout.IntSlider(stepCount, 1, 50);
+		}
+
+		millsBetweenStep = EditorGUILayout.IntField("Milliseconds between step", millsBetweenStep);
+		if (millsBetweenStep <= 0)
+		{
+			millsBetweenStep = 1;
 		}
 	}
 
@@ -133,7 +140,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 			{
 
 				Initialize();
-				GenerateTimeLapseTask = manager.GenerateTimeLapse(CancelTimeLapseToken);
+				GenerateTimeLapseTask = manager.GenerateTimeLapse(CancelTimeLapseToken, millsBetweenStep);
 			}
 		}
 
@@ -149,9 +156,8 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		if (GUILayout.Button("Stop Generation"))
 		{
 			CancelTimeLapseToken.Cancel();
+			ResetTimelapseVariables();
 		}
-
-		// if(GUILayout.Button("Pause Generation"))
 
 		GUILayout.EndHorizontal();
 	}
