@@ -190,7 +190,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 	{
 		manager.OnResult -= OnGenerateResult;
 		ResetTimelapseVariables();
-		Debug.Log($"Time to Generate: {DateTime.Now.Subtract(startTime)}");
+		Debug.Log($"Time to Generate: {TimeToGenerate()}");
 		Debug.Log("Reached On Generate Result");
 
 		GameObject[][] map = (exporter as BeachWFCExporter).Export((manager as WFCManager_2D).GetCells());
@@ -208,5 +208,21 @@ public class WFCEditorWindow : ExtendedEditorWindow
 			}
 			rowNumber++;
 		}
+	}
+	string TimeToGenerate()
+	{
+		TimeSpan finalTime = DateTime.Now.Subtract(startTime);
+		string returner = "";
+		if (finalTime.Minutes > 0)
+		{
+			returner += finalTime.Minutes + "m:";
+		}
+		//Always include seconds if minutes is > 0
+		if (finalTime.Minutes > 0 || finalTime.Seconds > 0)
+		{
+			returner += finalTime.Seconds + "s.";
+		}
+
+		return returner + finalTime.Milliseconds + "ms";
 	}
 }
