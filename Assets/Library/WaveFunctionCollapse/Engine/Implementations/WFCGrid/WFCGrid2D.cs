@@ -6,91 +6,55 @@ using UnityEngine;
 namespace FolvosLibrary.WFC
 {
 	[CreateAssetMenu(menuName = "Folvos/WFC/Grids/2DGrid"), System.Serializable]
-	public class WFCGrid2D : ScriptableObject, IWFCGrid
+	public class WFCGrid2D : IWFCGrid
 	{
-		IWFCManager manager;
-		public void SetManager(IWFCManager manager)
-		{
-			this.manager = manager;
-		}
-
-
 		IWFCPosition size;
 		IWFCCell[][] grid = new IWFCCell[0][];
 
-		public WFCError? Collapse()
-		{
-			IWFCCell cell = EntropyQueue[0];
-			Vector2Int nextTile = cell.GetPosition().AsVector2Int();
-
-			if (cell.CalculateEntropy() <= 0f)
-			{
-				//We have an issue
-				Debug.LogError("Entropy queue.next is <= 0");
-				return grid[nextTile.x][nextTile.y].GetError();
-			}
-
-			cell.Collapse();
-			EntropyQueue.Remove(cell);
-			SortQueue();
-
-			return null;
-		}
-
-		public WFCError? CollapseSpecificCell(IWFCPosition position, WFCTile toCollapseTo)
-		{
-			if (toCollapseTo == null)
-			{
-				Debug.LogError("Collapsing specific cell to null object");
-				return null;
-			}
-
-			Vector2Int pos = position.AsVector2Int();
-
-			if (pos.x < 0 || pos.x >= grid.Length)
-			{
-				// return WFCError out of bouds
-				Debug.LogError("Position out of bounds for manual collapse");
-				return null;
-			}
-
-			if (pos.y < 0 || pos.y >= grid[0].Length)
-			{
-				// return WFCError out of bouds
-				Debug.LogError("Position out of bounds for manual collapse");
-				return null;
-			}
-
-			IWFCCell toCollapse = grid[pos.x][pos.y];
-
-			toCollapse.Collapse(toCollapseTo);
-
-			EntropyQueue.Remove(toCollapse);
-
-			return null;
-		}
-
-		public void SetSize(IWFCPosition size)
+		public override void SetSize(IWFCPosition size)
 		{
 			Vector2Int newSize = size.AsVector2Int();
 			if (newSize.x < 0 || newSize.y < 0)
 			{
 				return;
 			}
+			this.size = size;
+		}
 
-			IWFCCell[][] newGrid = new IWFCCell[newSize.x][];
-			for (int x = 0; x < newSize.x; x++)
+		public override IWFCPosition GetSize()
+		{
+			if (grid == null || grid[0] == null)
 			{
-				newGrid[x] = new IWFCCell[newSize.y];
+				return new IWFCPosition(0, 0);
+			}
 
-				for (int y = 0; y < newSize.y; y++)
+			return new IWFCPosition(grid.Length, grid[0].Length);
+		}
+
+		public override void Initialize()
+		{
+			InitializeGrid();
+
+			Debug.Log($"grid size: {size}");
+
+			LoadGrid();
+		}
+
+		protected void InitializeGrid()
+		{
+			Vector2Int newGridSize = size.AsVector2Int();
+			IWFCCell[][] newGrid = new IWFCCell[newGridSize.x][];
+			for (int x = 0; x < newGridSize.x; x++)
+			{
+				newGrid[x] = new IWFCCell[newGridSize.y];
+
+				for (int y = 0; y < newGridSize.y; y++)
 				{
 					newGrid[x][y] = new IWFCCell(manager, new IWFCPosition(x, y));
 				}
 			}
 
 			grid = newGrid;
-			this.size = size;
 		}
 
 		protected void LoadGrid()
@@ -119,51 +83,35 @@ namespace FolvosLibrary.WFC
 			ShuffleLowestEntropy();
 		}
 
-		public void Initialize()
+		public override bool HasCollapsed(IWFCPosition position)
 		{
-			int yLength = -1;
-			if (grid.Length > 0)
+			if (!PositionInBounds(position))
 			{
-				yLength = grid[0].Length;
+				return false;
 			}
 
-			Debug.Log("grid size: [" + grid.Length + "," + yLength + "]");
-
-			LoadGrid();
-
-			CollapseFirstCellToSand();
+			Vector2Int vec = position.AsVector2Int();
+			return !(grid[vec.x][vec.y].CollapsedTile is null);
 		}
 
-		void CollapseFirstCellToSand()
+		public override bool PositionInBounds(IWFCPosition position)
 		{
-			Debug.LogWarning("Force Collapsing first cell to sand");
-			WFCTile collapseTo = null;
-			foreach (WFCTile tile in manager.GetDomain())
+			Vector2Int pos = position.AsVector2Int();
+
+			if (pos.x < 0 || pos.x >= grid.Length)
 			{
-				if (tile.Name == "Sand")
-				{
-					collapseTo = tile;
-					break;
-				}
+				return false;
 			}
-			CollapseSpecificCell(EntropyQueue[0].GetPosition(), collapseTo);
-		}
 
-		public void DrawSize(bool ForceReset = false)
-		{
-			Vector2Int newSize = UnityEditor.EditorGUILayout.Vector2IntField("Map Size", size.AsVector2Int());
-			if (ForceReset || newSize != size.AsVector2Int())
+			if (pos.y < 0 || pos.y >= grid[0].Length)
 			{
-				SetSize(new IWFCPosition(newSize));
+				return false;
 			}
+
+			return true;
 		}
 
-		public IWFCCell[][] GetCells()
-		{
-			return grid;
-		}
-
-		public IWFCCell GetCell(IWFCPosition position)
+		public override IWFCCell GetCell(IWFCPosition position)
 		{
 			if (position.x < 0 || position.y < 0)
 			{
@@ -179,23 +127,21 @@ namespace FolvosLibrary.WFC
 			return grid[vec.x][vec.y];
 		}
 
-		public bool HasCollapsed(IWFCPosition position)
+		public IWFCCell[][] GetCells()
 		{
-			if (position.x < 0 || position.y < 0)
-			{
-				return false;
-			}
-
-			if (position.x >= grid.Length || position.y >= grid[0].Length)
-			{
-				return false;
-			}
-
-			Vector2Int vec = position.AsVector2Int();
-			return !(grid[vec.x][vec.y].CollapsedTile is null);
+			return grid;
 		}
 
-		public void PrintCells()
+		public override void DrawSize(bool ForceReset = false)
+		{
+			Vector2Int newSize = UnityEditor.EditorGUILayout.Vector2IntField("Map Size", size.AsVector2Int());
+			if (ForceReset || newSize != size.AsVector2Int())
+			{
+				SetSize(new IWFCPosition(newSize));
+			}
+		}
+
+		public override void PrintCells()
 		{
 			Logging.Logging.LogMessage message = new Logging.Logging.LogMessage();
 
@@ -224,90 +170,6 @@ namespace FolvosLibrary.WFC
 
 				PrintEntropyQueue();
 			}
-		}
-
-		public void PrintEntropyQueue()
-		{
-			Logging.Logging.LogMessage message = new Logging.Logging.LogMessage();
-
-			message.MessageFrom = Logging.Logging.ProjectGroups.WFCManager;
-			message.Priority = Logging.Logging.Priority.Low;
-
-			string s = $"> Entropy Queue: \n";
-
-			int i = 0;
-			foreach (IWFCCell cell in EntropyQueue)
-			{
-				s += i + ">\t" + cell.GetPosition() + " " + cell.ToString() + "\n";
-				i++;
-			}
-
-			message.Message = s;
-			Logging.Logging.Message(message);
-		}
-
-		public IWFCPosition GetSize()
-		{
-			if (grid == null || grid[0] == null)
-			{
-				return new IWFCPosition(0, 0);
-			}
-
-			return new IWFCPosition(grid.Length, grid[0].Length);
-		}
-
-		//Entropy Queue
-		protected List<IWFCCell> EntropyQueue = new List<IWFCCell>();
-
-		protected void SortQueue()
-		{
-			EntropyQueue.Sort();
-		}
-
-		public virtual void ClearQueue()
-		{
-			EntropyQueue = new List<IWFCCell>();
-		}
-
-		protected void ShuffleLowestEntropy()
-		{
-			SortQueue();
-
-			float lowestEntropy = EntropyQueue[0].CalculateEntropy();
-			int endIndex;
-			for (endIndex = 0; endIndex < EntropyQueue.Count; endIndex++)
-			{
-				if (EntropyQueue[endIndex].CalculateEntropy() > lowestEntropy)
-				{
-					break;
-				}
-			}
-
-			List<IWFCCell> toShuffle = EntropyQueue.GetRange(0, endIndex);
-
-			int n = toShuffle.Count;
-			while (n > 1)
-			{
-				n--;
-				// int k = rng.Next(n + 1);
-				int k = UnityEngine.Random.Range(0, toShuffle.Count);
-				IWFCCell value = toShuffle[k];
-				toShuffle[k] = toShuffle[n];
-				toShuffle[n] = value;
-			}
-
-			EntropyQueue.RemoveRange(0, endIndex);
-			EntropyQueue.InsertRange(0, toShuffle);
-		}
-
-		public int RemainingCellsToCollapse()
-		{
-			return EntropyQueue.Count;
-		}
-
-		public void Reset()
-		{
-			EntropyQueue = new List<IWFCCell>();
 		}
 	}
 }

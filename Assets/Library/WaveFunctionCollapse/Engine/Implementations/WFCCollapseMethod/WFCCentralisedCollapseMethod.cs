@@ -1,30 +1,24 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace FolvosLibrary.WFC
 {
+	[CreateAssetMenu(menuName = "Folvos/WFC/CollapseMethods/Centralized Collapse Method"), System.Serializable]
 	public class WFCCentralisedCollapseMethod : IWFCCollapseMethod
 	{
 		Dictionary<IWFCPosition, List<IWFCCell>> toAlert = new Dictionary<IWFCPosition, List<IWFCCell>>();
 
-		IWFCManager manager;
-
-		public WFCCentralisedCollapseMethod(IWFCManager manager)
+		public override void Collapse(IWFCPosition position)
 		{
-			this.manager = manager;
+			manager.GetCell(position).Collapse();
 		}
 
-
-		public void Collapse(IWFCPosition position)
+		public override void CollapseSpecificCell(IWFCPosition position, WFCTile toCollapseTo)
 		{
-			IWFCCell toCollapse = manager.GetCell(position);
-
-			if (toCollapse != null)
-			{
-				toCollapse.Collapse();
-			}
+			manager.GetCell(position).Collapse(toCollapseTo);
 		}
 
-		public void RegisterForCellUpdates(IWFCPosition positionOfInterest, IWFCCell toRegister)
+		public override void RegisterForCellUpdates(IWFCPosition positionOfInterest, IWFCCell toRegister)
 		{
 			if (!toAlert.ContainsKey(positionOfInterest))
 			{
@@ -41,7 +35,7 @@ namespace FolvosLibrary.WFC
 			addTo.Add(toRegister);
 		}
 
-		public void DeRegisterForCellUpdates(IWFCPosition positionOfInterest, IWFCCell toDeregister)
+		public override void DeRegisterForCellUpdates(IWFCPosition positionOfInterest, IWFCCell toDeregister)
 		{
 			if (!toAlert.ContainsKey(positionOfInterest))
 			{

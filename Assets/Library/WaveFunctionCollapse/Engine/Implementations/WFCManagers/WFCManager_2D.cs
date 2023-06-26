@@ -10,6 +10,6 @@ public class WFCManager_2D : IWFCManager
 	//Has to stay until we fix exporter
 	public override void UpdateOutput()
 	{
-		((BeachWFCExporter)exporter).Export(grid.GetCells());
+		((BeachWFCExporter)exporter).Export((grid as WFCGrid2D).GetCells());
 	}
 }

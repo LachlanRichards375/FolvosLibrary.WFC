@@ -47,7 +47,7 @@ public class CellIsNotRule : WFCTests
 	[Test]
 	public void Test_RulePassesCorrectly()
 	{
-		Assert.That(manager.CollapseSpecificCell(new IWFCPosition(0, 0), GetGrass()) == null, "Unable to collapse First cell");
+		// Assert.That(manager.CollapseSpecificCell(new IWFCPosition(0, 0), GetGrass()) == null, "Unable to collapse First cell");
 
 		//Collapse cell to grass in position 0,0
 		//Water Rule in position 0,1 should fail

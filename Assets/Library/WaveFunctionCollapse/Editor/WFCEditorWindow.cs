@@ -20,6 +20,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 	[SerializeField] IWFCManager manager;
 	[SerializeField] IWFCExporter exporter;
 	[SerializeField] IWFCGrid grid;
+	[SerializeField] IWFCCollapseMethod collapseMethod;
 
 	bool hasInitialized = false;
 	DateTime startTime;
@@ -48,11 +49,21 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		manager = (IWFCManager)EditorGUILayout.ObjectField("Manager: ", (UnityEngine.Object)manager, typeof(IWFCManager), true);
 		exporter = (IWFCExporter)EditorGUILayout.ObjectField("Exporter: ", (UnityEngine.Object)exporter, typeof(IWFCExporter), true);
 		grid = (IWFCGrid)EditorGUILayout.ObjectField("Grid: ", (UnityEngine.Object)grid, typeof(IWFCGrid), true);
+		collapseMethod = (IWFCCollapseMethod)EditorGUILayout.ObjectField("Collapse Method: ", (UnityEngine.Object)collapseMethod, typeof(IWFCCollapseMethod), true);
 
-		if (grid != null && manager != null)
+		if (manager != null)
 		{
-			grid.SetManager(manager);
-			manager.SetGrid(grid);
+			if (grid != null)
+			{
+				grid.SetManager(manager);
+				manager.SetGrid(grid);
+			}
+
+			if (collapseMethod != null)
+			{
+				manager.SetCollapseMethod(collapseMethod);
+				collapseMethod.SetManager(manager);
+			}
 		}
 
 		Logging.LoggingLevel = (Logging.Priority)EditorGUILayout.EnumPopup("Logging Level", Logging.LoggingLevel);
