@@ -96,14 +96,8 @@ public class MultiCellIsNotTarget2D : MultiCellTargetWFCRule
 
 	bool CellCollapsed(IWFCCell collapsedCell, IWFCCell owner)
 	{
-		if (targetCells.Contains(collapsedCell.GetPosition().AsVector2Int()))
-		{
-			return !(collapsedCell.CollapsedTile.Equals(goal));
-		}
-		else
-		{
-			return true;
-		}
+		Debug.Log("Cell Collapsed");
+		return !(collapsedCell.CollapsedTile.Equals(goal));
 	}
 
 	bool DomainUpdated(WFCCellUpdate update, IWFCCell owner)
@@ -111,30 +105,35 @@ public class MultiCellIsNotTarget2D : MultiCellTargetWFCRule
 		bool result = false;
 		//If our target's domain contains our goal
 
-		bool[] PassTest = new bool[update.DomainChanges.Count];
-		int i = 0;
+
+
+		// bool[] PassTest = new bool[update.DomainChanges.Count];
+		// int i = 0;
 		foreach (DomainChange domainChange in update.DomainChanges)
 		{
-
-			if (domainChange.UpdatedTile == goal)
+			if (domainChange.UpdatedTile.Name == goal.Name)
 			{
 				if (domainChange.DomainUpdate == DomainUpdate.AddedToDomain)
 				{
-					PassTest[i] = false;
+					Debug.Log($"Domain updated, {goal} at {owner.GetPosition()} is NOT allowed.");
+					return false;
 				}
-				else if (domainChange.DomainUpdate == DomainUpdate.RemovedFromDomain)
-				{
-					PassTest[i] = true;
-				}
+				// else if (domainChange.DomainUpdate == DomainUpdate.RemovedFromDomain)
+				// {
+				// 	PassTest[i] = true;
+				// }
 			}
 
-			PassTest[i] = true;
+			// PassTest[i] = true;
 
-			i++;
+			// i++;
 		}
-		result = PassTest.All(t => t == true);
+		// result = PassTest.All(t => t == true);
 
-		return result;
+		Debug.Log($"Domain updated, {goal} at {owner.GetPosition()} is allowed.");
+
+		// return result;
+		return true;
 	}
 
 	public Vector2Int[] GetTargetCellsArray()
