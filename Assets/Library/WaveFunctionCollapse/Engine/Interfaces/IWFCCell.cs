@@ -42,7 +42,7 @@ namespace FolvosLibrary.WFC
 			return Domain.Count;
 		}
 
-		public void Collapse()
+		public WFCCellUpdate Collapse()
 		{
 			float tileNo = UnityEngine.Random.Range(0f, CalcDomain());
 			int index = 0;
@@ -54,12 +54,10 @@ namespace FolvosLibrary.WFC
 					break;
 				}
 			}
-			Collapse(Domain[index]);
-
-
+			return Collapse(Domain[index]);
 		}
 
-		public void Collapse(WFCTile toCollapseTo)
+		public WFCCellUpdate Collapse(WFCTile toCollapseTo)
 		{
 			CollapsedTile = toCollapseTo;
 
@@ -68,15 +66,16 @@ namespace FolvosLibrary.WFC
 			updateMessage.UpdateType = CellUpdateType.Collapsed;
 			updateMessage.UpdatedCell = this;
 
-			InvokeCellUpdate(updateMessage);
+			return updateMessage;
+			// InvokeCellUpdate(updateMessage);
 		}
 
-		public void DomainCheck(WFCCellUpdate update)
+		public WFCCellUpdate? DomainCheck(WFCCellUpdate update)
 		{
 			//If we've collapsed we don't care
 			if (CollapsedTile != null)
 			{
-				return;
+				return null;
 			}
 
 			List<WFCTile> tilesToRemove = new List<WFCTile>();
@@ -90,40 +89,37 @@ namespace FolvosLibrary.WFC
 				i++;
 			}
 
-			RemoveFromDomain(tilesToRemove);
+			return RemoveFromDomain(tilesToRemove);
 		}
 
-		void RemoveFromDomain(List<WFCTile> tilesToRemove)
+		WFCCellUpdate? RemoveFromDomain(List<WFCTile> tilesToRemove)
 		{
+			if (tilesToRemove.Count <= 0)
+			{
+				return null;
+			}
+			int i = 0;
+			WFCCellUpdate updateMessage = new WFCCellUpdate();
+
+			updateMessage.UpdateType = CellUpdateType.DomainUpdate;
+			updateMessage.UpdatedCell = this;
 			if (tilesToRemove.Count > 0)
 			{
-				int i = 0;
-				WFCCellUpdate updateMessage = new WFCCellUpdate();
-
-				updateMessage.UpdateType = CellUpdateType.DomainUpdate;
-				updateMessage.UpdatedCell = this;
-				if (tilesToRemove.Count > 0)
-				{
-					updateMessage.DomainChanges = new List<DomainChange>();
-				}
-
-				for (i = 0; i < tilesToRemove.Count; i++)
-				{
-					updateMessage.DomainChanges.Add(new DomainChange(tilesToRemove[i], DomainUpdate.RemovedFromDomain));
-					//Remove tile
-				}
-
-				for (i = 0; i < tilesToRemove.Count; i++)
-				{
-					Domain.Remove(tilesToRemove[i]);
-				}
-				InvokeCellUpdate(updateMessage);
+				updateMessage.DomainChanges = new List<DomainChange>();
 			}
-		}
 
-		protected void InvokeCellUpdate(WFCCellUpdate update)
-		{
-			OnCellUpdate.Invoke(update);
+			for (i = 0; i < tilesToRemove.Count; i++)
+			{
+				updateMessage.DomainChanges.Add(new DomainChange(tilesToRemove[i], DomainUpdate.RemovedFromDomain));
+				//Remove tile
+			}
+
+			for (i = 0; i < tilesToRemove.Count; i++)
+			{
+				Domain.Remove(tilesToRemove[i]);
+			}
+			return updateMessage;
+
 		}
 
 		protected int CalcDomain()

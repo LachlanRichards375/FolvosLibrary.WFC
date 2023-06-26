@@ -44,7 +44,7 @@ namespace FolvosLibrary.WFC
 				//This is needed so we aren't using the same Rule Objects as other tiles
 				NewRules[i] = (WFCRule)System.Activator.CreateInstance(Rules[i].GetType(), Rules[i]);
 				NewRules[i].RuleInitialize(manager, cell.GetPosition().AsVector2Int());
-				NewRules[i].OnRuleActivated += cell.DomainCheck;
+				// NewRules[i].OnRuleActivated += (WFCCellUpdate update) => cell.DomainCheck(update);
 			}
 			Rules = NewRules;
 		}

@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -132,6 +133,11 @@ namespace FolvosLibrary.WFC
 		public virtual void Cleanup()
 		{
 			InvokeOnCleanup();
+		}
+
+		public virtual IWFCCollapseMethod GetCollapseMethod()
+		{
+			return collapseMethod;
 		}
 		#endregion
 	}

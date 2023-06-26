@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 namespace FolvosLibrary.WFC
 {
@@ -7,7 +8,6 @@ namespace FolvosLibrary.WFC
 		public abstract void CollapseSpecificCell(IWFCPosition position, WFCTile collapseTo);
 		public abstract void RegisterForCellUpdates(IWFCPosition positionOfInterest, IWFCCell toRegister);
 		public abstract void DeRegisterForCellUpdates(IWFCPosition positionOfInterest, IWFCCell toDeregister);
-
 
 		protected IWFCManager manager;
 		public void SetManager(IWFCManager manager)

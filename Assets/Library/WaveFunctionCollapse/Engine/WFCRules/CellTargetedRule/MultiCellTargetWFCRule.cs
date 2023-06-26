@@ -50,9 +50,10 @@ namespace FolvosLibrary.WFC
 
 				if (FlagsHelper.IsSet<CellDirection.Direction>(this.direction, currentDirection))
 				{
-					targetCells2.Add(targetPos);
+					manager.GetCollapseMethod().RegisterForCellUpdates(new IWFCPosition(targetPos), manager.GetCell(new IWFCPosition(CellPos)));
+					// targetCells2.Add(targetPos);
 					// When the target cell is updated cause our cell to do a domain check
-					targetCell.OnCellUpdate += InvokeRuleActivated;
+					// targetCell.OnCellUpdate += InvokeRuleActivated;
 				}
 			}
 			this.targetCells = targetCells2.ToArray();
