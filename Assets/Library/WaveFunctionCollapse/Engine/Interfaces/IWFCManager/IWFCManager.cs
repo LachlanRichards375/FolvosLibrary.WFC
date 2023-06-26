@@ -8,26 +8,72 @@ namespace FolvosLibrary.WFC
 	{
 		protected IWFCExporter exporter;
 		protected IWFCImporter importer;
-		[SerializeField] protected List<WFCTile> domain;
+		protected IWFCCollapseMethod collapseMethod;
+		protected IWFCGrid grid;
+		protected List<WFCTile> domain;
 
-		public abstract WFCError? Collapse();
-		public abstract WFCError? CollapseSpecificCell(IWFCPosition position, WFCTile toCollapseTo);
-		public abstract void Initialize();
+		public void SetGrid(IWFCGrid grid)
+		{
+			this.grid = grid;
+		}
 
-		protected IWFCPosition size;
-		public abstract void SetSize(IWFCPosition newSize);
+		public WFCError? Collapse()
+		{
+			return grid.Collapse();
+		}
+
+		public WFCError? CollapseSpecificCell(IWFCPosition position, WFCTile toCollapseTo)
+		{
+			return grid.CollapseSpecificCell(position, toCollapseTo);
+		}
+
+		public void Initialize()
+		{
+			domain = new List<WFCTile>(importer.Import<string>("a"));
+
+
+			string print = "INITIALIZING \t Domain: ";
+			for (int i = 0; i < domain.Count; i++)
+			{
+				print += domain[i].ToString() + ", ";
+			}
+			Debug.Log(print);
+
+			grid.Initialize();
+			InvokeOnInitialize();
+		}
+
+		public void Reset()
+		{
+			grid.Reset();
+		}
+
+		public void SetSize(IWFCPosition newSize)
+		{
+			grid.SetSize(newSize);
+		}
 		public IWFCPosition GetSize()
 		{
-			return size;
+			return grid.GetSize();
 		}
-		protected abstract void LoadGrid();
-		public abstract IWFCCell GetCell(IWFCPosition position);
-		public abstract bool HasCollapsed(IWFCPosition position);
+		public IWFCCell GetCell(IWFCPosition position)
+		{
+			return grid.GetCell(position);
+		}
+		//dynamic because it can return different results
+		public dynamic GetCells()
+		{
+			return grid.GetCells();
+		}
+		public bool HasCollapsed(IWFCPosition position)
+		{
+			return grid.HasCollapsed(position);
+		}
 
 		//Generation
 		public virtual void Generate()
 		{
-			while (EntropyQueue.Count > 0)
+			while (grid.RemainingCellsToCollapse() > 0)
 			{
 				GenerateOnce();
 			}
@@ -35,17 +81,17 @@ namespace FolvosLibrary.WFC
 		}
 		public virtual void GenerateStep(int step = 1)
 		{
-			for (int i = 0; i < step && EntropyQueue.Count > 0; i++)
+			for (int i = 0; i < step && grid.RemainingCellsToCollapse() > 0; i++)
 			{
 				GenerateOnce();
 			}
 
-			if (EntropyQueue.Count > 0)
+			if (grid.RemainingCellsToCollapse() > 0)
 			{
 				UpdateOutput();
 			}
 
-			if (EntropyQueue.Count <= 0)
+			if (grid.RemainingCellsToCollapse() <= 0)
 			{
 				InvokeOnResult();
 			}
@@ -66,7 +112,7 @@ namespace FolvosLibrary.WFC
 		}
 		public virtual async System.Threading.Tasks.Task GenerateTimeLapse(System.Threading.CancellationTokenSource cancellationToken, int millsBetweenStep)
 		{
-			while (EntropyQueue.Count > 0)
+			while (grid.RemainingCellsToCollapse() > 0)
 			{
 				if (cancellationToken.IsCancellationRequested)
 				{
@@ -77,13 +123,14 @@ namespace FolvosLibrary.WFC
 				UpdateOutput();
 				await System.Threading.Tasks.Task.Delay(millsBetweenStep);
 			}
-			if (EntropyQueue.Count > 0)
+			if (grid.RemainingCellsToCollapse() > 0)
 			{
 
 			}
 			InvokeOnResult();
 		}
 
+		//Has to stay until we fix exporter.
 		public abstract void UpdateOutput();
 
 		#region One Line Functions
@@ -93,24 +140,6 @@ namespace FolvosLibrary.WFC
 		}
 
 		public IWFCImporter GetImporter() { return importer; }
-
-
-		protected List<WFCTile> ImportDomain()
-		{
-			if (importer == null)
-			{
-				return null;
-			}
-
-			List<WFCTile> returner = new List<WFCTile>();
-			foreach (WFCTile tile in importer.Import<string>("You like kissing boys don't you?"))
-			{
-				returner.Add(WFCTile.CreateTile(tile));
-			}
-
-			return returner;
-		}
-
 
 		public virtual void SetExporter(IWFCExporter exporter)
 		{
@@ -139,55 +168,14 @@ namespace FolvosLibrary.WFC
 			InvokeOnCleanup();
 		}
 
-		protected void OnCellUpdate(WFCCellUpdate update)
+		public virtual bool DrawSize(bool ForceReset = false)
 		{
-			SortQueue();
-		}
-		#endregion
-
-		#region Entropy Queue
-		//Entropy Queue
-		protected List<IWFCCell> EntropyQueue = new List<IWFCCell>();
-
-		protected void SortQueue()
-		{
-			EntropyQueue.Sort();
-		}
-
-		public virtual void ClearQueue()
-		{
-			EntropyQueue = new List<IWFCCell>();
-		}
-
-		protected void ShuffleLowestEntropy()
-		{
-			SortQueue();
-
-			float lowestEntropy = EntropyQueue[0].CalculateEntropy();
-			int endIndex;
-			for (endIndex = 0; endIndex < EntropyQueue.Count; endIndex++)
+			if (grid == null)
 			{
-				if (EntropyQueue[endIndex].CalculateEntropy() > lowestEntropy)
-				{
-					break;
-				}
+				return false;
 			}
-
-			List<IWFCCell> toShuffle = EntropyQueue.GetRange(0, endIndex);
-
-			int n = toShuffle.Count;
-			while (n > 1)
-			{
-				n--;
-				// int k = rng.Next(n + 1);
-				int k = UnityEngine.Random.Range(0, toShuffle.Count);
-				IWFCCell value = toShuffle[k];
-				toShuffle[k] = toShuffle[n];
-				toShuffle[n] = value;
-			}
-
-			EntropyQueue.RemoveRange(0, endIndex);
-			EntropyQueue.InsertRange(0, toShuffle);
+			grid.DrawSize(ForceReset);
+			return true;
 		}
 		#endregion
 	}

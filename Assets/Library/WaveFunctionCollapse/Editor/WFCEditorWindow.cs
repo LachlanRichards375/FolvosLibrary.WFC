@@ -19,6 +19,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 	[SerializeField] IWFCImporter importer;
 	[SerializeField] IWFCManager manager;
 	[SerializeField] IWFCExporter exporter;
+	[SerializeField] IWFCGrid grid;
 
 	bool hasInitialized = false;
 	DateTime startTime;
@@ -46,15 +47,34 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		importer = (IWFCImporter)EditorGUILayout.ObjectField("Importer: ", (UnityEngine.Object)importer, typeof(IWFCImporter), true);
 		manager = (IWFCManager)EditorGUILayout.ObjectField("Manager: ", (UnityEngine.Object)manager, typeof(IWFCManager), true);
 		exporter = (IWFCExporter)EditorGUILayout.ObjectField("Exporter: ", (UnityEngine.Object)exporter, typeof(IWFCExporter), true);
+		grid = (IWFCGrid)EditorGUILayout.ObjectField("Grid: ", (UnityEngine.Object)grid, typeof(IWFCGrid), true);
+
+		if (grid != null && manager != null)
+		{
+			grid.SetManager(manager);
+			manager.SetGrid(grid);
+		}
 
 		Logging.LoggingLevel = (Logging.Priority)EditorGUILayout.EnumPopup("Logging Level", Logging.LoggingLevel);
 		Logging.LoggingGroups = (Logging.ProjectGroups)EditorGUILayout.EnumFlagsField("Messages to display", Logging.LoggingGroups);
 
 		if (manager != null)
 		{
-			//When we have initialized we don't want to force update
-			manager.DrawSize(!hasInitialized);
 			stepCount = EditorGUILayout.IntSlider(stepCount, 1, 50);
+		}
+		else
+		{
+			EditorGUILayout.LabelField("Manager has not been provided", GUILayout.MinHeight(30));
+		}
+
+		if (grid != null)
+		{
+			//When we have initialized we don't want to force update
+			grid.DrawSize(!hasInitialized);
+		}
+		else
+		{
+			EditorGUILayout.LabelField("Grid has not been provided", GUILayout.MinHeight(30));
 		}
 
 		millsBetweenStep = EditorGUILayout.IntField("Milliseconds between step", millsBetweenStep);
@@ -74,7 +94,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 
 				if (manager != null)
 				{
-					manager.ClearQueue();
+					manager.Reset();
 				}
 
 				if (exporter != null)
@@ -193,21 +213,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		Debug.Log($"Time to Generate: {TimeToGenerate()}");
 		Debug.Log("Reached On Generate Result");
 
-		GameObject[][] map = (exporter as BeachWFCExporter).Export((manager as WFCManager_2D).GetCells());
-		int rowNumber = 0;
-
-		Debug.Log($"Map.Length: {map.Length}");
-
-		foreach (GameObject[] row in map)
-		{
-			Transform rowParent = new GameObject($"Row{{{rowNumber}}}").transform;
-			rowParent.SetParent(mapParent.transform);
-			foreach (GameObject cell in row)
-			{
-				cell.transform.SetParent(rowParent);
-			}
-			rowNumber++;
-		}
+		manager.UpdateOutput();
 	}
 	string TimeToGenerate()
 	{
