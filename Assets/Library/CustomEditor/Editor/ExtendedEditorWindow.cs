@@ -71,13 +71,18 @@ public class ExtendedEditorWindow : EditorWindow
 		}
 	}
 
-	protected void DrawLine(int space = 5)
+	protected void DrawLine(int firstSpace = 5, int secondSpace = 5)
 	{
-		EditorGUILayout.Space(space);
+		DrawSpace(firstSpace);
 		var rect = EditorGUILayout.BeginHorizontal();
 		Handles.color = new Color(0, 0, 0, 0.3f);
 		Handles.DrawLine(new Vector2(rect.x - 15, rect.y), new Vector2(rect.width + 15, rect.y));
 		EditorGUILayout.EndHorizontal();
+		DrawSpace(secondSpace);
+	}
+
+	protected void DrawSpace(int space = 5)
+	{
 		EditorGUILayout.Space(space);
 	}
 

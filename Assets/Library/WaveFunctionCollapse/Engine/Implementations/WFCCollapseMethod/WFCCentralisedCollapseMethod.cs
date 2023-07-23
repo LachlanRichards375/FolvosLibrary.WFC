@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using UnityEditor;
 using UnityEngine;
 
 namespace FolvosLibrary.WFC
@@ -10,6 +11,7 @@ namespace FolvosLibrary.WFC
 	{
 		Dictionary<IWFCPosition, List<IWFCCell>> toAlert = new Dictionary<IWFCPosition, List<IWFCCell>>();
 		List<WFCCellUpdate> updateQueue = new List<WFCCellUpdate>();
+		int maximumThreadCount = 1;
 
 		public override void Collapse(IWFCPosition position)
 		{
@@ -27,12 +29,11 @@ namespace FolvosLibrary.WFC
 					continue;
 				}
 
-
 				Debug.Log("Update being processed: " + updateBeingProcessed);
 
 				List<IWFCCell> listOfAlertees = toAlert[cellUpdatePos];
 				Thread[] threadList = new Thread[listOfAlertees.Count];
-				Semaphore threadWrite = new Semaphore(1, 1);
+				Semaphore threadWrite = new Semaphore(maximumThreadCount, maximumThreadCount);
 				for (int i = 0; i < listOfAlertees.Count; i++)
 				{
 					threadList[i] = new Thread(ThreadedLoop);
@@ -109,6 +110,15 @@ namespace FolvosLibrary.WFC
 			}
 
 			toAlert[positionOfInterest].Remove(toDeregister);
+		}
+
+		public override void DrawOptions()
+		{
+			maximumThreadCount = EditorGUILayout.IntField("Simultaneous Thread Count", maximumThreadCount);
+			if (maximumThreadCount <= 0)
+			{
+				maximumThreadCount = 1;
+			}
 		}
 	}
 }

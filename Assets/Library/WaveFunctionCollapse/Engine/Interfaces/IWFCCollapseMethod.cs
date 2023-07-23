@@ -14,5 +14,7 @@ namespace FolvosLibrary.WFC
 		{
 			this.manager = manager;
 		}
+
+		public abstract void DrawOptions();
 	}
 }

@@ -42,7 +42,20 @@ public class WFCEditorWindow : ExtendedEditorWindow
 
 	int stepCount = 1;
 	int millsBetweenStep = 500;
+	int maximumThreadCount = 1;
 	void DisplayVariableSetters()
+	{
+		DrawObjectPickers();
+		ConfigureObjects();
+
+		DrawLine(20);
+
+		DrawObjectSettings();
+
+		DrawLine(20);
+	}
+
+	void DrawObjectPickers()
 	{
 		mapParent = (GameObject)EditorGUILayout.ObjectField("Map Parent: ", mapParent, typeof(GameObject), true);
 		importer = (IWFCImporter)EditorGUILayout.ObjectField("Importer: ", (UnityEngine.Object)importer, typeof(IWFCImporter), true);
@@ -50,7 +63,10 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		exporter = (IWFCExporter)EditorGUILayout.ObjectField("Exporter: ", (UnityEngine.Object)exporter, typeof(IWFCExporter), true);
 		grid = (IWFCGrid)EditorGUILayout.ObjectField("Grid: ", (UnityEngine.Object)grid, typeof(IWFCGrid), true);
 		collapseMethod = (IWFCCollapseMethod)EditorGUILayout.ObjectField("Collapse Method: ", (UnityEngine.Object)collapseMethod, typeof(IWFCCollapseMethod), true);
+	}
 
+	void ConfigureObjects()
+	{
 		if (manager != null)
 		{
 			if (grid != null)
@@ -65,7 +81,10 @@ public class WFCEditorWindow : ExtendedEditorWindow
 				collapseMethod.SetManager(manager);
 			}
 		}
+	}
 
+	void DrawObjectSettings()
+	{
 		Logging.LoggingLevel = (Logging.Priority)EditorGUILayout.EnumPopup("Logging Level", Logging.LoggingLevel);
 		Logging.LoggingGroups = (Logging.ProjectGroups)EditorGUILayout.EnumFlagsField("Messages to display", Logging.LoggingGroups);
 
@@ -92,6 +111,16 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		if (millsBetweenStep <= 0)
 		{
 			millsBetweenStep = 1;
+		}
+
+
+		if (collapseMethod != null)
+		{
+			collapseMethod.DrawOptions();
+		}
+		else
+		{
+			EditorGUILayout.LabelField("Collapse Method has not been provided", GUILayout.MinHeight(30));
 		}
 	}
 
