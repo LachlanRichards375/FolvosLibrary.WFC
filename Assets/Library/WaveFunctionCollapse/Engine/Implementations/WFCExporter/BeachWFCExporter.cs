@@ -32,24 +32,28 @@ public class BeachWFCExporter : IWFCExporter
 			}
 			for (int y = 0; y < toExport[0].Length; y++)
 			{
-				GameObject target;
 				if (createGameObjects)
 				{
-					Exported[x][y] = new GameObject($"{{{x},{y}}}", typeof(SpriteRenderer));
+					Exported[x][y] = new GameObject($"{{{x},{y}}}", typeof(SpriteRenderer), typeof(IWFCCellComponent));
 					if (parent != null)
 					{
 						Exported[x][y].transform.SetParent(parent);
 					}
 				}
-				target = Exported[x][y];
+
+				GameObject target = Exported[x][y];
 				Transform t = target.transform;
 				t.position = new Vector3(x, y, 0f);
 
-				SpriteRenderer sR = target.GetComponent<SpriteRenderer>();
-				if (input[x][y].CollapsedTile != null)
+				if (toExport[x][y].CollapsedTile != null)
 				{
-					sR.sprite = input[x][y].CollapsedTile.TileData.Sprite;
+					SpriteRenderer sR = target.GetComponent<SpriteRenderer>();
+					sR.sprite = toExport[x][y].CollapsedTile.TileData.Sprite;
 				}
+
+				IWFCCellComponent cellVisualiser = target.GetComponent<IWFCCellComponent>();
+				cellVisualiser.CellCaptured = toExport[x][y].GetCellStruct();
+				cellVisualiser.UpdateVisuals();
 			}
 		}
 

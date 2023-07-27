@@ -219,5 +219,23 @@ namespace FolvosLibrary.WFC
 
 			return domainSize;
 		}
+
+		public WFCCellStruct GetCellStruct()
+		{
+			return new WFCCellStruct(CollapsedTile, Domain);
+		}
+	}
+
+	[System.Serializable]
+	public struct WFCCellStruct
+	{
+		public WFCTile CollapsedTile;
+		public List<WFCTile> Domain;
+
+		public WFCCellStruct(WFCTile collapsedTile, List<WFCTile> domain)
+		{
+			CollapsedTile = collapsedTile;
+			Domain = domain;
+		}
 	}
 }
