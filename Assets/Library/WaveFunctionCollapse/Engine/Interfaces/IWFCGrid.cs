@@ -24,7 +24,7 @@ namespace FolvosLibrary.WFC
 		//Entropy Queue
 		protected List<IWFCCell> EntropyQueue = new List<IWFCCell>();
 
-		protected void SortQueue()
+		public void SortQueue()
 		{
 			EntropyQueue.Sort();
 		}
@@ -74,7 +74,6 @@ namespace FolvosLibrary.WFC
 		{
 			IWFCPosition returner = EntropyQueue[0].GetPosition();
 			EntropyQueue.RemoveAt(0);
-			SortQueue();
 			return returner;
 		}
 

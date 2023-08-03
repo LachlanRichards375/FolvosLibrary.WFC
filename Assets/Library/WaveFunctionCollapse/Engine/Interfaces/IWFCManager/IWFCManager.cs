@@ -20,7 +20,11 @@ namespace FolvosLibrary.WFC
 			string print = "INITIALIZING \t Domain: ";
 			for (int i = 0; i < domain.Count; i++)
 			{
-				print += domain[i].ToString() + ", ";
+				print += domain[i].ToString();
+				if (i < domain.Count - 1)
+				{
+					print += ", ";
+				}
 			}
 			Debug.Log(print);
 
@@ -50,6 +54,9 @@ namespace FolvosLibrary.WFC
 		protected void GenerateOnce()
 		{
 			PrintGenerationDivider();
+
+			//Ensure grid is sorted before we collapse the next cell
+			grid.SortQueue();
 
 			Collapse();
 			//Try print cells after each step.
