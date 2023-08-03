@@ -26,7 +26,13 @@ namespace FolvosLibrary.WFC
 
 			grid.Initialize();
 
+			ForceCollapseFirstCellToSand();
 
+			InvokeOnInitialize();
+		}
+
+		void ForceCollapseFirstCellToSand()
+		{
 			Debug.LogWarning("Force Collapsing first cell to sand");
 			WFCTile collapseTo = null;
 			foreach (WFCTile tile in domain)
@@ -39,8 +45,6 @@ namespace FolvosLibrary.WFC
 			}
 
 			CollapseSpecificCell(grid.PopNextCellToCollapse(), collapseTo);
-
-			InvokeOnInitialize();
 		}
 
 		protected void GenerateOnce()
