@@ -2,8 +2,6 @@ using System;
 using UnityEngine;
 namespace FolvosLibrary.WFC
 {
-
-
 	public class CellDirection
 	{
 		[Flags]
@@ -16,7 +14,8 @@ namespace FolvosLibrary.WFC
 			South = 1 << 5,
 			SouthWest = 1 << 6,
 			West = 1 << 7,
-			NorthWest = 1 << 8
+			NorthWest = 1 << 8,
+			Invalid = 1 << 9
 		}
 
 		public static Vector2Int CellDirectionToVector2Int(Direction direction)
@@ -41,6 +40,58 @@ namespace FolvosLibrary.WFC
 					return new Vector2Int(-1, 1);
 			}
 			return new Vector2Int(0, 0);
+		}
+
+		public static Direction Vector2IntToCellDirection(Vector2Int direction)
+		{
+			//North/south
+			if (direction.x == 0)
+			{
+				if (direction.y == 1)
+				{
+					return Direction.North;
+				}
+				else if (direction.y == -1)
+				{
+					return Direction.South;
+				}
+			}
+
+			//West
+			if (direction.x == -1)
+			{
+				if (direction.y == 1)
+				{
+					return Direction.NorthWest;
+				}
+				else if (direction.y == -1)
+				{
+					return Direction.SouthWest;
+				}
+				else if (direction.y == 0)
+				{
+					return Direction.West;
+				}
+			}
+
+			//East
+			if (direction.x == 1)
+			{
+				if (direction.y == 1)
+				{
+					return Direction.NorthEast;
+				}
+				else if (direction.y == -1)
+				{
+					return Direction.SouthEast;
+				}
+				else if (direction.y == 0)
+				{
+					return Direction.East;
+				}
+			}
+
+			return Direction.Invalid;
 		}
 	}
 
