@@ -37,6 +37,7 @@ namespace FolvosLibrary.WFC
 				for (int i = 0; i < listOfAlertees.Count; i++)
 				{
 					threadList[i] = new Thread(ThreadedLoop);
+					threadList[i].Name = $"{listOfAlertees[i].GetPosition()}";
 					threadList[i].Start((new ThreadData(listOfAlertees[i], threadWrite, updateBeingProcessed)));
 				}
 

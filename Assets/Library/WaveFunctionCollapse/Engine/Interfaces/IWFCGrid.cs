@@ -74,6 +74,7 @@ namespace FolvosLibrary.WFC
 		{
 			IWFCPosition returner = EntropyQueue[0].GetPosition();
 			EntropyQueue.RemoveAt(0);
+			SortQueue();
 			return returner;
 		}
 
