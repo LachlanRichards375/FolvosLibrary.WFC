@@ -37,14 +37,13 @@ namespace FolvosLibrary.WFC
 				{
 					break;
 				}
-				Debug.Log("Generating once from Timelapse");
 				GenerateOnce();
 				UpdateOutput();
 				await System.Threading.Tasks.Task.Delay(millsBetweenStep);
 			}
 			if (grid.RemainingCellsToCollapse() > 0)
 			{
-
+				//Cancled early
 			}
 			InvokeOnResult();
 		}

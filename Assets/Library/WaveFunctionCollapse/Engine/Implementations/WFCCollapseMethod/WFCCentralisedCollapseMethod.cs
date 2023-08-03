@@ -29,8 +29,6 @@ namespace FolvosLibrary.WFC
 					continue;
 				}
 
-				Debug.Log("Update being processed: " + updateBeingProcessed);
-
 				List<IWFCCell> listOfAlertees = toAlert[cellUpdatePos];
 				Thread[] threadList = new Thread[listOfAlertees.Count];
 				Semaphore threadWrite = new Semaphore(maximumThreadCount, maximumThreadCount);
@@ -75,7 +73,6 @@ namespace FolvosLibrary.WFC
 			data.threadWrite.WaitOne();
 			if (update.HasValue)
 			{
-				Debug.Log("Domain log returned a value so we're adding it to the update queue");
 				updateQueue.Add(update.Value);
 			}
 			data.threadWrite.Release();

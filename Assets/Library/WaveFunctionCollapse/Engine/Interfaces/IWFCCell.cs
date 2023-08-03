@@ -84,17 +84,10 @@ namespace FolvosLibrary.WFC
 			{
 				if (!tile.PassesRules(update, this))
 				{
-					Debug.Log($"Tile: {tile.Name} at {position} has NOT passed its rules");
 					tilesToRemove.Add(tile);
-				}
-				else
-				{
-					Debug.Log($"Tile: {tile.Name} at {position} has passed its rules");
 				}
 				i++;
 			}
-
-			Debug.Log("Tile to remove count: " + tilesToRemove.Count);
 
 			return RemoveFromDomain(tilesToRemove);
 		}

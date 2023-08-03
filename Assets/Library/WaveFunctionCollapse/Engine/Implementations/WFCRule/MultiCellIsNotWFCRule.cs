@@ -110,43 +110,22 @@ public class MultiCellIsNotTarget2D : MultiCellTargetWFCRule
 
 	bool CellCollapsed(IWFCCell collapsedCell, IWFCCell owner)
 	{
-		Debug.Log("Cell Collapsed");
 		return !(collapsedCell.CollapsedTile.Equals(goal));
 	}
 
 	bool DomainUpdated(WFCCellUpdate update, IWFCCell owner)
 	{
-		bool result = false;
 		//If our target's domain contains our goal
-
-
-
-		// bool[] PassTest = new bool[update.DomainChanges.Count];
-		// int i = 0;
 		foreach (DomainChange domainChange in update.DomainChanges)
 		{
 			if (domainChange.UpdatedTile.Name == goal.Name)
 			{
 				if (domainChange.DomainUpdate == DomainUpdate.AddedToDomain)
 				{
-					Debug.Log($"Domain updated, {goal} at {owner.GetPosition()} is NOT allowed.");
 					return false;
 				}
-				// else if (domainChange.DomainUpdate == DomainUpdate.RemovedFromDomain)
-				// {
-				// 	PassTest[i] = true;
-				// }
 			}
-
-			// PassTest[i] = true;
-
-			// i++;
 		}
-		// result = PassTest.All(t => t == true);
-
-		Debug.Log($"Domain updated, {goal} at {owner.GetPosition()} is allowed.");
-
-		// return result;
 		return true;
 	}
 
