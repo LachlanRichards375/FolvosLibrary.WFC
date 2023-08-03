@@ -78,6 +78,11 @@ public class MultiCellIsNotTarget2D : MultiCellTargetWFCRule
 
 		WFCCellUpdate update = cellUpdate.Value;
 
+		if (!CheckCellUpdateAffectsThisRule(update, OwnerCell))
+		{
+			return true;
+		}
+
 		switch (update.UpdateType)
 		{
 			case (CellUpdateType.Collapsed):
@@ -92,6 +97,15 @@ public class MultiCellIsNotTarget2D : MultiCellTargetWFCRule
 		}
 
 		return false;
+	}
+
+	//Return true if this rule impacts owner cell
+	bool CheckCellUpdateAffectsThisRule(WFCCellUpdate update, IWFCCell ownerCell)
+	{
+		IWFCPosition updatePos = update.UpdatedCell.GetPosition();
+		IWFCPosition ownerPos = ownerCell.GetPosition();
+
+		return direction.HasFlag(CellDirection.Vector2IntToCellDirection(updatePos.AsVector2Int() - ownerPos.AsVector2Int()));
 	}
 
 	bool CellCollapsed(IWFCCell collapsedCell, IWFCCell owner)
