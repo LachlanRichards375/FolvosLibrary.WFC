@@ -34,29 +34,21 @@ namespace FolvosLibrary.WFC
 		public override void RuleInitialize(IWFCManager manager, Vector2Int CellPos)
 		{
 			this.manager = manager;
-
-			List<Vector2Int> targetCells2 = new List<Vector2Int>();
 			//For each possible direction
 			foreach (CellDirection.Direction currentDirection in (CellDirection.Direction[])Enum.GetValues(typeof(CellDirection.Direction)))
 			{
-
-				//If there is a cell in this direction add it to targetCells
-				Vector2Int targetPos = CellPos + CellDirection.CellDirectionToVector2Int(currentDirection);
-				IWFCCell targetCell = manager.GetCell(new IWFCPosition(targetPos));
-				if (targetCell is null)
-				{
-					continue;
-				}
-
 				if (FlagsHelper.IsSet<CellDirection.Direction>(this.direction, currentDirection))
 				{
+					//If there is a cell in this direction add it to targetCells
+					Vector2Int targetPos = CellPos + CellDirection.CellDirectionToVector2Int(currentDirection);
+					IWFCCell targetCell = manager.GetCell(new IWFCPosition(targetPos));
+					if (targetCell is null)
+					{
+						continue;
+					}
 					manager.GetCollapseMethod().RegisterForCellUpdates(new IWFCPosition(targetPos), manager.GetCell(new IWFCPosition(CellPos)));
-					// targetCells2.Add(targetPos);
-					// When the target cell is updated cause our cell to do a domain check
-					// targetCell.OnCellUpdate += InvokeRuleActivated;
 				}
 			}
-			this.targetCells = targetCells2.ToArray();
 		}
 
 		public void PrintCellTargets(Vector2Int cellPos)
