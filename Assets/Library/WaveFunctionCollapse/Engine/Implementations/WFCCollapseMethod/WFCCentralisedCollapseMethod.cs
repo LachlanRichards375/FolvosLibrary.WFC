@@ -12,6 +12,7 @@ namespace FolvosLibrary.WFC
 		Dictionary<IWFCPosition, List<IWFCCell>> toAlert = new Dictionary<IWFCPosition, List<IWFCCell>>();
 		List<WFCCellUpdate> updateQueue = new List<WFCCellUpdate>();
 		int maximumThreadCount = 1;
+		Thread[] threadList = new Thread[0];
 
 		public override void Collapse(IWFCPosition position)
 		{
@@ -24,18 +25,28 @@ namespace FolvosLibrary.WFC
 
 				IWFCPosition cellUpdatePos = updateBeingProcessed.UpdatedCell.GetPosition();
 
+				//No one cares about this cell
 				if (!toAlert.ContainsKey(cellUpdatePos))
 				{
 					continue;
 				}
 
 				List<IWFCCell> listOfAlertees = toAlert[cellUpdatePos];
-				Thread[] threadList = new Thread[listOfAlertees.Count];
-				Semaphore threadWrite = new Semaphore(maximumThreadCount, maximumThreadCount);
+				//Only one thread can access the write at a time
+				if (listOfAlertees.Count > threadList.Length)
+				{
+					Thread[] newThreads = new Thread[listOfAlertees.Count];
+					threadList.CopyTo(newThreads, 0);
+					threadList = newThreads;
+				}
+
+				Semaphore threadWrite = new Semaphore(1, 1);
 				for (int i = 0; i < listOfAlertees.Count; i++)
 				{
-					threadList[i] = new Thread(ThreadedLoop);
-					threadList[i].Name = $"{listOfAlertees[i].GetPosition()}";
+					if (threadList[i] == null)
+					{
+						threadList[i] = new Thread(ThreadedLoop);
+					}
 					threadList[i].Start((new ThreadData(listOfAlertees[i], threadWrite, updateBeingProcessed)));
 				}
 
@@ -70,12 +81,12 @@ namespace FolvosLibrary.WFC
 			}
 
 			WFCCellUpdate? update = data.toAlert.DomainCheck(data.update);
-			data.threadWrite.WaitOne();
 			if (update.HasValue)
 			{
+				data.threadWrite.WaitOne();
 				updateQueue.Add(update.Value);
+				data.threadWrite.Release();
 			}
-			data.threadWrite.Release();
 		}
 
 		public override void CollapseSpecificCell(IWFCPosition position, WFCTile toCollapseTo)
