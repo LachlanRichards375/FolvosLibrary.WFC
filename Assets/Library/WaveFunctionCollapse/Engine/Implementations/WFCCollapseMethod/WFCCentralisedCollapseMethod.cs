@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,18 +12,17 @@ namespace FolvosLibrary.WFC
 	public class WFCCentralisedCollapseMethod : IWFCCollapseMethod
 	{
 		Dictionary<IWFCPosition, List<IWFCCell>> toAlert = new Dictionary<IWFCPosition, List<IWFCCell>>();
-		List<WFCCellUpdate> updateQueue = new List<WFCCellUpdate>();
+		ConcurrentQueue<WFCCellUpdate> updateQueue = new ConcurrentQueue<WFCCellUpdate>();
 		int maximumThreadCount = 1;
 		Thread[] threadList = new Thread[0];
 
 		public override void Collapse(IWFCPosition position)
 		{
-			updateQueue.Add(manager.GetCell(position).Collapse());
+			updateQueue.Enqueue(manager.GetCell(position).Collapse());
 
 			while (updateQueue.Count > 0)
 			{
-				WFCCellUpdate updateBeingProcessed = updateQueue[0];
-				updateQueue.RemoveAt(0);
+				updateQueue.TryDequeue(out WFCCellUpdate updateBeingProcessed);
 
 				IWFCPosition cellUpdatePos = updateBeingProcessed.UpdatedCell.GetPosition();
 
@@ -32,41 +33,25 @@ namespace FolvosLibrary.WFC
 				}
 
 				List<IWFCCell> listOfAlertees = toAlert[cellUpdatePos];
-				//Only one thread can access the write at a time
-				if (listOfAlertees.Count > threadList.Length)
-				{
-					Thread[] newThreads = new Thread[listOfAlertees.Count];
-					threadList.CopyTo(newThreads, 0);
-					threadList = newThreads;
-				}
 
-				Semaphore threadWrite = new Semaphore(1, 1);
+				Task[] tasks = new Task[listOfAlertees.Count];
 				for (int i = 0; i < listOfAlertees.Count; i++)
 				{
-					if (threadList[i] == null)
-					{
-						threadList[i] = new Thread(ThreadedLoop);
-					}
-					threadList[i].Start((new ThreadData(listOfAlertees[i], threadWrite, updateBeingProcessed)));
+					int localInt = i;
+					tasks[i] = Task.Run(() => ThreadedLoop(new ThreadData(listOfAlertees[localInt], updateBeingProcessed)));
 				}
 
-				foreach (Thread t in threadList)
-				{
-					t.Join();
-				}
+				Task.WaitAll(tasks);
 			}
 		}
-
 		class ThreadData
 		{
-			public ThreadData(IWFCCell toAlert, Semaphore writeAccess, WFCCellUpdate update)
+			public ThreadData(IWFCCell toAlert, WFCCellUpdate update)
 			{
 				this.toAlert = toAlert;
-				this.threadWrite = writeAccess;
 				this.update = update;
 			}
 			public IWFCCell toAlert;
-			public Semaphore threadWrite;
 			public WFCCellUpdate update;
 		}
 
@@ -83,15 +68,13 @@ namespace FolvosLibrary.WFC
 			WFCCellUpdate? update = data.toAlert.DomainCheck(data.update);
 			if (update.HasValue)
 			{
-				data.threadWrite.WaitOne();
-				updateQueue.Add(update.Value);
-				data.threadWrite.Release();
+				updateQueue.Enqueue(update.Value);
 			}
 		}
 
 		public override void CollapseSpecificCell(IWFCPosition position, WFCTile toCollapseTo)
 		{
-			updateQueue.Add(manager.GetCell(position).Collapse(toCollapseTo));
+			updateQueue.Enqueue(manager.GetCell(position).Collapse(toCollapseTo));
 		}
 
 		public override void RegisterForCellUpdates(IWFCPosition positionOfInterest, IWFCCell toRegister)
