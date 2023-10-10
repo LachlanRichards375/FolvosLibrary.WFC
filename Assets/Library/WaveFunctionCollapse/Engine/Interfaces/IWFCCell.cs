@@ -89,6 +89,10 @@ namespace FolvosLibrary.WFC
 				i++;
 			}
 
+			if(tilesToRemove.Count == Domain.Count){
+				Debug.LogError("Removed all tiles from a cells domain");
+			}
+
 			return RemoveFromDomain(tilesToRemove);
 		}
 
