@@ -11,7 +11,7 @@ namespace FolvosLibrary.WFC
 	[CreateAssetMenu(menuName = "Folvos/WFC/CollapseMethods/Centralized Collapse Method"), System.Serializable]
 	public class WFCCentralisedCollapseMethod : IWFCCollapseMethod
 	{
-		Dictionary<IWFCPosition, List<IWFCCell>> toAlert = new Dictionary<IWFCPosition, List<IWFCCell>>();
+		ConcurrentDictionary<IWFCPosition, List<IWFCCell>> toAlert = new ConcurrentDictionary<IWFCPosition, List<IWFCCell>>();
 		ConcurrentQueue<WFCCellUpdate> updateQueue = new ConcurrentQueue<WFCCellUpdate>();
 		int maximumThreadCount = 1;
 		Thread[] threadList = new Thread[0];
@@ -40,7 +40,6 @@ namespace FolvosLibrary.WFC
 					int localInt = i;
 					tasks[i] = Task.Run(() => ThreadedLoop(new ThreadData(listOfAlertees[localInt], updateBeingProcessed)));
 				}
-
 				Task.WaitAll(tasks);
 			}
 		}
@@ -81,7 +80,7 @@ namespace FolvosLibrary.WFC
 		{
 			if (!toAlert.ContainsKey(positionOfInterest))
 			{
-				toAlert.Add(positionOfInterest, new List<IWFCCell>());
+				toAlert.TryAdd(positionOfInterest, new List<IWFCCell>());
 			}
 
 			List<IWFCCell> addTo = toAlert[positionOfInterest];

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using FolvosLibrary.Logging;
 using UnityEngine;
+using System.Threading.Tasks;
 
 namespace FolvosLibrary.WFC
 {
@@ -70,15 +71,26 @@ namespace FolvosLibrary.WFC
 					cell.OnCellUpdate += (WFCCellUpdate) => SortQueue();
 				}
 			}
-
+			
+			Task[] tasks = new Task[(int)size.x * (int)size.y];
+			int taskIndex = 0;
+			// Debug.Log("Task List Size: " + tasks.Length);
 			for (int x = 0; x < size.x; x++)
 			{
 				for (int y = 0; y < size.y; y++)
 				{
-					IWFCCell cell = grid[x][y];
-					cell.RuleSetup();
+					//grid[x][y].RuleSetup();
+					//Launch the rule setup for each cell
+					// Debug.Log($"taskIndex ({taskIndex}, on ({x},{y}))");
+					int localX = x;
+					int localY = y;
+					tasks[taskIndex] = Task.Run(() => grid[localX][localY].RuleSetup());
+					taskIndex++; 
 				}
 			}
+
+			//Wait for all jobs to be finished
+			Task.WaitAll(tasks);
 
 			ShuffleLowestEntropy();
 		}
