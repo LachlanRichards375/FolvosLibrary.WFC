@@ -51,5 +51,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "WaveFunctionCollapse.sln"
+    "dotnet.defaultSolution": "WaveFunctionCollapse.sln",
+    "dotnet.preferCSharpExtension": true
 }
