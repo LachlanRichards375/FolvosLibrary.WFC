@@ -266,12 +266,12 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		manager.UpdateOutput();
 	}
 
-	void OnGenerateError()
+	void OnGenerateError(Exception exception)
 	{
 		UnsubscribeToResults();
 		ResetTimelapseVariables();
 		Debug.Log($"Time to Error: {TimeToGenerate()}");
-		Debug.Log("Reached an impossible state");
+		Debug.Log(exception.Message);
 
 		manager.UpdateOutput();
 	}

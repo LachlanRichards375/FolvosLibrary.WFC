@@ -16,7 +16,7 @@ namespace FolvosLibrary.WFC
 			}
 			catch (ImpossibleDomainException e)
 			{
-				InvokeOnError();
+				InvokeOnError(e);
 			}
 		}
 		public virtual void GenerateStep(int step = 1)
@@ -41,7 +41,7 @@ namespace FolvosLibrary.WFC
 			}
 			catch (ImpossibleDomainException e)
 			{
-				InvokeOnError();
+				InvokeOnError(e);
 			}
 		}
 		public virtual async System.Threading.Tasks.Task GenerateTimeLapse(System.Threading.CancellationTokenSource cancellationToken, int millsBetweenStep)
@@ -66,7 +66,7 @@ namespace FolvosLibrary.WFC
 			}
 			catch (ImpossibleDomainException e)
 			{
-				InvokeOnError();
+				InvokeOnError(e);
 			}
 		}
 
