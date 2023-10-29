@@ -44,6 +44,7 @@ namespace FolvosLibrary.WFC
 
 		public WFCCellUpdate Collapse()
 		{
+			if (Domain.Count <= 0) { throw new ImpossibleDomainException("Nothing left in cell's domain."); }
 			float tileNo = UnityEngine.Random.Range(0f, CalcDomain());
 			int index = 0;
 			for (index = 0; index < Domain.Count; index++)
