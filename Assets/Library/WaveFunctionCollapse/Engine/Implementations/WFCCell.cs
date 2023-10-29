@@ -39,7 +39,13 @@ namespace FolvosLibrary.WFC
 		public float CalculateEntropy()
 		{
 			//return domain Length without weighting
-			return Domain.Count;
+			// return Domain.Count;
+			float domainWeight = 0;
+			for (int i = 0; i < Domain.Count; i++)
+			{
+				domainWeight += Domain[i].TileWeight;
+			}
+			return domainWeight;
 		}
 
 		public WFCCellUpdate Collapse()
