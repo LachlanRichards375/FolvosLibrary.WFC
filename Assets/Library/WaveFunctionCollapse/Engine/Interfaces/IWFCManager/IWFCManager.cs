@@ -66,8 +66,7 @@ namespace FolvosLibrary.WFC
 
 		protected void Collapse()
 		{
-			WFCPosition toCollapse = grid.PopNextCellToCollapse();
-			collapseMethod.Collapse(toCollapse);
+			collapseMethod.Collapse(grid.PopNextCellToCollapse());
 		}
 
 		protected void CollapseSpecificCell(WFCPosition position, WFCTile toCollapseTo)
