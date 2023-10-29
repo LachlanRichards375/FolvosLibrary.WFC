@@ -14,60 +14,54 @@ namespace FolvosLibrary.WFC
 		ConcurrentDictionary<WFCPosition, List<WFCCell>> toAlert = new ConcurrentDictionary<WFCPosition, List<WFCCell>>();
 		ConcurrentQueue<WFCCellUpdate> updateQueue = new ConcurrentQueue<WFCCellUpdate>();
 		int maximumThreadCount = 1;
-		Thread[] threadList = new Thread[0];
+		Task[] threadList = new Task[0];
+		int countInQueue = 0;
 
 		public override void Collapse(WFCPosition position)
 		{
 			updateQueue.Enqueue(manager.GetCell(position).Collapse());
+			countInQueue++;
 
-			while (updateQueue.Count > 0)
+			if (threadList.Length == 0)
 			{
-				updateQueue.TryDequeue(out WFCCellUpdate updateBeingProcessed);
-
-				WFCPosition cellUpdatePos = updateBeingProcessed.UpdatedCell.GetPosition();
-
-				//No one cares about this cell
-				if (!toAlert.ContainsKey(cellUpdatePos))
+				threadList = new Task[maximumThreadCount];
+				for (int i = 0; i < maximumThreadCount; i++)
 				{
-					continue;
+					threadList[i] = Task.Run(numberedThreadLoop);
 				}
+			}
 
-				List<WFCCell> listOfAlertees = toAlert[cellUpdatePos];
-
-				Task[] tasks = new Task[listOfAlertees.Count];
-				for (int i = 0; i < listOfAlertees.Count; i++)
+			while (countInQueue > 0) {/*Loop until threads are finished*/}
+		}
+		Action numberedThreadLoop()
+		{
+			while (true)
+			{
+				while (countInQueue > 0)
 				{
-					int localInt = i;
-					tasks[i] = Task.Run(() => ThreadedLoop(new ThreadData(listOfAlertees[localInt], updateBeingProcessed)));
+					if (updateQueue.TryDequeue(out WFCCellUpdate updateBeingProcessed))
+					{
+						countInQueue--;
+						WFCPosition cellUpdatePos = updateBeingProcessed.UpdatedCell.GetPosition();
+						//if no one cares about this cell ignore it.
+						if (!toAlert.ContainsKey(cellUpdatePos)) { continue; }
+						List<WFCCell> listOfAlertees = toAlert[cellUpdatePos];
+						for (int i = 0; i < listOfAlertees.Count; i++)
+						{
+							WFCCellUpdate? update = listOfAlertees[i].DomainCheck(updateBeingProcessed);
+							if (update.HasValue)
+							{
+								updateQueue.Enqueue(update.Value);
+								countInQueue++;
+							}
+						}
+					}
+					else
+					{
+						Thread.Sleep(100);
+					}
 				}
-				Task.WaitAll(tasks);
-			}
-		}
-		class ThreadData
-		{
-			public ThreadData(WFCCell toAlert, WFCCellUpdate update)
-			{
-				this.toAlert = toAlert;
-				this.update = update;
-			}
-			public WFCCell toAlert;
-			public WFCCellUpdate update;
-		}
-
-		// public void ThreadedLoop(ThreadData data)
-		void ThreadedLoop(object obj)
-		{
-			ThreadData data = obj as ThreadData;
-			if (data == null)
-			{
-				Debug.LogError("ThreadedLoop was passed a null object");
-				return;
-			}
-
-			WFCCellUpdate? update = data.toAlert.DomainCheck(data.update);
-			if (update.HasValue)
-			{
-				updateQueue.Enqueue(update.Value);
+				Thread.Sleep(100);
 			}
 		}
 
