@@ -9,10 +9,10 @@ namespace FolvosLibrary.WFC
 	[CreateAssetMenu(menuName = "Folvos/WFC/Grids/2DGrid"), System.Serializable]
 	public class WFCGrid2D : IWFCGrid
 	{
-		IWFCPosition size;
+		WFCPosition size;
 		IWFCCell[][] grid = new IWFCCell[0][];
 
-		public override void SetSize(IWFCPosition size)
+		public override void SetSize(WFCPosition size)
 		{
 			Vector2Int newSize = size.AsVector2Int();
 			if (newSize.x < 0 || newSize.y < 0)
@@ -22,14 +22,14 @@ namespace FolvosLibrary.WFC
 			this.size = size;
 		}
 
-		public override IWFCPosition GetSize()
+		public override WFCPosition GetSize()
 		{
 			if (grid == null || grid[0] == null)
 			{
-				return new IWFCPosition(0, 0);
+				return new WFCPosition(0, 0);
 			}
 
-			return new IWFCPosition(grid.Length, grid[0].Length);
+			return new WFCPosition(grid.Length, grid[0].Length);
 		}
 
 		public override void Initialize()
@@ -51,7 +51,7 @@ namespace FolvosLibrary.WFC
 
 				for (int y = 0; y < newGridSize.y; y++)
 				{
-					newGrid[x][y] = new IWFCCell(manager, new IWFCPosition(x, y));
+					newGrid[x][y] = new IWFCCell(manager, new WFCPosition(x, y));
 				}
 			}
 
@@ -71,7 +71,7 @@ namespace FolvosLibrary.WFC
 					cell.OnCellUpdate += (WFCCellUpdate) => SortQueue();
 				}
 			}
-			
+
 			Task[] tasks = new Task[(int)size.x * (int)size.y];
 			int taskIndex = 0;
 			// Debug.Log("Task List Size: " + tasks.Length);
@@ -85,7 +85,7 @@ namespace FolvosLibrary.WFC
 					int localX = x;
 					int localY = y;
 					tasks[taskIndex] = Task.Run(() => grid[localX][localY].RuleSetup());
-					taskIndex++; 
+					taskIndex++;
 				}
 			}
 
@@ -95,7 +95,7 @@ namespace FolvosLibrary.WFC
 			ShuffleLowestEntropy();
 		}
 
-		public override bool HasCollapsed(IWFCPosition position)
+		public override bool HasCollapsed(WFCPosition position)
 		{
 			if (!PositionInBounds(position))
 			{
@@ -106,7 +106,7 @@ namespace FolvosLibrary.WFC
 			return !(grid[vec.x][vec.y].CollapsedTile is null);
 		}
 
-		public override bool PositionInBounds(IWFCPosition position)
+		public override bool PositionInBounds(WFCPosition position)
 		{
 			Vector2Int pos = position.AsVector2Int();
 
@@ -123,7 +123,7 @@ namespace FolvosLibrary.WFC
 			return true;
 		}
 
-		public override IWFCCell GetCell(IWFCPosition position)
+		public override IWFCCell GetCell(WFCPosition position)
 		{
 			if (position.x < 0 || position.y < 0)
 			{
@@ -149,7 +149,7 @@ namespace FolvosLibrary.WFC
 			Vector2Int newSize = UnityEditor.EditorGUILayout.Vector2IntField("Map Size", size.AsVector2Int());
 			if (ForceReset || newSize != size.AsVector2Int())
 			{
-				SetSize(new IWFCPosition(newSize));
+				SetSize(new WFCPosition(newSize));
 			}
 		}
 

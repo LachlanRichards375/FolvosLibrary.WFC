@@ -11,12 +11,12 @@ namespace FolvosLibrary.WFC
 	[CreateAssetMenu(menuName = "Folvos/WFC/CollapseMethods/Centralized Collapse Method"), System.Serializable]
 	public class WFCCentralisedCollapseMethod : IWFCCollapseMethod
 	{
-		ConcurrentDictionary<IWFCPosition, List<IWFCCell>> toAlert = new ConcurrentDictionary<IWFCPosition, List<IWFCCell>>();
+		ConcurrentDictionary<WFCPosition, List<IWFCCell>> toAlert = new ConcurrentDictionary<WFCPosition, List<IWFCCell>>();
 		ConcurrentQueue<WFCCellUpdate> updateQueue = new ConcurrentQueue<WFCCellUpdate>();
 		int maximumThreadCount = 1;
 		Thread[] threadList = new Thread[0];
 
-		public override void Collapse(IWFCPosition position)
+		public override void Collapse(WFCPosition position)
 		{
 			updateQueue.Enqueue(manager.GetCell(position).Collapse());
 
@@ -24,7 +24,7 @@ namespace FolvosLibrary.WFC
 			{
 				updateQueue.TryDequeue(out WFCCellUpdate updateBeingProcessed);
 
-				IWFCPosition cellUpdatePos = updateBeingProcessed.UpdatedCell.GetPosition();
+				WFCPosition cellUpdatePos = updateBeingProcessed.UpdatedCell.GetPosition();
 
 				//No one cares about this cell
 				if (!toAlert.ContainsKey(cellUpdatePos))
@@ -71,12 +71,12 @@ namespace FolvosLibrary.WFC
 			}
 		}
 
-		public override void CollapseSpecificCell(IWFCPosition position, WFCTile toCollapseTo)
+		public override void CollapseSpecificCell(WFCPosition position, WFCTile toCollapseTo)
 		{
 			updateQueue.Enqueue(manager.GetCell(position).Collapse(toCollapseTo));
 		}
 
-		public override void RegisterForCellUpdates(IWFCPosition positionOfInterest, IWFCCell toRegister)
+		public override void RegisterForCellUpdates(WFCPosition positionOfInterest, IWFCCell toRegister)
 		{
 			if (!toAlert.ContainsKey(positionOfInterest))
 			{
@@ -93,7 +93,7 @@ namespace FolvosLibrary.WFC
 			addTo.Add(toRegister);
 		}
 
-		public override void DeRegisterForCellUpdates(IWFCPosition positionOfInterest, IWFCCell toDeregister)
+		public override void DeRegisterForCellUpdates(WFCPosition positionOfInterest, IWFCCell toDeregister)
 		{
 			if (!toAlert.ContainsKey(positionOfInterest))
 			{

@@ -102,8 +102,8 @@ public class MultiCellIsNotTarget2D : MultiCellTargetWFCRule
 	//Return true if this rule impacts owner cell
 	bool CheckCellUpdateAffectsThisRule(WFCCellUpdate update, IWFCCell ownerCell)
 	{
-		IWFCPosition updatePos = update.UpdatedCell.GetPosition();
-		IWFCPosition ownerPos = ownerCell.GetPosition();
+		WFCPosition updatePos = update.UpdatedCell.GetPosition();
+		WFCPosition ownerPos = ownerCell.GetPosition();
 
 		return direction.HasFlag(CellDirection.Vector2IntToCellDirection(updatePos.AsVector2Int() - ownerPos.AsVector2Int()));
 	}

@@ -66,11 +66,11 @@ namespace FolvosLibrary.WFC
 
 		protected void Collapse()
 		{
-			IWFCPosition toCollapse = grid.PopNextCellToCollapse();
+			WFCPosition toCollapse = grid.PopNextCellToCollapse();
 			collapseMethod.Collapse(toCollapse);
 		}
 
-		protected void CollapseSpecificCell(IWFCPosition position, WFCTile toCollapseTo)
+		protected void CollapseSpecificCell(WFCPosition position, WFCTile toCollapseTo)
 		{
 			collapseMethod.CollapseSpecificCell(position, toCollapseTo);
 		}
@@ -108,19 +108,19 @@ namespace FolvosLibrary.WFC
 		{
 			grid.Reset();
 		}
-		public void SetSize(IWFCPosition newSize)
+		public void SetSize(WFCPosition newSize)
 		{
 			grid.SetSize(newSize);
 		}
-		public IWFCPosition GetSize()
+		public WFCPosition GetSize()
 		{
 			return grid.GetSize();
 		}
-		public IWFCCell GetCell(IWFCPosition position)
+		public IWFCCell GetCell(WFCPosition position)
 		{
 			return grid.GetCell(position);
 		}
-		public bool HasCollapsed(IWFCPosition position)
+		public bool HasCollapsed(WFCPosition position)
 		{
 			return grid.HasCollapsed(position);
 		}

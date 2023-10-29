@@ -41,12 +41,12 @@ namespace FolvosLibrary.WFC
 				{
 					//If there is a cell in this direction add it to targetCells
 					Vector2Int targetPos = CellPos + CellDirection.CellDirectionToVector2Int(currentDirection);
-					IWFCCell targetCell = manager.GetCell(new IWFCPosition(targetPos));
+					IWFCCell targetCell = manager.GetCell(new WFCPosition(targetPos));
 					if (targetCell is null)
 					{
 						continue;
 					}
-					manager.GetCollapseMethod().RegisterForCellUpdates(new IWFCPosition(targetPos), manager.GetCell(new IWFCPosition(CellPos)));
+					manager.GetCollapseMethod().RegisterForCellUpdates(new WFCPosition(targetPos), manager.GetCell(new WFCPosition(CellPos)));
 				}
 			}
 		}
@@ -74,7 +74,7 @@ namespace FolvosLibrary.WFC
 
 		protected IWFCCell GetTargetCell(Vector2Int pos)
 		{
-			return manager.GetCell(new IWFCPosition(pos));
+			return manager.GetCell(new WFCPosition(pos));
 		}
 	}
 }

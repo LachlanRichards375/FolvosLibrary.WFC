@@ -2,14 +2,14 @@ using UnityEngine;
 
 namespace FolvosLibrary.WFC
 {
-	public struct IWFCPosition
+	public struct WFCPosition
 	{
 		public float x;
 		public float y;
 		public float? z;
 		public float? w;
 
-		public IWFCPosition(IWFCPosition other)
+		public WFCPosition(WFCPosition other)
 		{
 			this.x = other.x;
 			this.y = other.y;
@@ -17,7 +17,7 @@ namespace FolvosLibrary.WFC
 			this.w = other.w;
 		}
 
-		public IWFCPosition(float x, float y)
+		public WFCPosition(float x, float y)
 		{
 			this.x = x;
 			this.y = y;
@@ -25,7 +25,7 @@ namespace FolvosLibrary.WFC
 			this.w = null;
 		}
 
-		public IWFCPosition(float x, float y, float z)
+		public WFCPosition(float x, float y, float z)
 		{
 			this.x = x;
 			this.y = y;
@@ -33,7 +33,7 @@ namespace FolvosLibrary.WFC
 			this.w = null;
 		}
 
-		public IWFCPosition(float x, float y, float z, float w)
+		public WFCPosition(float x, float y, float z, float w)
 		{
 			this.x = x;
 			this.y = y;
@@ -41,7 +41,7 @@ namespace FolvosLibrary.WFC
 			this.w = w;
 		}
 
-		public IWFCPosition(Vector2 size)
+		public WFCPosition(Vector2 size)
 		{
 			this.x = size.x;
 			this.y = size.y;
@@ -49,7 +49,7 @@ namespace FolvosLibrary.WFC
 			this.w = null;
 		}
 
-		public IWFCPosition(Vector3 size)
+		public WFCPosition(Vector3 size)
 		{
 			this.x = size.x;
 			this.y = size.y;
@@ -57,7 +57,7 @@ namespace FolvosLibrary.WFC
 			this.w = null;
 		}
 
-		public IWFCPosition(Vector4 size)
+		public WFCPosition(Vector4 size)
 		{
 			this.x = size.x;
 			this.y = size.y;
@@ -128,7 +128,7 @@ namespace FolvosLibrary.WFC
 			return s + ")";
 		}
 
-		public static bool operator ==(IWFCPosition pos1, IWFCPosition pos2)
+		public static bool operator ==(WFCPosition pos1, WFCPosition pos2)
 		{
 			return (
 				pos1.x == pos2.x &&
@@ -138,7 +138,7 @@ namespace FolvosLibrary.WFC
 			);
 		}
 
-		public static bool operator !=(IWFCPosition pos1, IWFCPosition pos2)
+		public static bool operator !=(WFCPosition pos1, WFCPosition pos2)
 		{
 			return !(
 				pos1.x == pos2.x &&
@@ -156,7 +156,7 @@ namespace FolvosLibrary.WFC
 			}
 			else
 			{
-				IWFCPosition other = (IWFCPosition)obj;
+				WFCPosition other = (WFCPosition)obj;
 				return this == other;
 			}
 		}

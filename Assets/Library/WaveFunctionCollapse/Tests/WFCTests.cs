@@ -5,7 +5,7 @@ public class WFCTests
 	protected WFCManager_2D manager;
 	protected BeachImporter importer;
 	protected BeachWFCExporter exporter;
-	protected IWFCPosition size = new IWFCPosition(3, 3);
+	protected WFCPosition size = new WFCPosition(3, 3);
 	public WFCTile[] GetDomain()
 	{
 		WFCTile[] Domain = new WFCTile[3]{

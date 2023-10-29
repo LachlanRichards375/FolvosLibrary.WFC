@@ -28,7 +28,7 @@ public class IWFCManagerTests : WFCTests
 		Assert.That(manager.GetExporter() == exporter, "Assigned exporter is not the one provided");
 	}
 
-	IWFCPosition SmallerLengthSize = new IWFCPosition(1, 3);
+	WFCPosition SmallerLengthSize = new WFCPosition(1, 3);
 	[Test]
 	public void TestSetManagerSize()
 	{
@@ -46,7 +46,7 @@ public class IWFCManagerTests : WFCTests
 		manager.SetExporter(exporter);
 		manager.SetSize(size);
 		manager.Initialize();
-		Assert.That(manager.GetCell(new IWFCPosition(0, 0)) != null, "Manager did not initialize cells");
-		Assert.That(manager.GetCell(new IWFCPosition(size.x - 1, size.y - 1)) != null, $"Manager did not initialize {size.x}*{size.y} cells");
+		Assert.That(manager.GetCell(new WFCPosition(0, 0)) != null, "Manager did not initialize cells");
+		Assert.That(manager.GetCell(new WFCPosition(size.x - 1, size.y - 1)) != null, $"Manager did not initialize {size.x}*{size.y} cells");
 	}
 }

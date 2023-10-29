@@ -20,11 +20,11 @@ public class IWFCCellTests : WFCTests
 	[Test]
 	public void Test_CellHasDomain()
 	{
-		Assert.That(manager.GetCell(new IWFCPosition(0, 0)).Domain.Count == 3, "Domain not initialized properly On Cells");
-		Assert.That(manager.GetCell(new IWFCPosition(2, 2)).Domain.Count == 3, "Domain not initialized properly On Cells");
+		Assert.That(manager.GetCell(new WFCPosition(0, 0)).Domain.Count == 3, "Domain not initialized properly On Cells");
+		Assert.That(manager.GetCell(new WFCPosition(2, 2)).Domain.Count == 3, "Domain not initialized properly On Cells");
 	}
 
-	IWFCPosition CellInitialPosition = new IWFCPosition(1, 1);
+	WFCPosition CellInitialPosition = new WFCPosition(1, 1);
 	[Test]
 	public void CopyConstructorWorks()
 	{
@@ -34,7 +34,7 @@ public class IWFCCellTests : WFCTests
 		Assert.That(clone.GetPosition().AsVector2Int() == CellInitialPosition.AsVector2Int(), "Cloned Cell position is not being set correctly.");
 		Assert.That(!ReferenceEquals(CellInitialPosition, clone.GetPosition()), "Cloned Cell position is a reference to the initial cell position");
 
-		IWFCPosition clonePos = clone.GetPosition();
+		WFCPosition clonePos = clone.GetPosition();
 
 		clonePos.y = 2;
 
@@ -61,8 +61,8 @@ public class IWFCCellTests : WFCTests
 
 		Assert.That(!ReferenceEquals(tile, tileCopy), "WFCTile.Create(tile) is not returning a new instance of a tile object");
 
-		IWFCCell cell = manager.GetCell(new IWFCPosition(0, 0));
-		IWFCCell other = manager.GetCell(new IWFCPosition(0, 1));
+		IWFCCell cell = manager.GetCell(new WFCPosition(0, 0));
+		IWFCCell other = manager.GetCell(new WFCPosition(0, 1));
 
 		Assert.That(!ReferenceEquals(cell, other), "Cell is the same object at 0,0 and 0,1");
 	}

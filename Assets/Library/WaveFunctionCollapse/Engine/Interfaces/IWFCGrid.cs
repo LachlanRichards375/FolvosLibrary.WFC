@@ -11,15 +11,15 @@ namespace FolvosLibrary.WFC
 			this.manager = manager;
 		}
 
-		public abstract void SetSize(IWFCPosition size);
-		public abstract IWFCPosition GetSize();
+		public abstract void SetSize(WFCPosition size);
+		public abstract WFCPosition GetSize();
 		public abstract void Initialize();
 		public abstract void DrawSize(bool ForceReset = false);
-		public abstract IWFCCell GetCell(IWFCPosition position);
-		public abstract bool HasCollapsed(IWFCPosition position);
+		public abstract IWFCCell GetCell(WFCPosition position);
+		public abstract bool HasCollapsed(WFCPosition position);
 		public abstract void PrintCells();
 
-		public abstract bool PositionInBounds(IWFCPosition position);
+		public abstract bool PositionInBounds(WFCPosition position);
 
 		//Entropy Queue
 		protected List<IWFCCell> EntropyQueue = new List<IWFCCell>();
@@ -65,14 +65,14 @@ namespace FolvosLibrary.WFC
 			EntropyQueue.InsertRange(0, toShuffle);
 		}
 
-		public IWFCPosition GetNextCellToCollapse()
+		public WFCPosition GetNextCellToCollapse()
 		{
 			return EntropyQueue[0].GetPosition();
 		}
 
-		public IWFCPosition PopNextCellToCollapse()
+		public WFCPosition PopNextCellToCollapse()
 		{
-			IWFCPosition returner = EntropyQueue[0].GetPosition();
+			WFCPosition returner = EntropyQueue[0].GetPosition();
 			EntropyQueue.RemoveAt(0);
 			return returner;
 		}

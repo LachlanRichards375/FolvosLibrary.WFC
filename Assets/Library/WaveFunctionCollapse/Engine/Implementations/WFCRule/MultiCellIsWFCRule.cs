@@ -32,7 +32,7 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 		{
 			IWFCCell targetCell = GetTargetCell(pos);
 
-			if (manager.HasCollapsed(new IWFCPosition(targetCell.GetPosition())))
+			if (manager.HasCollapsed(new WFCPosition(targetCell.GetPosition())))
 			{
 				PassTest[i] = targetCell.CollapsedTile == goal;
 				i++;

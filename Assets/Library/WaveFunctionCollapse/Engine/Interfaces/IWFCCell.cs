@@ -11,9 +11,9 @@ namespace FolvosLibrary.WFC
 		public event Action<WFCCellUpdate> OnCellUpdate;
 
 		protected IWFCManager manager;
-		protected IWFCPosition position;
+		protected WFCPosition position;
 
-		public IWFCCell(IWFCManager m, IWFCPosition p)
+		public IWFCCell(IWFCManager m, WFCPosition p)
 		{
 			manager = m;
 			position = p;
@@ -89,7 +89,8 @@ namespace FolvosLibrary.WFC
 				i++;
 			}
 
-			if(tilesToRemove.Count == Domain.Count){
+			if (tilesToRemove.Count == Domain.Count)
+			{
 				Debug.LogError("Removed all tiles from a cells domain");
 			}
 
@@ -148,9 +149,9 @@ namespace FolvosLibrary.WFC
 			return position.ToString();
 		}
 
-		public virtual IWFCPosition GetPosition()
+		public virtual WFCPosition GetPosition()
 		{
-			return new IWFCPosition(position);
+			return new WFCPosition(position);
 		}
 
 		public int CompareTo(object obj)
