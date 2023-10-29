@@ -42,7 +42,6 @@ public class WFCEditorWindow : ExtendedEditorWindow
 
 	int stepCount = 1;
 	int millsBetweenStep = 500;
-	int maximumThreadCount = 1;
 	void DisplayVariableSetters()
 	{
 		DrawObjectPickers();
@@ -241,17 +240,38 @@ public class WFCEditorWindow : ExtendedEditorWindow
 			exporter.SetParent(mapParent.transform);
 
 			manager.Initialize();
-
-			manager.OnResult += OnGenerateResult;
+			SubscribeToResults();
 		}
+	}
+
+	void SubscribeToResults()
+	{
+		manager.OnResult += OnGenerateResult;
+		manager.OnError += OnGenerateError;
+	}
+
+	void UnsubscribeToResults()
+	{
+		manager.OnResult -= OnGenerateResult;
+		manager.OnError -= OnGenerateError;
 	}
 
 	void OnGenerateResult()
 	{
-		manager.OnResult -= OnGenerateResult;
+		UnsubscribeToResults();
 		ResetTimelapseVariables();
 		Debug.Log($"Time to Generate: {TimeToGenerate()}");
 		Debug.Log("Reached On Generate Result");
+
+		manager.UpdateOutput();
+	}
+
+	void OnGenerateError()
+	{
+		UnsubscribeToResults();
+		ResetTimelapseVariables();
+		Debug.Log($"Time to Error: {TimeToGenerate()}");
+		Debug.Log("Reached an impossible state");
 
 		manager.UpdateOutput();
 	}

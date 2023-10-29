@@ -54,6 +54,7 @@ namespace FolvosLibrary.WFC
 					break;
 				}
 			}
+			if (index >= Domain.Count) index = Domain.Count - 1;
 			return Collapse(Domain[index]);
 		}
 
@@ -89,9 +90,10 @@ namespace FolvosLibrary.WFC
 				i++;
 			}
 
-			if (tilesToRemove.Count == Domain.Count)
+			if (tilesToRemove.Count == Domain.Count && CollapsedTile != null)
 			{
 				Debug.LogError("Removed all tiles from a cells domain");
+				throw new ImpossibleDomainException("Contradiction detected.");
 			}
 
 			return RemoveFromDomain(tilesToRemove);
@@ -137,13 +139,6 @@ namespace FolvosLibrary.WFC
 			return sum;
 		}
 
-		public virtual WFCError GetError()
-		{
-			WFCError e = new WFCError();
-			e.Message = $"Error on cell at position {position}, Domain has {Domain.Count} remaining elements";
-			return e;
-		}
-
 		public virtual string GetPositionString()
 		{
 			return position.ToString();
@@ -158,7 +153,7 @@ namespace FolvosLibrary.WFC
 		{
 			if (obj == null) return 1;
 			WFCCell otherTile = obj as WFCCell;
-			if (otherTile == null) throw new ArgumentException("Object is not a FWCTile");
+			if (otherTile == null) throw new ArgumentException("Object is not a WFCCell");
 
 			return this.CalculateEntropy().CompareTo(otherTile.CalculateEntropy());
 		}
@@ -168,7 +163,7 @@ namespace FolvosLibrary.WFC
 			if (x == null || y == null) return 1;
 			WFCCell otherCell = x as WFCCell;
 
-			if (otherCell == null) throw new ArgumentException("Object is not a FWCTile");
+			if (otherCell == null) throw new ArgumentException("Object is not a WFCCell");
 
 			return otherCell.CompareTo(y);
 		}

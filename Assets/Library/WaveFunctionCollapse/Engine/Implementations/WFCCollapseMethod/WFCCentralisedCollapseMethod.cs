@@ -17,6 +17,8 @@ namespace FolvosLibrary.WFC
 		Task[] threadList = new Task[0];
 		int countInQueue = 0;
 
+		bool continueWorkFlag = true;
+		Exception workerException = null;
 		public override void Collapse(WFCPosition position)
 		{
 			updateQueue.Enqueue(manager.GetCell(position).Collapse());
@@ -27,38 +29,54 @@ namespace FolvosLibrary.WFC
 				threadList = new Task[maximumThreadCount];
 				for (int i = 0; i < maximumThreadCount; i++)
 				{
-					threadList[i] = Task.Run(numberedThreadLoop);
+					threadList[i] = Task.Run(NumberedThreadLoop);
 				}
 			}
 
-			while (countInQueue > 0) {/*Loop until threads are finished*/}
-		}
-		Action numberedThreadLoop()
-		{
-			while (true)
+			while (countInQueue > 0)
 			{
-				while (countInQueue > 0)
+				/*Loop until threads are finished or exception thrown*/
+				if (workerException != null)
 				{
-					if (updateQueue.TryDequeue(out WFCCellUpdate updateBeingProcessed))
+					throw workerException;
+				}
+			}
+		}
+
+		void NumberedThreadLoop()
+		{
+			while (continueWorkFlag)
+			{
+				while (countInQueue > 0 && continueWorkFlag)
+				{
+					try
 					{
-						countInQueue--;
-						WFCPosition cellUpdatePos = updateBeingProcessed.UpdatedCell.GetPosition();
-						//if no one cares about this cell ignore it.
-						if (!toAlert.ContainsKey(cellUpdatePos)) { continue; }
-						List<WFCCell> listOfAlertees = toAlert[cellUpdatePos];
-						for (int i = 0; i < listOfAlertees.Count; i++)
+
+						if (updateQueue.TryDequeue(out WFCCellUpdate updateBeingProcessed))
 						{
-							WFCCellUpdate? update = listOfAlertees[i].DomainCheck(updateBeingProcessed);
-							if (update.HasValue)
+							countInQueue--;
+							WFCPosition cellUpdatePos = updateBeingProcessed.UpdatedCell.GetPosition();
+							//if no one cares about this cell ignore it.
+							if (!toAlert.ContainsKey(cellUpdatePos)) { continue; }
+							List<WFCCell> listOfAlertees = toAlert[cellUpdatePos];
+							for (int i = 0; i < listOfAlertees.Count; i++)
 							{
-								updateQueue.Enqueue(update.Value);
-								countInQueue++;
+								WFCCellUpdate? update = listOfAlertees[i].DomainCheck(updateBeingProcessed);
+								if (update.HasValue)
+								{
+									updateQueue.Enqueue(update.Value);
+									countInQueue++;
+								}
 							}
 						}
+						else
+						{
+							Thread.Sleep(100);
+						}
 					}
-					else
+					catch (Exception e)
 					{
-						Thread.Sleep(100);
+						workerException = e;
 					}
 				}
 				Thread.Sleep(100);

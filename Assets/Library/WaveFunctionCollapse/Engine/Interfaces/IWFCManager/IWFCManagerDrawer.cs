@@ -6,46 +6,68 @@ namespace FolvosLibrary.WFC
 	{
 		public virtual void Generate()
 		{
-			while (grid.RemainingCellsToCollapse() > 0)
+			try
 			{
-				GenerateOnce();
+				while (grid.RemainingCellsToCollapse() > 0)
+				{
+					GenerateOnce();
+				}
+				InvokeOnResult();
 			}
-			InvokeOnResult();
+			catch (ImpossibleDomainException e)
+			{
+				InvokeOnError();
+			}
 		}
 		public virtual void GenerateStep(int step = 1)
 		{
-			for (int i = 0; i < step && grid.RemainingCellsToCollapse() > 0; i++)
+			try
 			{
-				GenerateOnce();
-			}
+				for (int i = 0; i < step && grid.RemainingCellsToCollapse() > 0; i++)
+				{
+					GenerateOnce();
+				}
 
-			if (grid.RemainingCellsToCollapse() > 0)
-			{
-				UpdateOutput();
-			}
+				if (grid.RemainingCellsToCollapse() > 0)
+				{
+					UpdateOutput();
+				}
 
-			if (grid.RemainingCellsToCollapse() <= 0)
+				if (grid.RemainingCellsToCollapse() <= 0)
+				{
+					InvokeOnResult();
+				}
+
+			}
+			catch (ImpossibleDomainException e)
 			{
-				InvokeOnResult();
+				InvokeOnError();
 			}
 		}
 		public virtual async System.Threading.Tasks.Task GenerateTimeLapse(System.Threading.CancellationTokenSource cancellationToken, int millsBetweenStep)
 		{
-			while (grid.RemainingCellsToCollapse() > 0)
+			try
 			{
-				if (cancellationToken.IsCancellationRequested)
+				while (grid.RemainingCellsToCollapse() > 0)
 				{
-					break;
+					if (cancellationToken.IsCancellationRequested)
+					{
+						break;
+					}
+					GenerateOnce();
+					UpdateOutput();
+					await System.Threading.Tasks.Task.Delay(millsBetweenStep);
 				}
-				GenerateOnce();
-				UpdateOutput();
-				await System.Threading.Tasks.Task.Delay(millsBetweenStep);
+				if (grid.RemainingCellsToCollapse() > 0)
+				{
+					//Cancled early
+				}
+				InvokeOnResult();
 			}
-			if (grid.RemainingCellsToCollapse() > 0)
+			catch (ImpossibleDomainException e)
 			{
-				//Cancled early
+				InvokeOnError();
 			}
-			InvokeOnResult();
 		}
 
 		public virtual bool DrawSize(bool ForceReset = false)

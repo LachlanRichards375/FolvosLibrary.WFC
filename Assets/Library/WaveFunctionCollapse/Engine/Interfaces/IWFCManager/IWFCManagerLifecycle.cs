@@ -7,7 +7,7 @@ namespace FolvosLibrary.WFC
 		//Lifecycle
 		public event Action OnInitialize;
 		public event Action OnResult;
-		public event Action<WFCError> OnError;
+		public event Action OnError;
 		public event Action OnCleanup;
 
 		protected void InvokeOnInitialize()
@@ -20,9 +20,9 @@ namespace FolvosLibrary.WFC
 			OnResult?.Invoke();
 		}
 
-		protected void InvokeOnError(WFCError error)
+		protected void InvokeOnError()
 		{
-			OnError?.Invoke(error);
+			OnError?.Invoke();
 		}
 
 		protected void InvokeOnCleanup()
