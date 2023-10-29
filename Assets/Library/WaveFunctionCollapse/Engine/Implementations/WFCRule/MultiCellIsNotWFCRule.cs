@@ -26,11 +26,11 @@ public class MultiCellIsNotTarget2D : MultiCellTargetWFCRule
 
 		bool[] PassTest = new bool[targetCells.Length];
 		int i = 0;
-		// foreach (IWFCCell ICell in targetCells)
+		// foreach (WFCCell ICell in targetCells)
 		foreach (Vector2Int pos in targetCells)
 		{
 
-			IWFCCell targetCell = GetTargetCell(pos);
+			WFCCell targetCell = GetTargetCell(pos);
 
 			// if (targetCell.CollapsedTile != null)
 			if ((manager as WFCManager_2D).HasCollapsed(targetCell.GetPosition()))
@@ -69,7 +69,7 @@ public class MultiCellIsNotTarget2D : MultiCellTargetWFCRule
 		return PassTest.All(b => b == true);
 	}
 
-	public override bool Test(WFCCellUpdate? cellUpdate, IWFCCell OwnerCell)
+	public override bool Test(WFCCellUpdate? cellUpdate, WFCCell OwnerCell)
 	{
 		if (cellUpdate is null)
 		{
@@ -100,7 +100,7 @@ public class MultiCellIsNotTarget2D : MultiCellTargetWFCRule
 	}
 
 	//Return true if this rule impacts owner cell
-	bool CheckCellUpdateAffectsThisRule(WFCCellUpdate update, IWFCCell ownerCell)
+	bool CheckCellUpdateAffectsThisRule(WFCCellUpdate update, WFCCell ownerCell)
 	{
 		WFCPosition updatePos = update.UpdatedCell.GetPosition();
 		WFCPosition ownerPos = ownerCell.GetPosition();
@@ -108,12 +108,12 @@ public class MultiCellIsNotTarget2D : MultiCellTargetWFCRule
 		return direction.HasFlag(CellDirection.Vector2IntToCellDirection(updatePos.AsVector2Int() - ownerPos.AsVector2Int()));
 	}
 
-	bool CellCollapsed(IWFCCell collapsedCell, IWFCCell owner)
+	bool CellCollapsed(WFCCell collapsedCell, WFCCell owner)
 	{
 		return !(collapsedCell.CollapsedTile.Equals(goal));
 	}
 
-	bool DomainUpdated(WFCCellUpdate update, IWFCCell owner)
+	bool DomainUpdated(WFCCellUpdate update, WFCCell owner)
 	{
 		//If our target's domain contains our goal
 		foreach (DomainChange domainChange in update.DomainChanges)

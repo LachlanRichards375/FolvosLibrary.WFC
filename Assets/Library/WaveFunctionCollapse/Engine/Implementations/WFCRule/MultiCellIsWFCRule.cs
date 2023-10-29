@@ -27,10 +27,10 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 
 		bool[] PassTest = new bool[targetCells.Length];
 		int i = 0;
-		// foreach (IWFCCell ICell in targetCells)
+		// foreach (WFCCell ICell in targetCells)
 		foreach (Vector2Int pos in targetCells)
 		{
-			IWFCCell targetCell = GetTargetCell(pos);
+			WFCCell targetCell = GetTargetCell(pos);
 
 			if (manager.HasCollapsed(new WFCPosition(targetCell.GetPosition())))
 			{
@@ -68,7 +68,7 @@ public class MultiCellIsTarget2D : MultiCellTargetWFCRule
 		return PassTest.All(b => b == true);
 	}
 
-	public override bool Test(WFCCellUpdate? cellUpdate, IWFCCell OwnerCell)
+	public override bool Test(WFCCellUpdate? cellUpdate, WFCCell OwnerCell)
 	{
 		if (cellUpdate == null)
 		{

@@ -33,8 +33,8 @@ public class CellIsNotRule : WFCTests
 		Assert.That(copy.direction == ruleToCopy.direction, "Copied rule does not have the same direction goal as the original");
 	}
 
-	IWFCCell FirstCell;
-	IWFCCell SecondCell;
+	WFCCell FirstCell;
+	WFCCell SecondCell;
 	[SetUp]
 	public void Setup()
 	{

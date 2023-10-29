@@ -10,7 +10,7 @@ namespace FolvosLibrary.WFC
 	public class WFCGrid2D : IWFCGrid
 	{
 		WFCPosition size;
-		IWFCCell[][] grid = new IWFCCell[0][];
+		WFCCell[][] grid = new WFCCell[0][];
 
 		public override void SetSize(WFCPosition size)
 		{
@@ -44,14 +44,14 @@ namespace FolvosLibrary.WFC
 		protected void InitializeGrid()
 		{
 			Vector2Int newGridSize = size.AsVector2Int();
-			IWFCCell[][] newGrid = new IWFCCell[newGridSize.x][];
+			WFCCell[][] newGrid = new WFCCell[newGridSize.x][];
 			for (int x = 0; x < newGridSize.x; x++)
 			{
-				newGrid[x] = new IWFCCell[newGridSize.y];
+				newGrid[x] = new WFCCell[newGridSize.y];
 
 				for (int y = 0; y < newGridSize.y; y++)
 				{
-					newGrid[x][y] = new IWFCCell(manager, new WFCPosition(x, y));
+					newGrid[x][y] = new WFCCell(manager, new WFCPosition(x, y));
 				}
 			}
 
@@ -65,7 +65,7 @@ namespace FolvosLibrary.WFC
 			{
 				for (int y = 0; y < size.y; y++)
 				{
-					IWFCCell cell = grid[x][y];
+					WFCCell cell = grid[x][y];
 					EntropyQueue.Add(cell);
 					cell.Domain = manager.GetDomain();
 					cell.OnCellUpdate += (WFCCellUpdate) => SortQueue();
@@ -123,7 +123,7 @@ namespace FolvosLibrary.WFC
 			return true;
 		}
 
-		public override IWFCCell GetCell(WFCPosition position)
+		public override WFCCell GetCell(WFCPosition position)
 		{
 			if (position.x < 0 || position.y < 0)
 			{
@@ -139,7 +139,7 @@ namespace FolvosLibrary.WFC
 			return grid[vec.x][vec.y];
 		}
 
-		public IWFCCell[][] GetCells()
+		public WFCCell[][] GetCells()
 		{
 			return grid;
 		}

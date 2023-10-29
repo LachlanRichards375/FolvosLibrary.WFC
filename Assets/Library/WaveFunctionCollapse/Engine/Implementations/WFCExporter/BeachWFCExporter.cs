@@ -7,16 +7,16 @@ public class BeachWFCExporter : IWFCExporter
 {
 	public override void Export()
 	{
-		Debug.LogError("Export should not be called, use Export(IWFCCell[][]) instead");
+		Debug.LogError("Export should not be called, use Export(WFCCell[][]) instead");
 	}
 
 	Transform parent;
 	GameObject[][] Exported = new GameObject[0][];
 
-	public GameObject[][] Export(IWFCCell[][] input)
+	public GameObject[][] Export(WFCCell[][] input)
 	{
-		IWFCCell[][] toExport;
-		toExport = input as IWFCCell[][];
+		WFCCell[][] toExport;
+		toExport = input as WFCCell[][];
 		bool createGameObjects = Exported.Length != input.Length || Exported[0].Length != input[0].Length || Exported[0][0] == null;
 
 		if (createGameObjects)
@@ -34,7 +34,7 @@ public class BeachWFCExporter : IWFCExporter
 			{
 				if (createGameObjects)
 				{
-					Exported[x][y] = new GameObject($"{{{x},{y}}}", typeof(SpriteRenderer), typeof(IWFCCellComponent));
+					Exported[x][y] = new GameObject($"{{{x},{y}}}", typeof(SpriteRenderer), typeof(WFCCellComponent));
 					if (parent != null)
 					{
 						Exported[x][y].transform.SetParent(parent);
@@ -51,7 +51,7 @@ public class BeachWFCExporter : IWFCExporter
 					sR.sprite = toExport[x][y].CollapsedTile.TileData.Sprite;
 				}
 
-				IWFCCellComponent cellVisualiser = target.GetComponent<IWFCCellComponent>();
+				WFCCellComponent cellVisualiser = target.GetComponent<WFCCellComponent>();
 				cellVisualiser.CellCaptured = toExport[x][y].GetCellStruct();
 				cellVisualiser.UpdateVisuals();
 			}

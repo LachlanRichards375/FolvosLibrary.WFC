@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace FolvosLibrary.WFC
 {
-	public class IWFCCell : IComparable
+	public class WFCCell : IComparable
 	{
 		public WFCTile CollapsedTile { get; protected set; }
 		public List<WFCTile> Domain;
@@ -13,13 +13,13 @@ namespace FolvosLibrary.WFC
 		protected IWFCManager manager;
 		protected WFCPosition position;
 
-		public IWFCCell(IWFCManager m, WFCPosition p)
+		public WFCCell(IWFCManager m, WFCPosition p)
 		{
 			manager = m;
 			position = p;
 		}
 
-		public IWFCCell(IWFCCell other)
+		public WFCCell(WFCCell other)
 		{
 			this.manager = other.manager;
 			this.position = other.position;
@@ -31,7 +31,7 @@ namespace FolvosLibrary.WFC
 		{
 			foreach (WFCTile tile in Domain)
 			{
-				IWFCCell local = this;
+				WFCCell local = this;
 				tile.RuleSetup(manager, local);
 			}
 		}
@@ -157,7 +157,7 @@ namespace FolvosLibrary.WFC
 		public int CompareTo(object obj)
 		{
 			if (obj == null) return 1;
-			IWFCCell otherTile = obj as IWFCCell;
+			WFCCell otherTile = obj as WFCCell;
 			if (otherTile == null) throw new ArgumentException("Object is not a FWCTile");
 
 			return this.CalculateEntropy().CompareTo(otherTile.CalculateEntropy());
@@ -166,7 +166,7 @@ namespace FolvosLibrary.WFC
 		public int Compare(object x, object y)
 		{
 			if (x == null || y == null) return 1;
-			IWFCCell otherCell = x as IWFCCell;
+			WFCCell otherCell = x as WFCCell;
 
 			if (otherCell == null) throw new ArgumentException("Object is not a FWCTile");
 

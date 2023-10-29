@@ -2,7 +2,7 @@ using FolvosLibrary.WFC;
 using NUnit.Framework;
 using System.Collections.Generic;
 
-public class IWFCCellTests : WFCTests
+public class WFCCellTests : WFCTests
 {
 	[OneTimeSetUp]
 	public void TestSetup()
@@ -13,7 +13,7 @@ public class IWFCCellTests : WFCTests
 	[Test]
 	public void RegularConstructorWorks()
 	{
-		IWFCCell inital = new IWFCCell(manager, CellInitialPosition);
+		WFCCell inital = new WFCCell(manager, CellInitialPosition);
 		Assert.That(inital.GetPosition().AsVector2Int() == CellInitialPosition.AsVector2Int(), "Cell initial position is not being set correctly");
 	}
 
@@ -28,9 +28,9 @@ public class IWFCCellTests : WFCTests
 	[Test]
 	public void CopyConstructorWorks()
 	{
-		IWFCCell inital = new IWFCCell(manager, CellInitialPosition);
+		WFCCell inital = new WFCCell(manager, CellInitialPosition);
 		Assert.That(inital.GetPosition().AsVector2Int() == CellInitialPosition.AsVector2Int(), "Cell initial position is not being set correctly. !!Check Regular Constructor!!");
-		IWFCCell clone = new IWFCCell(inital);
+		WFCCell clone = new WFCCell(inital);
 		Assert.That(clone.GetPosition().AsVector2Int() == CellInitialPosition.AsVector2Int(), "Cloned Cell position is not being set correctly.");
 		Assert.That(!ReferenceEquals(CellInitialPosition, clone.GetPosition()), "Cloned Cell position is a reference to the initial cell position");
 
@@ -44,7 +44,7 @@ public class IWFCCellTests : WFCTests
 	[Test]
 	public void Test_InitializedTileRuleNotReferenceToOriginal()
 	{
-		IWFCCell initial = new IWFCCell(manager, CellInitialPosition);
+		WFCCell initial = new WFCCell(manager, CellInitialPosition);
 		initial.Domain = new List<WFCTile>(GetDomain());
 		initial.RuleSetup();
 
@@ -55,14 +55,14 @@ public class IWFCCellTests : WFCTests
 	[Test]
 	public void Test_WFCTileCreateCreatesNewObject()
 	{
-		IWFCCell inital = manager.GetCell(CellInitialPosition);
+		WFCCell inital = manager.GetCell(CellInitialPosition);
 		WFCTile tile = inital.Domain[0];
 		WFCTile tileCopy = WFCTile.CreateTile(tile);
 
 		Assert.That(!ReferenceEquals(tile, tileCopy), "WFCTile.Create(tile) is not returning a new instance of a tile object");
 
-		IWFCCell cell = manager.GetCell(new WFCPosition(0, 0));
-		IWFCCell other = manager.GetCell(new WFCPosition(0, 1));
+		WFCCell cell = manager.GetCell(new WFCPosition(0, 0));
+		WFCCell other = manager.GetCell(new WFCPosition(0, 1));
 
 		Assert.That(!ReferenceEquals(cell, other), "Cell is the same object at 0,0 and 0,1");
 	}

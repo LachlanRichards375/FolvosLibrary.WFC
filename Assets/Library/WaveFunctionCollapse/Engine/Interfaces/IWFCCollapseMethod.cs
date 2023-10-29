@@ -6,8 +6,8 @@ namespace FolvosLibrary.WFC
 	{
 		public abstract void Collapse(WFCPosition position);
 		public abstract void CollapseSpecificCell(WFCPosition position, WFCTile collapseTo);
-		public abstract void RegisterForCellUpdates(WFCPosition positionOfInterest, IWFCCell toRegister);
-		public abstract void DeRegisterForCellUpdates(WFCPosition positionOfInterest, IWFCCell toDeregister);
+		public abstract void RegisterForCellUpdates(WFCPosition positionOfInterest, WFCCell toRegister);
+		public abstract void DeRegisterForCellUpdates(WFCPosition positionOfInterest, WFCCell toDeregister);
 
 		protected IWFCManager manager;
 		public void SetManager(IWFCManager manager)

@@ -5,7 +5,7 @@ namespace FolvosLibrary.WFC
 	public struct WFCCellUpdate
 	{
 		public CellUpdateType UpdateType;
-		public IWFCCell UpdatedCell;
+		public WFCCell UpdatedCell;
 		public List<DomainChange> DomainChanges;
 
 		public override string ToString()

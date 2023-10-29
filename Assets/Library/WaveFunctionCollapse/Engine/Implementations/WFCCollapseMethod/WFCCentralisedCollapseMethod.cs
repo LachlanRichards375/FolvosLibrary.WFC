@@ -11,7 +11,7 @@ namespace FolvosLibrary.WFC
 	[CreateAssetMenu(menuName = "Folvos/WFC/CollapseMethods/Centralized Collapse Method"), System.Serializable]
 	public class WFCCentralisedCollapseMethod : IWFCCollapseMethod
 	{
-		ConcurrentDictionary<WFCPosition, List<IWFCCell>> toAlert = new ConcurrentDictionary<WFCPosition, List<IWFCCell>>();
+		ConcurrentDictionary<WFCPosition, List<WFCCell>> toAlert = new ConcurrentDictionary<WFCPosition, List<WFCCell>>();
 		ConcurrentQueue<WFCCellUpdate> updateQueue = new ConcurrentQueue<WFCCellUpdate>();
 		int maximumThreadCount = 1;
 		Thread[] threadList = new Thread[0];
@@ -32,7 +32,7 @@ namespace FolvosLibrary.WFC
 					continue;
 				}
 
-				List<IWFCCell> listOfAlertees = toAlert[cellUpdatePos];
+				List<WFCCell> listOfAlertees = toAlert[cellUpdatePos];
 
 				Task[] tasks = new Task[listOfAlertees.Count];
 				for (int i = 0; i < listOfAlertees.Count; i++)
@@ -45,12 +45,12 @@ namespace FolvosLibrary.WFC
 		}
 		class ThreadData
 		{
-			public ThreadData(IWFCCell toAlert, WFCCellUpdate update)
+			public ThreadData(WFCCell toAlert, WFCCellUpdate update)
 			{
 				this.toAlert = toAlert;
 				this.update = update;
 			}
-			public IWFCCell toAlert;
+			public WFCCell toAlert;
 			public WFCCellUpdate update;
 		}
 
@@ -76,14 +76,14 @@ namespace FolvosLibrary.WFC
 			updateQueue.Enqueue(manager.GetCell(position).Collapse(toCollapseTo));
 		}
 
-		public override void RegisterForCellUpdates(WFCPosition positionOfInterest, IWFCCell toRegister)
+		public override void RegisterForCellUpdates(WFCPosition positionOfInterest, WFCCell toRegister)
 		{
 			if (!toAlert.ContainsKey(positionOfInterest))
 			{
-				toAlert.TryAdd(positionOfInterest, new List<IWFCCell>());
+				toAlert.TryAdd(positionOfInterest, new List<WFCCell>());
 			}
 
-			List<IWFCCell> addTo = toAlert[positionOfInterest];
+			List<WFCCell> addTo = toAlert[positionOfInterest];
 
 			if (addTo.Contains(toRegister))
 			{
@@ -93,7 +93,7 @@ namespace FolvosLibrary.WFC
 			addTo.Add(toRegister);
 		}
 
-		public override void DeRegisterForCellUpdates(WFCPosition positionOfInterest, IWFCCell toDeregister)
+		public override void DeRegisterForCellUpdates(WFCPosition positionOfInterest, WFCCell toDeregister)
 		{
 			if (!toAlert.ContainsKey(positionOfInterest))
 			{

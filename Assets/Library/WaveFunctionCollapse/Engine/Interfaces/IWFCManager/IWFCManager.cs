@@ -116,7 +116,7 @@ namespace FolvosLibrary.WFC
 		{
 			return grid.GetSize();
 		}
-		public IWFCCell GetCell(WFCPosition position)
+		public WFCCell GetCell(WFCPosition position)
 		{
 			return grid.GetCell(position);
 		}

@@ -1,7 +1,7 @@
 using FolvosLibrary.WFC;
 using UnityEngine;
 
-public class IWFCCellComponent : MonoBehaviour
+public class WFCCellComponent : MonoBehaviour
 {
 	[SerializeField] public WFCCellStruct CellCaptured;
 

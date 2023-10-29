@@ -21,7 +21,7 @@ namespace FolvosLibrary.WFC
 		}
 
 		public abstract bool Test();
-		public abstract bool Test(WFCCellUpdate? cellUpdate, IWFCCell ownerCell);
+		public abstract bool Test(WFCCellUpdate? cellUpdate, WFCCell ownerCell);
 		public abstract void RuleInitialize(IWFCManager manager, Vector2Int CellPos);
 
 		public bool InvalidateTileOnFail = false;

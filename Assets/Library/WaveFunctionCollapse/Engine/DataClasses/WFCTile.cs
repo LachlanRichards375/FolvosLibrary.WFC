@@ -35,7 +35,7 @@ namespace FolvosLibrary.WFC
 			Rules = other.Rules;
 		}
 
-		public void RuleSetup(IWFCManager manager, IWFCCell cell)
+		public void RuleSetup(IWFCManager manager, WFCCell cell)
 		{
 			WFCRule[] NewRules = new WFCRule[Rules.Length];
 			for (int i = 0; i < Rules.Length; i++)
@@ -49,7 +49,7 @@ namespace FolvosLibrary.WFC
 			Rules = NewRules;
 		}
 
-		public bool PassesRules(WFCCellUpdate update, IWFCCell caller)
+		public bool PassesRules(WFCCellUpdate update, WFCCell caller)
 		{
 			int index = 0;
 			bool returner = true;

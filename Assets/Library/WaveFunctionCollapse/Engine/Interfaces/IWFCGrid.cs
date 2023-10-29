@@ -15,14 +15,14 @@ namespace FolvosLibrary.WFC
 		public abstract WFCPosition GetSize();
 		public abstract void Initialize();
 		public abstract void DrawSize(bool ForceReset = false);
-		public abstract IWFCCell GetCell(WFCPosition position);
+		public abstract WFCCell GetCell(WFCPosition position);
 		public abstract bool HasCollapsed(WFCPosition position);
 		public abstract void PrintCells();
 
 		public abstract bool PositionInBounds(WFCPosition position);
 
 		//Entropy Queue
-		protected List<IWFCCell> EntropyQueue = new List<IWFCCell>();
+		protected List<WFCCell> EntropyQueue = new List<WFCCell>();
 
 		public void SortQueue()
 		{
@@ -31,7 +31,7 @@ namespace FolvosLibrary.WFC
 
 		public virtual void ClearQueue()
 		{
-			EntropyQueue = new List<IWFCCell>();
+			EntropyQueue = new List<WFCCell>();
 		}
 
 		protected void ShuffleLowestEntropy()
@@ -48,7 +48,7 @@ namespace FolvosLibrary.WFC
 				}
 			}
 
-			List<IWFCCell> toShuffle = EntropyQueue.GetRange(0, endIndex);
+			List<WFCCell> toShuffle = EntropyQueue.GetRange(0, endIndex);
 
 			int n = toShuffle.Count;
 			while (n > 1)
@@ -56,7 +56,7 @@ namespace FolvosLibrary.WFC
 				n--;
 				// int k = rng.Next(n + 1);
 				int k = UnityEngine.Random.Range(0, toShuffle.Count);
-				IWFCCell value = toShuffle[k];
+				WFCCell value = toShuffle[k];
 				toShuffle[k] = toShuffle[n];
 				toShuffle[n] = value;
 			}
@@ -92,7 +92,7 @@ namespace FolvosLibrary.WFC
 			string s = $"> Entropy Queue: \n";
 
 			int i = 0;
-			foreach (IWFCCell cell in EntropyQueue)
+			foreach (WFCCell cell in EntropyQueue)
 			{
 				s += i + ">\t" + cell.GetPosition() + " " + cell.ToString() + "\n";
 				i++;
@@ -104,7 +104,7 @@ namespace FolvosLibrary.WFC
 
 		public void Reset()
 		{
-			EntropyQueue = new List<IWFCCell>();
+			EntropyQueue = new List<WFCCell>();
 		}
 
 	}
