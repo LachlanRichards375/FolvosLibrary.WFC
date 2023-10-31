@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Grass
   m_EditorClassIdentifier: 
   TileData:
+    BitMaskID: 1
     Name: Grass
     TileWeight: 1
     Sprite: {fileID: 1393356836, guid: 21969dd09df65e143b6f12d9a18b1522, type: 3}
