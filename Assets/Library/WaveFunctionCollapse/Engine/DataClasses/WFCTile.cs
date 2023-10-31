@@ -2,11 +2,12 @@ using UnityEngine;
 
 namespace FolvosLibrary.WFC
 {
-	[CreateAssetMenu(menuName = "Folvos/WFC/Tile"), System.Serializable]
+	[CreateAssetMenu(menuName = "Folvos/WFC/Tile/Tile", order = 2), System.Serializable]
 	public class WFCTile : ScriptableObject
 	{
 		public string Name { get => TileData.Name; set => TileData.Name = value; }
 		public int TileWeight { get => TileData.TileWeight; set => TileData.TileWeight = value; }
+		public ulong ID { get => TileData.BitMaskID; set => TileData.BitMaskID = value; }
 		public TileData TileData;
 		[SerializeReference] public WFCRule[] Rules = new WFCRule[0];
 
@@ -29,8 +30,6 @@ namespace FolvosLibrary.WFC
 
 		public void Copy(WFCTile other)
 		{
-			Name = other.Name;
-			TileWeight = other.TileWeight;
 			TileData = other.TileData;
 			Rules = other.Rules;
 		}
@@ -44,7 +43,6 @@ namespace FolvosLibrary.WFC
 				//This is needed so we aren't using the same Rule Objects as other tiles
 				NewRules[i] = (WFCRule)System.Activator.CreateInstance(Rules[i].GetType(), Rules[i]);
 				NewRules[i].RuleInitialize(manager, cell.GetPosition().AsVector2Int());
-				// NewRules[i].OnRuleActivated += (WFCCellUpdate update) => cell.DomainCheck(update);
 			}
 			Rules = NewRules;
 		}
@@ -115,7 +113,7 @@ namespace FolvosLibrary.WFC
 			}
 			WFCTile otherTile = other as WFCTile;
 
-			return otherTile.Name == this.Name;
+			return otherTile.ID == this.ID;
 		}
 
 		public override int GetHashCode()
@@ -132,15 +130,21 @@ namespace FolvosLibrary.WFC
 
 		}
 
-		public TileData(string Name, int TileWeight)
+		public TileData(string Name, int TileWeight, ulong ID)
 		{
 			this.Name = Name;
 			this.TileWeight = TileWeight;
+			BitMaskID = ID;
 		}
+
+		[SerializeField]
+		public ulong BitMaskID;
+		private static ulong ClaimedBitMaskID;
 
 		public string Name;
 		[Min(1)] public int TileWeight = 1;
 		[SerializeField] public Sprite Sprite;
-		//Include other types if needed
 	}
+
+
 }

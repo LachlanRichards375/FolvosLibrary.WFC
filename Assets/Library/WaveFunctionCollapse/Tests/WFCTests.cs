@@ -9,14 +9,14 @@ public class WFCTests
 	public WFCTile[] GetDomain()
 	{
 		WFCTile[] Domain = new WFCTile[3]{
-			WFCTile.CreateTile(new TileData("Grass", 1), new WFCRule[1]{
+			WFCTile.CreateTile(new TileData("Grass", 1, 1), new WFCRule[1]{
 				new MultiCellIsNotTarget2D()
 			}),
-			WFCTile.CreateTile(new TileData("Sand", 1), new WFCRule[2]{
+			WFCTile.CreateTile(new TileData("Sand", 1, 2), new WFCRule[2]{
 				new MultiCellIsNotTarget2D(),
 				new MultiCellIsNotTarget2D(),
 			}),
-			WFCTile.CreateTile(new TileData("Water", 1), new WFCRule[1]{
+			WFCTile.CreateTile(new TileData("Water", 1, 4), new WFCRule[1]{
 				new MultiCellIsNotTarget2D()
 			}),
 		};
