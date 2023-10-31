@@ -49,6 +49,7 @@ namespace FolvosLibrary.WFC
 			}
 
 			CollapseSpecificCell(grid.PopNextCellToCollapse(), collapseTo);
+			UpdateOutput();
 		}
 
 		protected void GenerateOnce()
@@ -106,6 +107,7 @@ namespace FolvosLibrary.WFC
 		public void Reset()
 		{
 			grid.Reset();
+			collapseMethod.Reset();
 		}
 		public void SetSize(WFCPosition newSize)
 		{

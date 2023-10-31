@@ -9,6 +9,7 @@ namespace FolvosLibrary.WFC
 		public abstract void RegisterForCellUpdates(WFCPosition positionOfInterest, WFCCell toRegister);
 		public abstract void DeRegisterForCellUpdates(WFCPosition positionOfInterest, WFCCell toDeregister);
 
+		public abstract void Reset();
 		protected IWFCManager manager;
 		public void SetManager(IWFCManager manager)
 		{
