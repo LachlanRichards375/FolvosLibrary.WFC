@@ -67,7 +67,7 @@ namespace FolvosLibrary.WFC
 				{
 					WFCCell cell = grid[x][y];
 					EntropyQueue.Add(cell);
-					cell.Domain = manager.GetDomain();
+					cell.SetDomain(manager.GetDomain());
 					cell.OnCellUpdate += (WFCCellUpdate) => SortQueue();
 				}
 			}

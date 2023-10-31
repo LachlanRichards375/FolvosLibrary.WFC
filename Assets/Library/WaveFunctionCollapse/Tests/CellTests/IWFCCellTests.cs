@@ -45,7 +45,7 @@ public class WFCCellTests : WFCTests
 	public void Test_InitializedTileRuleNotReferenceToOriginal()
 	{
 		WFCCell initial = new WFCCell(manager, CellInitialPosition);
-		initial.Domain = new List<WFCTile>(GetDomain());
+		initial.SetDomain(new List<WFCTile>(GetDomain()));
 		initial.RuleSetup();
 
 		Assert.That(!ReferenceEquals(initial.Domain[0], GetDomain()[0]), "Initialized Tile is a reference to original Domain");
