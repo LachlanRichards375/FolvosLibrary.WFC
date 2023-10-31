@@ -21,17 +21,8 @@ namespace FolvosLibrary.WFC
 		Exception workerException = null;
 		public override void Collapse(WFCPosition position)
 		{
-			updateQueue.Enqueue(manager.GetCell(position).Collapse());
-			countInQueue++;
 
-			if (threadList.Length == 0)
-			{
-				threadList = new Task[maximumThreadCount];
-				for (int i = 0; i < maximumThreadCount; i++)
-				{
-					threadList[i] = Task.Run(NumberedThreadLoop);
-				}
-			}
+			Enqueue(position);
 
 			while (countInQueue > 0)
 			{
@@ -85,7 +76,30 @@ namespace FolvosLibrary.WFC
 
 		public override void CollapseSpecificCell(WFCPosition position, WFCTile toCollapseTo)
 		{
-			updateQueue.Enqueue(manager.GetCell(position).Collapse(toCollapseTo));
+			Enqueue(position, toCollapseTo);
+		}
+
+		void Enqueue(WFCPosition position, WFCTile toCollapseTo = null)
+		{
+			if (toCollapseTo != null)
+			{
+				updateQueue.Enqueue(manager.GetCell(position).Collapse(toCollapseTo));
+			}
+			else
+			{
+				updateQueue.Enqueue(manager.GetCell(position).Collapse());
+			}
+
+			countInQueue++;
+
+			if (threadList.Length == 0)
+			{
+				threadList = new Task[maximumThreadCount];
+				for (int i = 0; i < maximumThreadCount; i++)
+				{
+					threadList[i] = Task.Run(NumberedThreadLoop);
+				}
+			}
 		}
 
 		public override void RegisterForCellUpdates(WFCPosition positionOfInterest, WFCCell toRegister)
@@ -122,6 +136,15 @@ namespace FolvosLibrary.WFC
 			{
 				maximumThreadCount = 1;
 			}
+		}
+
+		public override void Reset()
+		{
+			workerException = null;
+			threadList = new Task[0];
+
+			toAlert = new ConcurrentDictionary<WFCPosition, List<WFCCell>>();
+			updateQueue = new ConcurrentQueue<WFCCellUpdate>();
 		}
 	}
 }
