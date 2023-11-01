@@ -16,64 +16,11 @@ public class MultiCellIsNotTarget2D : MultiCellTargetWFCRule
 
 	}
 
-	public override bool Test()
-	{
-		Debug.Log("Test no params");
-		if (targetCells == null)
-		{
-			return false;
-		}
-
-		bool[] PassTest = new bool[targetCells.Length];
-		int i = 0;
-		// foreach (WFCCell ICell in targetCells)
-		foreach (Vector2Int pos in targetCells)
-		{
-
-			WFCCell targetCell = GetTargetCell(pos);
-
-			// if (targetCell.CollapsedTile != null)
-			if ((manager as WFCManager_2D).HasCollapsed(targetCell.GetPosition()))
-			{
-				PassTest[i] = targetCell.CollapsedTile == goal;
-				i++;
-				continue;
-			}
-			Debug.Log("Cell was not collapsed");
-
-			PassTest[i] = false;
-			string toPrint = "";
-			//If our target's domain contains our goal
-			for (int target = 0; target < targetCell.Domain.Count; target++)
-			{
-				if (targetCell.Domain != null && targetCell.Domain[target] != null)
-				{
-					toPrint += $"> TargetCell.Domain {targetCell.Domain[target].Name} == {goal.Name}? {targetCell.Domain[target] == goal}\n";
-				}
-				if (targetCell.Domain[target] == goal)
-				{
-					PassTest[i] = true;
-					break;
-				}
-			}
-			i++;
-		}
-
-		String s = "> PassTest:[";
-		foreach (bool b in PassTest)
-		{
-			s += b.ToString() + ", ";
-		}
-		Debug.Log(s + "]");
-		//if all are true, return true
-		return PassTest.All(b => b == true);
-	}
-
 	public override bool Test(WFCCellUpdate? cellUpdate, WFCCell OwnerCell)
 	{
 		if (cellUpdate is null)
 		{
-			return Test();
+			return false;
 		}
 
 		WFCCellUpdate update = cellUpdate.Value;
@@ -115,17 +62,9 @@ public class MultiCellIsNotTarget2D : MultiCellTargetWFCRule
 
 	bool DomainUpdated(WFCCellUpdate update, WFCCell owner)
 	{
-		//If our target's domain contains our goal
-		foreach (DomainChange domainChange in update.DomainChanges)
-		{
-			if (domainChange.UpdatedTile.Name == goal.Name)
-			{
-				if (domainChange.DomainUpdate == DomainUpdate.AddedToDomain)
-				{
-					return false;
-				}
-			}
-		}
+		//Always return true because we only care
+		//That our target cell does NOT collapse to our goal
+		//We don't care if the goal is in the domain
 		return true;
 	}
 

@@ -19,8 +19,6 @@ namespace FolvosLibrary.WFC
 		{
 			InvalidateTileOnFail = (bool)EditorGUILayout.Toggle("Invalidate tile on rule failure", InvalidateTileOnFail);
 		}
-
-		public abstract bool Test();
 		public abstract bool Test(WFCCellUpdate? cellUpdate, WFCCell ownerCell);
 		public abstract void RuleInitialize(IWFCManager manager, Vector2Int CellPos);
 
