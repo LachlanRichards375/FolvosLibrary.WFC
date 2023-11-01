@@ -6,20 +6,27 @@ namespace FolvosLibrary.WFC
 	{
 		public CellUpdateType UpdateType;
 		public WFCCell UpdatedCell;
-		public List<DomainChange> DomainChanges;
+		public ulong RemovedFromDomain;
+		public ulong AddedToDomain;
+		// public List<DomainChange> DomainChanges;
 
 		public override string ToString()
 		{
 			string s = $"CellUpdateType: {UpdateType} at {UpdatedCell.GetPositionString()}";
 
-			if (DomainChanges != null && DomainChanges.Count > 0)
-			{
-				foreach (DomainChange change in DomainChanges)
+			if(RemovedFromDomain > 0){
+				foreach (WFCTile updatedTile in WFCCellDomain.GetTilesFromGlobalDomain(RemovedFromDomain))
 				{
-					s += " tile: " + change.UpdatedTile + " was " + change.DomainUpdate;
+					s += " tile: " + updatedTile.Name + " was removed from the domain.";
 				}
 			}
 
+			if(AddedToDomain > 0){
+				foreach (WFCTile updatedTile in WFCCellDomain.GetTilesFromGlobalDomain(RemovedFromDomain))
+				{
+					s += " tile: " + updatedTile.Name + " was added to the domain";
+				}
+			}
 			return s;
 		}
 	}
