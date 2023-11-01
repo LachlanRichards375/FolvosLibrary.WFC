@@ -17,6 +17,8 @@ namespace FolvosLibrary.WFC
 		{
 			domain = new List<WFCTile>(importer.Import<string>("a"));
 
+			WFCCellDomain.GlobalDomain = domain.ToArray();
+
 			string print = "INITIALIZING \t Domain: ";
 			for (int i = 0; i < domain.Count; i++)
 			{

@@ -17,6 +17,7 @@ namespace FolvosLibrary.WFC
 		{
 			manager = m;
 			position = p;
+			Domain = new WFCCellDomain(this);
 		}
 
 		public WFCCell(WFCCell other)
@@ -45,7 +46,8 @@ namespace FolvosLibrary.WFC
 			//return domain Length without weighting
 			// return Domain.Count;
 			float domainWeight = 0;
-			foreach(WFCTile tile in Domain.GetTileArray()){
+			foreach (WFCTile tile in Domain.GetTileArray())
+			{
 				domainWeight += tile.TileWeight;
 			}
 			return domainWeight;
@@ -56,7 +58,8 @@ namespace FolvosLibrary.WFC
 			if (Domain.DomainBitMaskID == 0) { throw new ImpossibleDomainException("Nothing left in cell's domain."); }
 			float tileNo = UnityEngine.Random.Range(0f, Domain.MaxTileWeight);
 			int index = 0;
-			foreach(WFCTile tile in Domain.GetTileArray()){
+			foreach (WFCTile tile in Domain.GetTileArray())
+			{
 				tileNo -= tile.TileWeight;
 				index++;
 				if (tileNo <= 0f)

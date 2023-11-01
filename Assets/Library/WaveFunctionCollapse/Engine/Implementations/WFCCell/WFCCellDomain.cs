@@ -10,27 +10,29 @@ namespace FolvosLibrary.WFC
 	public class WFCCellDomain
 	{
 		public static WFCTile[] GlobalDomain;
-		
-		public static WFCTile[] GetTilesFromGlobalDomain(ulong bitmask){
-			if(bitmask == 0){ return null;}
+
+		public static WFCTile[] GetTilesFromGlobalDomain(ulong bitmask)
+		{
+			if (bitmask == 0) { return null; }
 
 			List<WFCTile> returner = new List<WFCTile>();
-			foreach(WFCTile tile in GlobalDomain){
-				if((tile.ID & bitmask) == tile.ID){
+			foreach (WFCTile tile in GlobalDomain)
+			{
+				if ((tile.ID & bitmask) == tile.ID)
+				{
 					returner.Add(tile);
 				}
 			}
 			return returner.ToArray();
 		}
 
-
-		WFCCellDomain(WFCCell owner)
+		public WFCCellDomain(WFCCell owner)
 		{
 			cell = owner;
 		}
 
 		WFCCell cell;
-		public ulong DomainBitMaskID { get; private set;} = 0;
+		public ulong DomainBitMaskID { get; private set; } = 0;
 		public void SetDomain(IEnumerable<WFCTile> newDomain)
 		{
 			DomainBitMaskID = 0;
@@ -40,7 +42,8 @@ namespace FolvosLibrary.WFC
 			}
 		}
 
-		public WFCTile[] GetTileArray(){
+		public WFCTile[] GetTileArray()
+		{
 			return GetTilesFromGlobalDomain(DomainBitMaskID);
 		}
 
@@ -96,22 +99,27 @@ namespace FolvosLibrary.WFC
 			return updateMessage;
 		}
 
-		public int MaxTileWeight { 
-		get {
-			int sum = 0;
-			foreach (WFCTile tile in GetTilesFromGlobalDomain(DomainBitMaskID))
+		public int MaxTileWeight
+		{
+			get
 			{
-				sum += tile.TileWeight;
+				int sum = 0;
+				foreach (WFCTile tile in GetTilesFromGlobalDomain(DomainBitMaskID))
+				{
+					sum += tile.TileWeight;
+				}
+				return sum;
 			}
-			return sum;
-		}}
+		}
 
 		public int Count
 		{
-			get {
+			get
+			{
 				ulong n = DomainBitMaskID;
 				int count = 0;
-				while (n != 0) {
+				while (n != 0)
+				{
 					count++;
 					n &= (n - 1);
 				}
