@@ -29,15 +29,14 @@ namespace FolvosLibrary.WFC
 
 		public void SetDomain(List<WFCTile> newDomain)
 		{
-			Domain.Domain = newDomain;
+			Domain.SetDomain(newDomain);
 		}
 
 		public void RuleSetup()
 		{
-			foreach (WFCTile tile in Domain)
+			foreach (WFCTile tile in Domain.GetTileArray())
 			{
-				WFCCell local = this;
-				tile.RuleSetup(manager, local);
+				tile.RuleSetup(manager, this);
 			}
 		}
 
@@ -46,28 +45,28 @@ namespace FolvosLibrary.WFC
 			//return domain Length without weighting
 			// return Domain.Count;
 			float domainWeight = 0;
-			for (int i = 0; i < Domain.Count; i++)
-			{
-				domainWeight += Domain[i].TileWeight;
+			foreach(WFCTile tile in Domain.GetTileArray()){
+				domainWeight += tile.TileWeight;
 			}
 			return domainWeight;
 		}
 
 		public WFCCellUpdate Collapse()
 		{
-			if (DomainBitMaskID == 0) { throw new ImpossibleDomainException("Nothing left in cell's domain."); }
-			float tileNo = UnityEngine.Random.Range(0f, CalcDomain());
+			if (Domain.DomainBitMaskID == 0) { throw new ImpossibleDomainException("Nothing left in cell's domain."); }
+			float tileNo = UnityEngine.Random.Range(0f, Domain.MaxTileWeight);
 			int index = 0;
-			for (index = 0; index < Domain.Count; index++)
-			{
-				tileNo -= Domain[index].TileWeight;
+			foreach(WFCTile tile in Domain.GetTileArray()){
+				tileNo -= tile.TileWeight;
+				index++;
 				if (tileNo <= 0f)
 				{
 					break;
 				}
 			}
-			if (index >= Domain.Count) index = Domain.Count - 1;
-			return Collapse(Domain[index]);
+
+			if (index >= Domain.GetActualDomainSize()) index = Domain.GetActualDomainSize() - 1;
+			return Collapse(Domain.GetTileArray()[index]);
 		}
 
 		public WFCCellUpdate Collapse(WFCTile toCollapseTo)
@@ -83,7 +82,10 @@ namespace FolvosLibrary.WFC
 		}
 
 		#region Domain
-
+		public WFCCellUpdate? DomainCheck(WFCCellUpdate update)
+		{
+			return Domain.DomainCheck(update);
+		}
 		#endregion
 
 		public virtual string GetPositionString()
@@ -127,7 +129,7 @@ namespace FolvosLibrary.WFC
 				return CollapsedTile.Name;
 			}
 
-			string returner = "Undecided (" + GetActualDomainSize() + ")";
+			string returner = "Undecided (" + Domain.GetActualDomainSize() + ")";
 			if (Domain == null)
 			{
 				// Debug.Log("Domain is null");
@@ -135,7 +137,7 @@ namespace FolvosLibrary.WFC
 			}
 			else
 			{
-				foreach (WFCTile tile in Domain)
+				foreach (WFCTile tile in Domain.GetTileArray())
 				{
 					returner += tile.Name + " ";
 				}
@@ -145,7 +147,7 @@ namespace FolvosLibrary.WFC
 
 		public WFCCellStruct GetCellStruct()
 		{
-			return new WFCCellStruct(CollapsedTile, Domain);
+			return new WFCCellStruct(CollapsedTile, Domain.GetTileArray());
 		}
 	}
 
@@ -153,9 +155,9 @@ namespace FolvosLibrary.WFC
 	public struct WFCCellStruct
 	{
 		public WFCTile CollapsedTile;
-		public List<WFCTile> Domain;
+		public WFCTile[] Domain;
 
-		public WFCCellStruct(WFCTile collapsedTile, List<WFCTile> domain)
+		public WFCCellStruct(WFCTile collapsedTile, WFCTile[] domain)
 		{
 			CollapsedTile = collapsedTile;
 			Domain = domain;

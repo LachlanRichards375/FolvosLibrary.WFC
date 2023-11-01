@@ -11,7 +11,7 @@ namespace FolvosLibrary.WFC
 	{
 		public static WFCTile[] GlobalDomain;
 		
-		public static List<WFCTile> GetTilesFromGlobalDomain(ulong bitmask){
+		public static WFCTile[] GetTilesFromGlobalDomain(ulong bitmask){
 			if(bitmask == 0){ return null;}
 
 			List<WFCTile> returner = new List<WFCTile>();
@@ -20,7 +20,7 @@ namespace FolvosLibrary.WFC
 					returner.Add(tile);
 				}
 			}
-			return returner;
+			return returner.ToArray();
 		}
 
 
@@ -30,20 +30,20 @@ namespace FolvosLibrary.WFC
 		}
 
 		WFCCell cell;
-		private ulong DomainBitMaskID = 0;
-		public void SetDomain(List<WFCTile> newDomain)
+		public ulong DomainBitMaskID { get; private set;} = 0;
+		public void SetDomain(IEnumerable<WFCTile> newDomain)
 		{
 			DomainBitMaskID = 0;
-			foreach (WFCTile t in Domain)
+			foreach (WFCTile t in newDomain)
 			{
 				DomainBitMaskID |= t.ID;
 			}
 		}
 
-		void SetDomain(ulong newDomainBitMask)
-		{
-			DomainBitMaskID = newDomain;
+		public WFCTile[] GetTileArray(){
+			return GetTilesFromGlobalDomain(DomainBitMaskID);
 		}
+
 
 		public WFCCellUpdate? DomainCheck(WFCCellUpdate update)
 		{
@@ -88,15 +88,7 @@ namespace FolvosLibrary.WFC
 
 			updateMessage.UpdateType = CellUpdateType.DomainUpdate;
 			updateMessage.UpdatedCell = cell;
-			updateMessage.DomainChanges = new List<DomainChange>();
-
-			foreach (WFCTile t in Domain)
-			{
-				if ((t.ID & tilesToRemove) == t.ID)
-				{
-					updateMessage.DomainChanges.Add(new DomainChange(t, DomainUpdate.RemovedFromDomain));
-				}
-			}
+			updateMessage.RemovedFromDomain = tilesToRemove;
 
 			//Remove the bit from the bitmask;
 			DomainBitMaskID &= ~tilesToRemove;
@@ -116,19 +108,19 @@ namespace FolvosLibrary.WFC
 
 		public int GetActualDomainSize()
 		{
-			int domainSize = 0;
-			if (Domain != null)
-			{
-				for (int i = 0; i < Domain.Count; i++)
-				{
-					if (Domain[i] != null)
-					{
-						domainSize++;
-					}
-				}
+			return countSetBits(DomainBitMaskID);
+		}
+		
+		// Function that count set bits
+		public static int countSetBits(ulong n)
+		{
+			int count = 0;
+			while (n != 0) {
+				count++;
+				n &= (n - 1);
 			}
-
-			return domainSize;
+			return count;
 		}
 	}
+
 }
