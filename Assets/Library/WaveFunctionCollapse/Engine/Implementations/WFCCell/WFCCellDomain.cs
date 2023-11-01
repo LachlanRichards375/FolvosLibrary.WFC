@@ -106,21 +106,17 @@ namespace FolvosLibrary.WFC
 			return sum;
 		}}
 
-		public int GetActualDomainSize()
+		public int Count
 		{
-			return countSetBits(DomainBitMaskID);
-		}
-		
-		// Function that count set bits
-		public static int countSetBits(ulong n)
-		{
-			int count = 0;
-			while (n != 0) {
-				count++;
-				n &= (n - 1);
+			get {
+				ulong n = DomainBitMaskID;
+				int count = 0;
+				while (n != 0) {
+					count++;
+					n &= (n - 1);
+				}
+				return count;
 			}
-			return count;
 		}
 	}
-
 }

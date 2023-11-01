@@ -65,7 +65,7 @@ namespace FolvosLibrary.WFC
 				}
 			}
 
-			if (index >= Domain.GetActualDomainSize()) index = Domain.GetActualDomainSize() - 1;
+			if (index >= Domain.Count) index = Domain.Count - 1;
 			return Collapse(Domain.GetTileArray()[index]);
 		}
 
@@ -129,7 +129,7 @@ namespace FolvosLibrary.WFC
 				return CollapsedTile.Name;
 			}
 
-			string returner = "Undecided (" + Domain.GetActualDomainSize() + ")";
+			string returner = "Undecided (" + Domain.Count + ")";
 			if (Domain == null)
 			{
 				// Debug.Log("Domain is null");
