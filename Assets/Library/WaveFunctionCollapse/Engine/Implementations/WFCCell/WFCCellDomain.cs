@@ -126,5 +126,10 @@ namespace FolvosLibrary.WFC
 				return count;
 			}
 		}
+
+		public string GetBitsAsString()
+		{
+			return Convert.ToString((long)DomainBitMaskID, 2).PadLeft(GlobalDomain.Length, '0');
+		}
 	}
 }

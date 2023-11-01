@@ -56,6 +56,8 @@ namespace FolvosLibrary.WFC
 		public WFCCellUpdate Collapse()
 		{
 			if (Domain.DomainBitMaskID == 0) { throw new ImpossibleDomainException("Nothing left in cell's domain."); }
+
+			// Debug.Log("Domain : " + Domain.GetBitsAsString());
 			float tileNo = UnityEngine.Random.Range(0f, Domain.MaxTileWeight);
 			int index = 0;
 			foreach (WFCTile tile in Domain.GetTileArray())
@@ -150,7 +152,7 @@ namespace FolvosLibrary.WFC
 
 		public WFCCellStruct GetCellStruct()
 		{
-			return new WFCCellStruct(CollapsedTile, Domain.GetTileArray());
+			return new WFCCellStruct(CollapsedTile, Domain.GetTileArray(), Domain.GetBitsAsString());
 		}
 	}
 
@@ -159,11 +161,13 @@ namespace FolvosLibrary.WFC
 	{
 		public WFCTile CollapsedTile;
 		public WFCTile[] Domain;
+		public string DomainBitMask;
 
-		public WFCCellStruct(WFCTile collapsedTile, WFCTile[] domain)
+		public WFCCellStruct(WFCTile collapsedTile, WFCTile[] domain, string DomainBitMask)
 		{
 			CollapsedTile = collapsedTile;
 			Domain = domain;
+			this.DomainBitMask = DomainBitMask;
 		}
 	}
 }
