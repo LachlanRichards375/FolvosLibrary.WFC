@@ -168,7 +168,9 @@ public class WFCEditorWindow : ExtendedEditorWindow
 			}
 			else
 			{
+				DateTime initializationStartTime = DateTime.Now;
 				Initialize();
+				Debug.Log($"Time to Initialize: {TimeToGenerate(initializationStartTime, DateTime.Now)}");
 				startTime = DateTime.Now;
 				Debug.Log($"Time at generation start: {startTime.TimeOfDay}");
 				manager.Generate();
@@ -260,7 +262,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 	{
 		UnsubscribeToResults();
 		ResetTimelapseVariables();
-		Debug.Log($"Time to Generate: {TimeToGenerate()}");
+		Debug.Log($"Time to Generate: {TimeToGenerate(startTime, DateTime.Now)}");
 		Debug.Log("Reached On Generate Result");
 
 		manager.UpdateOutput();
@@ -270,14 +272,14 @@ public class WFCEditorWindow : ExtendedEditorWindow
 	{
 		UnsubscribeToResults();
 		ResetTimelapseVariables();
-		Debug.Log($"Time to Error: {TimeToGenerate()}");
+		Debug.Log($"Time to Error: {TimeToGenerate(startTime, DateTime.Now)}");
 		Debug.Log(exception.Message);
 
 		manager.UpdateOutput();
 	}
-	string TimeToGenerate()
+	string TimeToGenerate(DateTime start, DateTime end)
 	{
-		TimeSpan finalTime = DateTime.Now.Subtract(startTime);
+		TimeSpan finalTime = end.Subtract(start);
 		string returner = "";
 		if (finalTime.Minutes > 0)
 		{
