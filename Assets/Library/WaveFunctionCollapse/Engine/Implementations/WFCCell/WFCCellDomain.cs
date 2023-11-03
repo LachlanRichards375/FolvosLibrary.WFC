@@ -15,21 +15,36 @@ namespace FolvosLibrary.WFC
 		{
 			if (bitmask == 0) { return null; }
 
-			List<WFCTile> returner = new List<WFCTile>();
+			WFCTile[] returner = new WFCTile[Count];
+			int i = 0;
 			foreach (WFCTile tile in GlobalDomain)
 			{
 				if ((tile.ID & bitmask) == tile.ID)
 				{
-					returner.Add(tile);
+					returner[i] = tile;
+					i++;
 				}
 			}
-			return returner.ToArray();
+			return returner;
 		}
 
 		public WFCCellDomain(WFCCell owner)
 		{
 			cell = owner;
 		}
+
+
+		public static int CountBitsFlippedInBitmask(ulong n)
+		{
+				int count = 0;
+				while (n != 0)
+				{
+					count++;
+					n &= (n - 1);
+				}
+				return count;
+			}
+
 
 		WFCCell cell;
 		public ulong DomainBitMaskID { get; private set; } = 0;
