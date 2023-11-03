@@ -56,21 +56,8 @@ namespace FolvosLibrary.WFC
 		public WFCCellUpdate Collapse()
 		{
 			if (Domain.DomainBitMaskID == 0) { throw new ImpossibleDomainException("Nothing left in cell's domain."); }
-
-			// Debug.Log("Domain : " + Domain.GetBitsAsString());
-			float tileNo = UnityEngine.Random.Range(0f, Domain.MaxTileWeight);
-			int index = 0;
-			foreach (WFCTile tile in Domain.GetTileArray())
-			{
-				tileNo -= tile.TileWeight;
-				index++;
-				if (tileNo <= 0f)
-				{
-					break;
-				}
-			}
-
-			if (index >= Domain.Count) index = Domain.Count - 1;
+			// Debug.LogWarning("Domain: " + Domain.GetBitsAsString() + "Domain.Count: " + Domain.Count + " Index: " + index);
+			int index = Mathf.FloorToInt(UnityEngine.Random.Range(0f, Domain.MaxTileWeight));
 			return Collapse(Domain.GetTileArray()[index]);
 		}
 
