@@ -90,6 +90,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		if (manager != null)
 		{
 			stepCount = EditorGUILayout.IntSlider(stepCount, 1, 50);
+			manager.MaxThreadCount = EditorGUILayout.IntField("Simultaneous Thread Count", manager.MaxThreadCount);
 		}
 		else
 		{
@@ -113,14 +114,6 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		}
 
 
-		if (collapseMethod != null)
-		{
-			collapseMethod.DrawOptions();
-		}
-		else
-		{
-			EditorGUILayout.LabelField("Collapse Method has not been provided", GUILayout.MinHeight(30));
-		}
 	}
 
 	void DisplayResetButton()

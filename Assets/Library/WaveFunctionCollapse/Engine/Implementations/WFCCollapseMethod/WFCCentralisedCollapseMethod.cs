@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Unity.Profiling;
 using UnityEditor;
 using UnityEngine;
 
@@ -19,9 +20,17 @@ namespace FolvosLibrary.WFC
 
 		bool continueWorkFlag = true;
 		Exception workerException = null;
+		static ProfilerMarker profilerMarker = new ProfilerMarker("CentralisedCollapse.Collapse");
+
+		public override void Initalize(IWFCManager manager)
+		{
+			manager.OnResult += () => continueWorkFlag = false;
+			maximumThreadCount = manager.MaxThreadCount;
+		}
+
 		public override void Collapse(WFCPosition position)
 		{
-
+			profilerMarker.Begin();
 			Enqueue(position);
 
 			while (countInQueue > 0)
@@ -32,6 +41,7 @@ namespace FolvosLibrary.WFC
 					throw workerException;
 				}
 			}
+			profilerMarker.End();
 		}
 
 		void NumberedThreadLoop()
@@ -60,17 +70,12 @@ namespace FolvosLibrary.WFC
 								}
 							}
 						}
-						else
-						{
-							Thread.Sleep(100);
-						}
 					}
 					catch (Exception e)
 					{
 						workerException = e;
 					}
 				}
-				Thread.Sleep(100);
 			}
 		}
 
@@ -129,22 +134,14 @@ namespace FolvosLibrary.WFC
 			toAlert[positionOfInterest].Remove(toDeregister);
 		}
 
-		public override void DrawOptions()
-		{
-			maximumThreadCount = EditorGUILayout.IntField("Simultaneous Thread Count", maximumThreadCount);
-			if (maximumThreadCount <= 0)
-			{
-				maximumThreadCount = 1;
-			}
-		}
-
 		public override void Reset()
 		{
-			workerException = null;
 			threadList = new Task[0];
+			workerException = null;
 
 			toAlert = new ConcurrentDictionary<WFCPosition, List<WFCCell>>();
 			updateQueue = new ConcurrentQueue<WFCCellUpdate>();
+			continueWorkFlag = true;
 		}
 	}
 }

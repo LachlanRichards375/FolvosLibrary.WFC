@@ -13,6 +13,17 @@ namespace FolvosLibrary.WFC
 		protected IWFCGrid grid;
 		protected List<WFCTile> domain;
 
+		public int MaxThreadCount
+		{
+			get => maximumThreadCount;
+			set
+			{
+				if (value < 1) { maximumThreadCount = 1; }
+				else { maximumThreadCount = value; }
+			}
+		}
+		private int maximumThreadCount = 1;
+
 		public void Initialize()
 		{
 			domain = new List<WFCTile>(importer.Import<string>("a"));
@@ -29,6 +40,8 @@ namespace FolvosLibrary.WFC
 				}
 			}
 			Debug.Log(print);
+
+			collapseMethod.Initalize(this);
 
 			grid.Initialize();
 

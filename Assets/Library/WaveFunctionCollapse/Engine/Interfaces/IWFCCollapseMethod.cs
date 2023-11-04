@@ -4,6 +4,7 @@ namespace FolvosLibrary.WFC
 {
 	public abstract class IWFCCollapseMethod : ScriptableObject
 	{
+		public abstract void Initalize(IWFCManager manager);
 		public abstract void Collapse(WFCPosition position);
 		public abstract void CollapseSpecificCell(WFCPosition position, WFCTile collapseTo);
 		public abstract void RegisterForCellUpdates(WFCPosition positionOfInterest, WFCCell toRegister);
@@ -15,7 +16,5 @@ namespace FolvosLibrary.WFC
 		{
 			this.manager = manager;
 		}
-
-		public abstract void DrawOptions();
 	}
 }
