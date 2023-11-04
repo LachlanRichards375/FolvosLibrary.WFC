@@ -15,7 +15,7 @@ namespace FolvosLibrary.WFC
 		{
 			if (bitmask == 0) { return null; }
 
-			WFCTile[] returner = new WFCTile[Count];
+			WFCTile[] returner = new WFCTile[CountBitsFlippedInBitmask(bitmask)];
 			int i = 0;
 			foreach (WFCTile tile in GlobalDomain)
 			{
@@ -36,14 +36,14 @@ namespace FolvosLibrary.WFC
 
 		public static int CountBitsFlippedInBitmask(ulong n)
 		{
-				int count = 0;
-				while (n != 0)
-				{
-					count++;
-					n &= (n - 1);
-				}
-				return count;
+			int count = 0;
+			while (n != 0)
+			{
+				count++;
+				n &= (n - 1);
 			}
+			return count;
+		}
 
 
 		WFCCell cell;
