@@ -1,14 +1,15 @@
 #include "WFCCellDomain.h"
 #include "WFCCellUpdate.h"
+#include "IWFCManager.h"
 
 class WFCCell
 {
 protected:
-	IWFCManager manager;
+	IWFCManager *manager;
 	WFCPosition position;
 	/* data */
 public:
-	WFCCell(IWFCManager m, WFCPosition p);
+	WFCCell(IWFCManager *m, WFCPosition p);
 	WFCCell(WFCCell &other);
 	~WFCCell();
 	WFCCellDomain Domain;
@@ -16,30 +17,30 @@ public:
 	// event Action<WFCCellUpdate> OnCellUpdate;
 
 	// Methods
-	//  void SetDomain(List<unsigned long> newDomain);
-	void RuleSetup();
-	float CalculateEntropy();
+	void SetDomain(std::vector<unsigned long> newDomain);
+	void RuleSetup() const;
+	float CalculateEntropy() const;
 	WFCCellUpdate Collapse();
 	WFCCellUpdate Collapse(unsigned long toCollapseTo);
 	// WFCCellUpdate? DomainCheck(WFCCellUpdate update);
-	WFCPosition GetPosition();
+	WFCPosition GetPosition() const;
 
-	// Comparison operators
-	//  int CompareTo(object obj);
-	//  int Compare(object x, object y);
-	//  override String ToString();
+	bool operator<(const WFCCell &other) const
+	{
+		return (this->CalculateEntropy() < other.CalculateEntropy());
+	}
 };
 
-WFCCell::WFCCell(IWFCManager m, WFCPosition p)
+WFCCell::WFCCell(IWFCManager *m, WFCPosition p)
 {
-	manager = m;
-	position = p;
+	WFCCell::manager = m;
+	WFCCell::position = p;
 }
 
 WFCCell::WFCCell(WFCCell &other)
 {
-	manager = other.manager;
-	position = other.position;
+	WFCCell::manager = other.manager;
+	WFCCell::position = other.position;
 }
 
 WFCCell::~WFCCell()

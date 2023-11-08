@@ -2,13 +2,14 @@
 
 class WFC2DGrid : public IWFCGrid
 {
+private:
+	void RuleSetupThreadWorker();
+
 protected:
-	std::vector<std::vector<WFCCell>> grid;
+	std::vector<std::vector<WFCCell *>> grid;
 
 public:
 	using IWFCGrid::IWFCGrid;
-	void SetSize(WFCPosition size);
-	WFCPosition GetSize();
 	void Initialize();
 	WFCCell GetCell(WFCPosition position);
 	bool HasCollapsed(WFCPosition position);

@@ -34,7 +34,7 @@ public:
 	WFCCell GetCell(WFCPosition position);
 	bool HasCollapsed(WFCPosition position);
 	bool HasInitialized();
-	List<WFCTile> GetDomain();
+	std::vector<unsigned long> GetDomain();
 	void Cleanup();
 	IWFCCollapseMethod GetCollapseMethod();
 	const int GetMaxThreadCount();

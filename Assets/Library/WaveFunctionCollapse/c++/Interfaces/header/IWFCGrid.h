@@ -1,9 +1,9 @@
-class IWFCManager;
-
+#pragma once
 #include <set>
 #include <vector>
 #include "WFCPosition.h"
 #include "WFCCell.h"
+#include "IWFCManager.h"
 
 class IWFCGrid
 {
@@ -11,7 +11,7 @@ protected:
 	IWFCManager *manager;
 	// List<WFCCell> EntropyQueue = new List<WFCCell>();
 	std::set<WFCCell> EntropyQueue = std::set<WFCCell>();
-	WFCPosition position;
+	WFCPosition size;
 
 	void
 	ShuffleLowestEntropy()
@@ -19,12 +19,10 @@ protected:
 	}
 
 public:
-	IWFCGrid(IWFCManager *manager);
+	IWFCGrid(IWFCManager *manager, WFCPosition size);
 	~IWFCGrid();
 
-	WFCPosition GetSize() { return position; }
-
-	virtual void SetSize(WFCPosition size) = 0;
+	WFCPosition GetSize() { return size; }
 
 	virtual void Initialize() = 0;
 	virtual WFCCell GetCell(WFCPosition position) = 0;
@@ -38,9 +36,10 @@ public:
 	virtual void Reset() = 0;
 };
 
-IWFCGrid::IWFCGrid(IWFCManager *manager)
+IWFCGrid::IWFCGrid(IWFCManager *manager, WFCPosition size)
 {
 	IWFCGrid::manager = manager;
+	IWFCGrid::size = size;
 }
 
 IWFCGrid::~IWFCGrid()
