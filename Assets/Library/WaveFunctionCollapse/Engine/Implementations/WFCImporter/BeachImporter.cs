@@ -8,12 +8,7 @@ public class BeachImporter : IWFCImporter
 	public WFCTile[] returner;
 	public override WFCTile[] Import<Input>(Input input)
 	{
-		List<WFCTile> toReturn = new List<WFCTile>();
-		for (int i = 0; i < returner.Length; i++)
-		{
-			toReturn.Add(WFCTile.CreateTile(returner[i].TileData, returner[i].Rules));
-		}
-		return toReturn.ToArray();
+		return (WFCTile[])returner.Clone();
 	}
 
 	public override void Reset()
