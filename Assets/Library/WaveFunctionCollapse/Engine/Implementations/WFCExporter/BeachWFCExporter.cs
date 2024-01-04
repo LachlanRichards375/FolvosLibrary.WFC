@@ -5,9 +5,27 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Folvos/WFC/Exporter/BeachExporter"), System.Serializable]
 public class BeachWFCExporter : IWFCExporter
 {
-	public override void Export()
+	public override void Export(ulong[] var, WFCPosition size)
 	{
-		Debug.LogError("Export should not be called, use Export(WFCCell[][]) instead");
+		string message = "Exporting: \n";
+		WFCCell[][] cells = new WFCCell[(int)size.x][];
+		for (int x = 0; x < size.x; x++)
+		{
+			cells[x] = new WFCCell[(int)size.y]; ;
+			for (int y = 0; y < size.y; y++)
+			{
+				message += var[x * size.AsVector2Int().x + y];
+				if (y + 1 < size.y)
+				{
+					message += ", ";
+				}
+				else
+				{
+					message += "\n";
+				}
+			}
+		}
+		Debug.Log(message);
 	}
 
 	Transform parent;

@@ -1,7 +1,9 @@
 
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using FolvosLibrary.WFC;
+using UnityEngine;
 
 public class WaveFunctionCollapse_CPP
 {
@@ -29,8 +31,8 @@ public class WaveFunctionCollapse_CPP
 	static extern int IWFCManager_Collapse(IntPtr manager, ulong toCollapseTo, IntPtr position);
 	[DllImport("WaveFunctionCollapse.dll")]
 	static extern int IWFCManager_Run(IntPtr manager);
-	[DllImport("WaveFunctionCollapse.dll")]
-	static extern ulong[] IWFCManager_GetResult(IntPtr manager, IntPtr length);
+	[DllImport("WaveFunctionCollapse.dll", CallingConvention = CallingConvention.Cdecl)]
+	static extern IntPtr IWFCManager_GetResult(IntPtr manager, ref ulong array, int lengthOfArray);
 
 	[DllImport("WaveFunctionCollapse.dll")]
 	static extern void WFCRule_Add_CellIsNot(ulong tile, ulong goal, uint localTargetCount, WFCPosition[] localTargets);
@@ -44,11 +46,12 @@ public class WaveFunctionCollapse_CPP
 	}
 
 	IntPtr manager;
-
+	WFCPosition size;
 	public WaveFunctionCollapse_CPP Create2DWFC(WFCPosition size)
 	{
 		IntPtr collapse = Threaded2DCollapse_Create();
 		IntPtr grid = Grid2D_Create(WFCPositionToIntPtr(size));
+		this.size = size;
 		manager = IWFCManager_Create(collapse, grid, 12);
 		return this;
 	}
@@ -89,17 +92,37 @@ public class WaveFunctionCollapse_CPP
 		}
 		catch (Exception e)
 		{
+			e.GetBaseException().ToString();
 		}
 		return this;
 	}
 
-	// public ulong[] Results => IWFCManager_GetResult(manager, new IntPtr());
+	//https://stackoverflow.com/questions/31349268/convert-intptr-to-ulong-array
+	ulong[] GetUlongArray(IntPtr ptr, int length)
+	{
+		long[] buffer = new long[length];
+		Marshal.Copy(ptr, buffer, 0, length - 1);
+		// If you're not a fan of LINQ, this can be
+		// replaced with a for loop or
+		// return Array.ConvertAll<long, ulong>(buffer, l => (ulong)l);
+		return buffer.Select(l => (ulong)l).ToArray();
+	}
 
 	public ulong[] GetResults()
 	{
-		int test = 0;
-		return IWFCManager_GetResult(manager, new IntPtr(test));
-
+		ulong[] returner = new ulong[0];
+		try
+		{
+			returner = new ulong[(int)size.x * (int)size.y];
+			Debug.Log("Attempting to get: " + returner.Length + " values back");
+			IWFCManager_GetResult(manager, ref returner[0], returner.Length);
+			Debug.Log("Got " + returner.Length + " values back");
+		}
+		catch (Exception e)
+		{
+			Debug.LogError(e.ToString() + "\n\t" + e.StackTrace);
+		}
+		return returner;
 	}
 
 	IntPtr WFCPositionToIntPtr(WFCPosition toConvert)

@@ -52,8 +52,10 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		if (GUILayout.Button("Import to DLL"))
 		{
 			WFCTile[] toAdd = importer.Import<string>("Needed to provide some type");
+			string message = "Added: ";
 			foreach (WFCTile tile in toAdd)
 			{
+				message += tile.ID + " as " + tile.name + "; ";
 				dll.AddTilesToDomain(tile.ID);
 				foreach (WFCRule rule in tile.Rules)
 				{
@@ -69,8 +71,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 				}
 			}
 
-
-			Debug.Log("Imported successfully");
+			Debug.Log("Imported successfully\n" + message);
 		}
 
 
@@ -99,6 +100,8 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		{
 			ulong[] test = dll.GetResults();
 			Debug.Log("Exported from the Generator successfully, recieved " + test.Length + "results");
+
+			exporter.Export(test, new WFCPosition(5, 5));
 		}
 
 	}
