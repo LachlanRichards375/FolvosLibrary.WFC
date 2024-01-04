@@ -1,5 +1,5 @@
 {
-    "name": "WaveFunctionCollapse",
+    "name": "WaveFunctionCollapseAsmDef",
     "rootNamespace": "",
     "references": [
         "GUID:0921e550998619f4d8abce4a3e08bf6d",

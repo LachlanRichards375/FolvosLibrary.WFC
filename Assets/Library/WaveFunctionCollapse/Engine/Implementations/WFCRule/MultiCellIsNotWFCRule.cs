@@ -68,7 +68,7 @@ public class MultiCellIsNotTarget2D : MultiCellTargetWFCRule
 		return true;
 	}
 
-	public Vector2Int[] GetTargetCellsArray()
+	public WFCPosition[] GetTargetCellsArray()
 	{
 		return targetCells;
 	}

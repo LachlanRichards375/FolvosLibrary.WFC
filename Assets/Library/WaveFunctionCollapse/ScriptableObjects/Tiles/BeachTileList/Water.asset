@@ -18,30 +18,27 @@ MonoBehaviour:
     TileWeight: 1
     Sprite: {fileID: -1850867006, guid: 21969dd09df65e143b6f12d9a18b1522, type: 3}
   Rules:
-  - rid: 7759094378477387952
-  - rid: 7759094378477387953
-  - rid: 7759094378477387954
+  - rid: 1581632585354969099
+  - rid: 1581632585354969100
+  - rid: 1581632585354969101
   references:
     version: 2
     RefIds:
-    - rid: 7759094378477387952
-      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
+    - rid: 1581632585354969099
+      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapseAsmDef}
       data:
         InvalidateTileOnFail: 0
-        targetCells: []
-        goal: {fileID: 11400000, guid: d1637cbfd533a624599eeabddfd90d36, type: 2}
-        direction: -1
-    - rid: 7759094378477387953
-      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
-      data:
-        InvalidateTileOnFail: 0
-        targetCells: []
         goal: {fileID: 11400000, guid: 4b80a1102d96b2940bf959e104e96aab, type: 2}
-        direction: -1
-    - rid: 7759094378477387954
-      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
+        direction: -513
+    - rid: 1581632585354969100
+      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapseAsmDef}
       data:
         InvalidateTileOnFail: 0
-        targetCells: []
+        goal: {fileID: 11400000, guid: d1637cbfd533a624599eeabddfd90d36, type: 2}
+        direction: 509
+    - rid: 1581632585354969101
+      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapseAsmDef}
+      data:
+        InvalidateTileOnFail: 0
         goal: {fileID: 11400000, guid: 3ee41d799c6fbbf40987ce9acd11a4ec, type: 2}
         direction: 28

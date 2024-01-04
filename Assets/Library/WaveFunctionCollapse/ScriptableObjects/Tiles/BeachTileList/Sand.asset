@@ -18,38 +18,34 @@ MonoBehaviour:
     TileWeight: 1
     Sprite: {fileID: 2013179604, guid: 21969dd09df65e143b6f12d9a18b1522, type: 3}
   Rules:
-  - rid: 7759094205233233990
-  - rid: 7759094205233233991
-  - rid: 7759094205233233992
-  - rid: 7759094205233233993
+  - rid: 1581632585354969095
+  - rid: 1581632585354969096
+  - rid: 1581632585354969097
+  - rid: 1581632585354969098
   references:
     version: 2
     RefIds:
-    - rid: 7759094205233233990
-      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
+    - rid: 1581632585354969095
+      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapseAsmDef}
       data:
         InvalidateTileOnFail: 0
-        targetCells: []
         goal: {fileID: 11400000, guid: 4b80a1102d96b2940bf959e104e96aab, type: 2}
-        direction: -1
-    - rid: 7759094205233233991
-      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
+        direction: -513
+    - rid: 1581632585354969096
+      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapseAsmDef}
       data:
         InvalidateTileOnFail: 0
-        targetCells: []
         goal: {fileID: 11400000, guid: d1637cbfd533a624599eeabddfd90d36, type: 2}
         direction: 28
-    - rid: 7759094205233233992
-      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
+    - rid: 1581632585354969097
+      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapseAsmDef}
       data:
         InvalidateTileOnFail: 0
-        targetCells: []
         goal: {fileID: 11400000, guid: dd71be7ad22618c45baf4d1ff8effb88, type: 2}
         direction: 448
-    - rid: 7759094205233233993
-      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapse}
+    - rid: 1581632585354969098
+      type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapseAsmDef}
       data:
         InvalidateTileOnFail: 0
-        targetCells: []
         goal: {fileID: 11400000, guid: c6a4fd71e9e02a64bacf01f4a46159d6, type: 2}
-        direction: -1
+        direction: -513

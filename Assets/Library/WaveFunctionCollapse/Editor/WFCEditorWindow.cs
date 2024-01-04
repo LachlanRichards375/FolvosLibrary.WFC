@@ -38,7 +38,68 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		{
 			DisplayTimelapseControls();
 		}
+
+		ShowDllOptions();
 	}
+
+	[SerializeField] WaveFunctionCollapse_CPP dll;
+
+	void ShowDllOptions()
+	{
+		dll ??= new WaveFunctionCollapse_CPP();
+		DrawLine(20, 20);
+
+		if (GUILayout.Button("Import to DLL"))
+		{
+			WFCTile[] toAdd = importer.Import<string>("Needed to provide some type");
+			foreach (WFCTile tile in toAdd)
+			{
+				dll.AddTilesToDomain(tile.ID);
+				foreach (WFCRule rule in tile.Rules)
+				{
+					if (rule is MultiCellIsNotTarget2D)
+					{
+						MultiCellIsNotTarget2D multiTargetRule = rule as MultiCellIsNotTarget2D;
+						WaveFunctionCollapse_CPP.CellIsNotRule ruleToAdd = new WaveFunctionCollapse_CPP.CellIsNotRule();
+						ruleToAdd.tile = tile.ID;
+						ruleToAdd.goal = multiTargetRule.goal.ID;
+						ruleToAdd.localTargets = multiTargetRule.GetTargetCellsArray();
+						dll.AddCellIsNotRule(ruleToAdd);
+					}
+				}
+			}
+
+
+			Debug.Log("Imported successfully");
+		}
+
+
+		if (GUILayout.Button("Initialize and set Size to (5,5)") && dll != null)
+		{
+			dll.Create2DWFC(new WFCPosition(5, 5));
+			Debug.Log("Initialized successfully");
+		}
+
+		if (GUILayout.Button("collapse specific cell to sand DLL") && dll != null)
+		{
+			dll.CollapseSpecificCell(4, new WFCPosition(2, 2));
+			Debug.Log("Collapsed Specific Cell successfully");
+		}
+
+		if (GUILayout.Button("Run DLL") && dll != null)
+		{
+			dll.RunGenerator();
+			Debug.Log("Run the Generator successfully");
+		}
+
+		if (GUILayout.Button("Export DLL Results") && dll != null)
+		{
+			ulong[] test = dll.GetResults();
+			Debug.Log("Exported from the Generator successfully, recieved " + test.Length + "results");
+		}
+
+	}
+
 
 	int stepCount = 1;
 	int millsBetweenStep = 500;

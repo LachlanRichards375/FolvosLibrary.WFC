@@ -6,31 +6,33 @@ using FolvosLibrary.WFC;
 public class WaveFunctionCollapse_CPP
 {
 	#region C++ Imports
-	[DllImport("WaveFunctionCollapse_CPP.dll")]
+	[DllImport("WaveFunctionCollapse.dll")]
 	static extern IntPtr Threaded2DCollapse_Create();
 
-	[DllImport("WaveFunctionCollapse_CPP.dll")]
+	[DllImport("WaveFunctionCollapse.dll")]
 	static extern IntPtr Grid2D_Create(IntPtr position);
 
-	[DllImport("WaveFunctionCollapse_CPP.dll")]
+	[DllImport("WaveFunctionCollapse.dll")]
 	static extern IntPtr WFCPosition_Create2D(uint x, uint y);
-	[DllImport("WaveFunctionCollapse_CPP.dll")]
+	[DllImport("WaveFunctionCollapse.dll")]
 	static extern IntPtr WFCPosition_Create3D(uint x, uint y, uint z);
-	[DllImport("WaveFunctionCollapse_CPP.dll")]
+	[DllImport("WaveFunctionCollapse.dll")]
 	static extern IntPtr WFCPosition_Create4D(uint x, uint y, uint z, uint w);
 
-	[DllImport("WaveFunctionCollapse_CPP.dll")]
+	[DllImport("WaveFunctionCollapse.dll")]
 	static extern IntPtr IWFCManager_Create(IntPtr collapseMethod, IntPtr grid, short threadCount);
 
-	[DllImport("WaveFunctionCollapse_CPP.dll")]
+	[DllImport("WaveFunctionCollapse.dll")]
 	static extern void AddTileToDomain(ulong tilesToAdd);
 
-	[DllImport("WaveFunctionCollapse_CPP.dll")]
+	[DllImport("WaveFunctionCollapse.dll")]
 	static extern int IWFCManager_Collapse(IntPtr manager, ulong toCollapseTo, IntPtr position);
-	[DllImport("WaveFunctionCollapse_CPP.dll")]
+	[DllImport("WaveFunctionCollapse.dll")]
 	static extern int IWFCManager_Run(IntPtr manager);
+	[DllImport("WaveFunctionCollapse.dll")]
+	static extern ulong[] IWFCManager_GetResult(IntPtr manager, IntPtr length);
 
-	[DllImport("WaveFunctionCollapse_CPP.dll")]
+	[DllImport("WaveFunctionCollapse.dll")]
 	static extern void WFCRule_Add_CellIsNot(ulong tile, ulong goal, uint localTargetCount, WFCPosition[] localTargets);
 	#endregion
 
@@ -43,7 +45,7 @@ public class WaveFunctionCollapse_CPP
 
 	IntPtr manager;
 
-	public WaveFunctionCollapse_CPP Create2DWaveFunctionCollapse(WFCPosition size)
+	public WaveFunctionCollapse_CPP Create2DWFC(WFCPosition size)
 	{
 		IntPtr collapse = Threaded2DCollapse_Create();
 		IntPtr grid = Grid2D_Create(WFCPositionToIntPtr(size));
@@ -67,7 +69,7 @@ public class WaveFunctionCollapse_CPP
 	{
 		if (manager == IntPtr.Zero)
 		{
-			//This should throw an error and make me realise what's wrong
+			//This should throw an error and make me realise something's wrong
 			return null;
 		}
 		IWFCManager_Collapse(manager, toCollapseTo, WFCPositionToIntPtr(position));
@@ -78,11 +80,26 @@ public class WaveFunctionCollapse_CPP
 	{
 		if (manager == IntPtr.Zero)
 		{
-			//This should throw an error and make me realise what's wrong
+			//This should throw an error and make me realise something's wrong
 			return null;
 		}
-		IWFCManager_Run(manager);
+		try
+		{
+			IWFCManager_Run(manager);
+		}
+		catch (Exception e)
+		{
+		}
 		return this;
+	}
+
+	// public ulong[] Results => IWFCManager_GetResult(manager, new IntPtr());
+
+	public ulong[] GetResults()
+	{
+		int test = 0;
+		return IWFCManager_GetResult(manager, new IntPtr(test));
+
 	}
 
 	IntPtr WFCPositionToIntPtr(WFCPosition toConvert)

@@ -8,7 +8,7 @@ namespace FolvosLibrary.WFC
 	[System.Serializable]
 	public abstract class MultiCellTargetWFCRule : WFCRule
 	{
-		public Vector2Int[] targetCells = new Vector2Int[0];
+		public WFCPosition[] targetCells = new WFCPosition[0];
 		public WFCTile goal;
 		public CellDirection.Direction direction;
 
@@ -54,7 +54,7 @@ namespace FolvosLibrary.WFC
 		public void PrintCellTargets(Vector2Int cellPos)
 		{
 			string s = $"{goal.Name} at {cellPos} has {targetCells.Length} target cells: ";
-			foreach (Vector2Int v in targetCells)
+			foreach (WFCPosition v in targetCells)
 			{
 				s += $"{v}, ";
 			}
