@@ -88,8 +88,11 @@ public class WFCEditorWindow : ExtendedEditorWindow
 
 		if (GUILayout.Button("Run DLL") && dll != null)
 		{
+			System.Diagnostics.Stopwatch stopwatch = new();
+			stopwatch.Start();
 			dll.RunGenerator();
-			Debug.Log("Run the Generator successfully");
+			stopwatch.Stop();
+			Debug.Log("Run the Generator in " + stopwatch.ElapsedMilliseconds + "ms successfully");
 		}
 
 		if (GUILayout.Button("Export DLL Results") && dll != null)
