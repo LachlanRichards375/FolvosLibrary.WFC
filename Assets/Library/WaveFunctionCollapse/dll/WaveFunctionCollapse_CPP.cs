@@ -114,9 +114,7 @@ public class WaveFunctionCollapse_CPP
 		try
 		{
 			returner = new ulong[(int)size.x * (int)size.y];
-			Debug.Log("Attempting to get: " + returner.Length + " values back");
 			IWFCManager_GetResult(manager, ref returner[0], returner.Length);
-			Debug.Log("Got " + returner.Length + " values back");
 		}
 		catch (Exception e)
 		{

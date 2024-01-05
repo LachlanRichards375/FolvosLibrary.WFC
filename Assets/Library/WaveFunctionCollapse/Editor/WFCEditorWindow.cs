@@ -51,6 +51,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 
 		if (GUILayout.Button("Import to DLL"))
 		{
+			dll = new WaveFunctionCollapse_CPP();
 			WFCTile[] toAdd = importer.Import<string>("Needed to provide some type");
 			string message = "Added: ";
 			foreach (WFCTile tile in toAdd)
