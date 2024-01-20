@@ -97,22 +97,12 @@ public class WaveFunctionCollapse_CPP
 		return this;
 	}
 
-	//https://stackoverflow.com/questions/31349268/convert-intptr-to-ulong-array
-	ulong[] GetUlongArray(IntPtr ptr, int length)
-	{
-		long[] buffer = new long[length];
-		Marshal.Copy(ptr, buffer, 0, length - 1);
-		// If you're not a fan of LINQ, this can be
-		// replaced with a for loop or
-		// return Array.ConvertAll<long, ulong>(buffer, l => (ulong)l);
-		return buffer.Select(l => (ulong)l).ToArray();
-	}
-
 	public ulong[] GetResults()
 	{
 		ulong[] returner = new ulong[0];
 		try
 		{
+			Debug.Log("Size: " + size.AsVector2Int());
 			returner = new ulong[(int)size.x * (int)size.y];
 			IWFCManager_GetResult(manager, ref returner[0], returner.Length);
 		}

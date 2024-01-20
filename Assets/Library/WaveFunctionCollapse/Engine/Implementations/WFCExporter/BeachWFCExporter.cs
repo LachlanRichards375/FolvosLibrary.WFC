@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FolvosLibrary.WFC;
 using UnityEngine;
 
@@ -5,14 +6,16 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Folvos/WFC/Exporter/BeachExporter"), System.Serializable]
 public class BeachWFCExporter : IWFCExporter
 {
-	public override void Export(ulong[] var, WFCPosition size)
+	Transform parent;
+	GameObject[][] Exported = new GameObject[0][];
+	public override void Export(ulong[] var, WFCPosition size, WFCTileList tileList)
 	{
 		string message = "Exporting: \n";
 		WFCCell[][] cells = new WFCCell[(int)size.x][];
-		for (int x = 0; x < size.x; x++)
+		for (int y = 0; y < size.y; y++)
 		{
-			cells[x] = new WFCCell[(int)size.y]; ;
-			for (int y = 0; y < size.y; y++)
+			cells[y] = new WFCCell[(int)size.y]; ;
+			for (int x = 0; x < size.x; x++)
 			{
 				message += var[x * size.AsVector2Int().x + y];
 				if (y + 1 < size.y)
@@ -26,15 +29,54 @@ public class BeachWFCExporter : IWFCExporter
 			}
 		}
 		Debug.Log(message);
-	}
 
-	Transform parent;
-	GameObject[][] Exported = new GameObject[0][];
+		//Setup the dictionary
+		Dictionary<ulong, WFCTile> tileDict = new();
+		foreach (WFCTile t in tileList.tiles)
+		{
+			tileDict.Add(t.ID, t);
+		}
+
+		//Do we need to create new gameobjects or can we use old ones?
+		bool createGameObjects = Exported.Length != size.x || Exported[0].Length != size.y || Exported[0][0] == null;
+		if (createGameObjects)
+		{
+			Exported = new GameObject[(int)size.x][];
+		}
+
+		//The grid loop 
+		for (int x = 0; x < (int)size.x; x++)
+		{
+			if (createGameObjects)
+			{
+				Exported[x] = new GameObject[(int)size.y];
+			}
+			for (int y = 0; y < (int)size.y; y++)
+			{
+				if (createGameObjects)
+				{
+					Exported[x][y] = new GameObject($"{{{x},{y}}}", typeof(SpriteRenderer), typeof(WFCCellComponent));
+					if (parent != null)
+					{
+						Exported[x][y].transform.SetParent(parent);
+					}
+				}
+
+				GameObject target = Exported[x][y];
+				Transform t = target.transform;
+				t.position = new Vector3(x, y, 0f);
+				WFCTile collapsedTile = tileDict[var[x * size.AsVector2Int().x + y]];
+
+				SpriteRenderer sR = target.GetComponent<SpriteRenderer>();
+				sR.sprite = collapsedTile.TileData.Sprite;
+			}
+		}
+	}
 
 	public GameObject[][] Export(WFCCell[][] input)
 	{
 		WFCCell[][] toExport;
-		toExport = input as WFCCell[][];
+		toExport = input;
 		bool createGameObjects = Exported.Length != input.Length || Exported[0].Length != input[0].Length || Exported[0][0] == null;
 
 		if (createGameObjects)

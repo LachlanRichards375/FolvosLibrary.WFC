@@ -9,7 +9,7 @@ namespace FolvosLibrary.WFC
 	public class WFCTileList : ScriptableObject
 	{
 		[SerializeReference]
-		private WFCTile[] tiles;
+		public WFCTile[] tiles;
 
 		public bool ValidateTileBitmasks()
 		{
@@ -29,6 +29,4 @@ namespace FolvosLibrary.WFC
 			return true;
 		}
 	}
-
-
 }
