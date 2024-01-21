@@ -1,5 +1,5 @@
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using FolvosLibrary.WFC;
 using UnityEngine;
 
@@ -70,6 +70,29 @@ public class MultiCellIsNotTarget2D : MultiCellTargetWFCRule
 
 	public WFCPosition[] GetTargetCellsArray()
 	{
-		return targetCells;
+
+		List<WFCPosition> localDirections = new();
+		foreach (CellDirection.Direction d in Enum.GetValues(typeof(CellDirection.Direction)))
+		{
+			if (direction.HasFlag(d))
+			{
+				localDirections.Add(new WFCPosition(CellDirection.CellDirectionToVector2Int(d)));
+			}
+		}
+
+		foreach (var dir in targetCells)
+		{
+			localDirections.Add(dir);
+		}
+
+		string s = "localDirections:\n";
+		foreach (var v in localDirections)
+		{
+			s += v.ToString() + ", ";
+		}
+
+		Debug.Log(s);
+
+		return localDirections.ToArray();
 	}
 }

@@ -15,11 +15,11 @@ public class WaveFunctionCollapse_CPP
 	static extern IntPtr Grid2D_Create(IntPtr position);
 
 	[DllImport("WaveFunctionCollapse.dll")]
-	static extern IntPtr WFCPosition_Create2D(uint x, uint y);
+	static extern IntPtr WFCPosition_Create2D(int x, int y);
 	[DllImport("WaveFunctionCollapse.dll")]
-	static extern IntPtr WFCPosition_Create3D(uint x, uint y, uint z);
+	static extern IntPtr WFCPosition_Create3D(int x, int y, int z);
 	[DllImport("WaveFunctionCollapse.dll")]
-	static extern IntPtr WFCPosition_Create4D(uint x, uint y, uint z, uint w);
+	static extern IntPtr WFCPosition_Create4D(int x, int y, int z, int w);
 
 	[DllImport("WaveFunctionCollapse.dll")]
 	static extern IntPtr IWFCManager_Create(IntPtr collapseMethod, IntPtr grid, short threadCount);
@@ -34,8 +34,8 @@ public class WaveFunctionCollapse_CPP
 	[DllImport("WaveFunctionCollapse.dll", CallingConvention = CallingConvention.Cdecl)]
 	static extern IntPtr IWFCManager_GetResult(IntPtr manager, ref ulong array, int lengthOfArray);
 
-	[DllImport("WaveFunctionCollapse.dll")]
-	static extern void WFCRule_Add_CellIsNot(ulong tile, ulong goal, uint localTargetCount, WFCPosition[] localTargets);
+	[DllImport("WaveFunctionCollapse.dll", CallingConvention = CallingConvention.Cdecl)]
+	static extern void WFCRule_Add_CellIsNot(ulong tile, ulong goal, IntPtr localTargets, uint localTargetCount);
 	#endregion
 
 	public struct CellIsNotRule
@@ -58,7 +58,7 @@ public class WaveFunctionCollapse_CPP
 
 	public WaveFunctionCollapse_CPP AddCellIsNotRule(CellIsNotRule ruleToAdd)
 	{
-		WFCRule_Add_CellIsNot(ruleToAdd.tile, ruleToAdd.goal, (uint)ruleToAdd.localTargets.Length, ruleToAdd.localTargets);
+		WFCRule_Add_CellIsNot(ruleToAdd.tile, ruleToAdd.goal, WFCPositionToIntPtr(ruleToAdd.localTargets[0]), (uint)ruleToAdd.localTargets.Length);
 		return this;
 	}
 
@@ -117,15 +117,15 @@ public class WaveFunctionCollapse_CPP
 	{
 		if (toConvert.IsVector4())
 		{
-			return WFCPosition_Create4D((uint)toConvert.x, (uint)toConvert.y, (uint)toConvert.z, (uint)toConvert.w);
+			return WFCPosition_Create4D((int)toConvert.x, (int)toConvert.y, (int)toConvert.z, (int)toConvert.w);
 		}
 		else if (toConvert.IsVector3())
 		{
-			return WFCPosition_Create3D((uint)toConvert.x, (uint)toConvert.y, (uint)toConvert.z);
+			return WFCPosition_Create3D((int)toConvert.x, (int)toConvert.y, (int)toConvert.z);
 		}
 		else
 		{
-			return WFCPosition_Create2D((uint)toConvert.x, (uint)toConvert.y);
+			return WFCPosition_Create2D((int)toConvert.x, (int)toConvert.y);
 		}
 	}
 }

@@ -91,14 +91,16 @@ public class WFCEditorWindow : ExtendedEditorWindow
 			dll.AddTilesToDomain(tile.ID);
 			foreach (WFCRule rule in tile.Rules)
 			{
-				if (rule is MultiCellIsNotTarget2D)
+				switch (rule)
 				{
-					MultiCellIsNotTarget2D multiTargetRule = rule as MultiCellIsNotTarget2D;
-					WaveFunctionCollapse_CPP.CellIsNotRule ruleToAdd = new WaveFunctionCollapse_CPP.CellIsNotRule();
-					ruleToAdd.tile = tile.ID;
-					ruleToAdd.goal = multiTargetRule.goal.ID;
-					ruleToAdd.localTargets = multiTargetRule.GetTargetCellsArray();
-					dll.AddCellIsNotRule(ruleToAdd);
+					case MultiCellIsNotTarget2D:
+						MultiCellIsNotTarget2D multiTargetRule = rule as MultiCellIsNotTarget2D;
+						WaveFunctionCollapse_CPP.CellIsNotRule ruleToAdd = new WaveFunctionCollapse_CPP.CellIsNotRule();
+						ruleToAdd.tile = tile.ID;
+						ruleToAdd.goal = multiTargetRule.goal.ID;
+						ruleToAdd.localTargets = multiTargetRule.GetTargetCellsArray();
+						dll.AddCellIsNotRule(ruleToAdd);
+						break;
 				}
 			}
 		}
