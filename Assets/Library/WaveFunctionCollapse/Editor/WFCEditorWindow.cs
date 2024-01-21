@@ -1,6 +1,4 @@
 using System;
-using System.Threading;
-using System.Threading.Tasks;
 using FolvosLibrary.Logging;
 using FolvosLibrary.WFC;
 using UnityEditor;
@@ -18,6 +16,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 	[SerializeReference] GameObject mapParent;
 	[SerializeReference] WFCTileList wfcTileList;
 	[SerializeField] IWFCExporter exporter;
+	[SerializeField] Vector2Int gridSize;
 
 	private void OnGUI()
 	{
@@ -30,6 +29,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		mapParent = (GameObject)EditorGUILayout.ObjectField("Map Parent: ", mapParent, typeof(GameObject), true);
 		wfcTileList = (WFCTileList)EditorGUILayout.ObjectField("Tile List: ", wfcTileList, typeof(WFCTileList), true);
 		exporter = (IWFCExporter)EditorGUILayout.ObjectField("Exporter: ", exporter, typeof(IWFCExporter), true);
+		gridSize = (Vector2Int)EditorGUILayout.Vector2IntField("Size: ", gridSize);
 	}
 
 	[SerializeField] WaveFunctionCollapse_CPP dll;
@@ -74,6 +74,10 @@ public class WFCEditorWindow : ExtendedEditorWindow
 	private void Reset()
 	{
 		dll = new WaveFunctionCollapse_CPP();
+		while (mapParent.transform.childCount > 0)
+		{
+			DestroyImmediate(mapParent.transform.GetChild(0).gameObject);
+		}
 	}
 
 	void Import()
@@ -104,13 +108,13 @@ public class WFCEditorWindow : ExtendedEditorWindow
 
 	void Initialize()
 	{
-		dll.Create2DWFC(new WFCPosition(5, 5));
+		dll.Create2DWFC(new WFCPosition(gridSize));
 		Debug.Log("Initialized successfully");
 	}
 
 	void CollapseSpecificCell()
 	{
-		dll.CollapseSpecificCell(4, new WFCPosition(2, 2));
+		dll.CollapseSpecificCell(4, new WFCPosition((int)gridSize.x / 2, (int)gridSize.y / 2));
 		Debug.Log("Collapsed Specific Cell successfully");
 	}
 
@@ -128,7 +132,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		ulong[] test = dll.GetResults();
 		Debug.Log("Exported from the Generator successfully, recieved " + test.Length + "results");
 		exporter.SetParent(mapParent.transform);
-		exporter.Export(test, new WFCPosition(5, 5), wfcTileList);
+		exporter.Export(test, new WFCPosition(gridSize), wfcTileList);
 	}
 
 	string TimeToGenerate(DateTime start, DateTime end)
