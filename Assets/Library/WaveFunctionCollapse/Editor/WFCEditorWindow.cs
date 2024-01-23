@@ -40,6 +40,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 
 		DrawLine(20, 20);
 
+		GUILayout.BeginHorizontal();
 		if (GUILayout.Button("Reset DLL"))
 		{
 			Reset();
@@ -50,11 +51,13 @@ public class WFCEditorWindow : ExtendedEditorWindow
 			Import();
 		}
 
-		if (GUILayout.Button("Initialize and set Size to (5,5)") && dll != null)
+		if (GUILayout.Button("Initialize and Set Size") && dll != null)
 		{
 			Initialize();
 		}
+		GUILayout.EndHorizontal();
 
+		GUILayout.BeginHorizontal();
 		if (GUILayout.Button("collapse specific cell to sand DLL") && dll != null)
 		{
 			CollapseSpecificCell();
@@ -68,6 +71,31 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		if (GUILayout.Button("Export DLL Results") && dll != null)
 		{
 			Export();
+		}
+		GUILayout.EndHorizontal();
+
+		if (GUILayout.Button("Generate something") && dll != null)
+		{
+			DateTime start = DateTime.Now;
+			bool generatedCorrectly = false;
+			while (!generatedCorrectly)
+			{
+				generatedCorrectly = true;
+				try
+				{
+					Reset();
+					Import();
+					Initialize();
+					CollapseSpecificCell();
+					Run();
+					Export();
+				}
+				catch
+				{
+					generatedCorrectly = false;
+				}
+			}
+			Debug.Log("Generation time: " + TimeToGenerate(start, DateTime.Now));
 		}
 	}
 
@@ -95,10 +123,12 @@ public class WFCEditorWindow : ExtendedEditorWindow
 				{
 					case MultiCellIsNotTarget2D:
 						MultiCellIsNotTarget2D multiTargetRule = rule as MultiCellIsNotTarget2D;
-						WaveFunctionCollapse_CPP.CellIsNotRule ruleToAdd = new WaveFunctionCollapse_CPP.CellIsNotRule();
-						ruleToAdd.tile = tile.ID;
-						ruleToAdd.goal = multiTargetRule.goal.ID;
-						ruleToAdd.localTargets = multiTargetRule.GetTargetCellsArray();
+						WaveFunctionCollapse_CPP.CellIsNotRule ruleToAdd = new WaveFunctionCollapse_CPP.CellIsNotRule
+						{
+							tile = tile.ID,
+							goal = multiTargetRule.goal.ID,
+							localTargets = multiTargetRule.GetTargetCellsArray()
+						};
 						dll.AddCellIsNotRule(ruleToAdd);
 						break;
 				}
@@ -117,6 +147,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 	void CollapseSpecificCell()
 	{
 		dll.CollapseSpecificCell(4, new WFCPosition((int)gridSize.x / 2, (int)gridSize.y / 2));
+		// dll.CollapseSpecificCell(2, new WFCPosition((int)gridSize.x / 4 * 3, (int)gridSize.y / 2));
 		Debug.Log("Collapsed Specific Cell successfully");
 	}
 
