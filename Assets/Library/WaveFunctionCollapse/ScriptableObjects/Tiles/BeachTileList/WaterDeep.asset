@@ -41,4 +41,4 @@ MonoBehaviour:
       data:
         InvalidateTileOnFail: 0
         goal: {fileID: 11400000, guid: 3ee41d799c6fbbf40987ce9acd11a4ec, type: 2}
-        direction: -1
+        direction: 509

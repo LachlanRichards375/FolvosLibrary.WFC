@@ -91,8 +91,6 @@ public class MultiCellIsNotTarget2D : MultiCellTargetWFCRule
 			s += v.ToString() + ", ";
 		}
 
-		Debug.Log(s);
-
 		return localDirections.ToArray();
 	}
 }

@@ -35,7 +35,7 @@ public class WaveFunctionCollapse_CPP
 	static extern IntPtr IWFCManager_GetResult(IntPtr manager, ref ulong array, int lengthOfArray);
 
 	[DllImport("WaveFunctionCollapse.dll", CallingConvention = CallingConvention.Cdecl)]
-	static extern void WFCRule_Add_CellIsNot(ulong tile, ulong goal, IntPtr localTargets, uint localTargetCount);
+	static extern void WFCRule_Add_CellIsNot(ulong tile, ulong goal, int gridDimensions, ref int localTargets, uint localTargetCount);
 	#endregion
 
 	public struct CellIsNotRule
@@ -58,7 +58,13 @@ public class WaveFunctionCollapse_CPP
 
 	public WaveFunctionCollapse_CPP AddCellIsNotRule(CellIsNotRule ruleToAdd)
 	{
-		WFCRule_Add_CellIsNot(ruleToAdd.tile, ruleToAdd.goal, WFCPositionToIntPtr(ruleToAdd.localTargets[0]), (uint)ruleToAdd.localTargets.Length);
+		int[] localTargets = new int[ruleToAdd.localTargets.Length * 2];
+		for (int i = 0; i < ruleToAdd.localTargets.Length; i++)
+		{
+			localTargets[i * 2] = (int)ruleToAdd.localTargets[i].x;
+			localTargets[(i * 2) + 1] = (int)ruleToAdd.localTargets[i].y;
+		}
+		WFCRule_Add_CellIsNot(ruleToAdd.tile, ruleToAdd.goal, 2, ref localTargets[0], (uint)ruleToAdd.localTargets.Length);
 		return this;
 	}
 
