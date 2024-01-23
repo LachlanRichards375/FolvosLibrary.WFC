@@ -18,9 +18,9 @@ MonoBehaviour:
     TileWeight: 1
     Sprite: {fileID: -1850867006, guid: 21969dd09df65e143b6f12d9a18b1522, type: 3}
   Rules:
-  - rid: 1581632585354969099
-  - rid: 1581632585354969100
   - rid: 1581632585354969101
+  - rid: 1581632585354969100
+  - rid: 1581632585354969099
   references:
     version: 2
     RefIds:

@@ -29,7 +29,7 @@ MonoBehaviour:
       data:
         InvalidateTileOnFail: 0
         goal: {fileID: 11400000, guid: 3ee41d799c6fbbf40987ce9acd11a4ec, type: 2}
-        direction: 28
+        direction: 448
     - rid: 1581632585354969090
       type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapseAsmDef}
       data:
