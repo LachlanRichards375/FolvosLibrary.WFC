@@ -74,6 +74,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		}
 		GUILayout.EndHorizontal();
 
+		DrawLine(20, 20);
 		if (GUILayout.Button("Generate something") && dll != null)
 		{
 			DateTime start = DateTime.Now;
@@ -97,15 +98,13 @@ public class WFCEditorWindow : ExtendedEditorWindow
 			}
 			Debug.Log("Generation time: " + TimeToGenerate(start, DateTime.Now));
 		}
+
+		//EditorUtility.DisplayCancelableProgressBar("Title", "Info", 0f /*0 = none, 1 = finished*/);
 	}
 
 	private void Reset()
 	{
 		dll = new WaveFunctionCollapse_CPP();
-		while (mapParent.transform.childCount > 0)
-		{
-			DestroyImmediate(mapParent.transform.GetChild(0).gameObject);
-		}
 	}
 
 	void Import()

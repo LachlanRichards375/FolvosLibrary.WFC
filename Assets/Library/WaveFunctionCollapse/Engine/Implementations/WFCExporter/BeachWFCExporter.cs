@@ -12,10 +12,10 @@ public class BeachWFCExporter : IWFCExporter
 	{
 		string message = "Exporting: \n";
 		WFCCell[][] cells = new WFCCell[(int)size.x][];
-		for (int y = 0; y < size.y; y++)
+		for (int x = 0; x < size.x; x++)
 		{
-			cells[y] = new WFCCell[(int)size.y]; ;
-			for (int x = 0; x < size.x; x++)
+			cells[x] = new WFCCell[(int)size.x]; ;
+			for (int y = 0; y < size.y; y++)
 			{
 				message += var[x * size.AsVector2Int().x + y];
 				if (y + 1 < size.y)
@@ -41,6 +41,11 @@ public class BeachWFCExporter : IWFCExporter
 		bool createGameObjects = Exported.Length != size.x || Exported[0].Length != size.y || Exported[0][0] == null;
 		if (createGameObjects)
 		{
+			while (parent.childCount > 0)
+			{
+				DestroyImmediate(parent.GetChild(0).gameObject);
+			}
+
 			Exported = new GameObject[(int)size.x][];
 		}
 
