@@ -10,7 +10,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 	[MenuItem("Folvos Library/WFC Editor Window")]
 	public static void ShowWindow()
 	{
-		GetWindow<WFCEditorWindow>("WFC DLL Editor Window");
+		GetWindow<WFCEditorWindow>("WFC Editor Window");
 	}
 
 	[SerializeReference] GameObject mapParent;
