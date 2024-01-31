@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using FolvosLibrary.WFC;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -49,6 +50,7 @@ public class BeachWFCExporter : IWFCExporter
 			Exported = new GameObject[(int)size.x][];
 		}
 
+
 		//The grid loop 
 		for (int x = 0; x < (int)size.x; x++)
 		{
@@ -58,6 +60,11 @@ public class BeachWFCExporter : IWFCExporter
 			}
 			for (int y = 0; y < (int)size.y; y++)
 			{
+				// if (Application.isEditor)
+				// {
+				// 	EditorUtility.DisplayProgressBar("Creating GameObjects", "" + x * size.x + y + "/" + size.x * size.y, (float)(x * size.x + y) / (float)(size.x * size.y));
+				// }
+
 				if (createGameObjects)
 				{
 					Exported[x][y] = new GameObject($"{{{x},{y}}}", typeof(SpriteRenderer), typeof(WFCCellComponent));
