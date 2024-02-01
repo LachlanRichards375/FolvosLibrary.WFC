@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a466f86a19776f740aa9cbab4fbbc1e2, type: 3}
+  m_Script: {fileID: 11500000, guid: a6523d539e4dc7b4e9f0b43c7b2f79e9, type: 3}
   m_Name: Sand
   m_EditorClassIdentifier: 
   TileData:
@@ -28,24 +28,20 @@ MonoBehaviour:
     - rid: 1581632585354969095
       type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapseAsmDef}
       data:
-        InvalidateTileOnFail: 0
-        goal: {fileID: 11400000, guid: 4b80a1102d96b2940bf959e104e96aab, type: 2}
+        goal: {fileID: 11400000, guid: 278a06451b96a704f8ab4d55328ce0a7, type: 2}
         direction: -513
     - rid: 1581632585354969096
       type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapseAsmDef}
       data:
-        InvalidateTileOnFail: 0
-        goal: {fileID: 11400000, guid: d1637cbfd533a624599eeabddfd90d36, type: 2}
+        goal: {fileID: 11400000, guid: da291c544f6701649b2a2d5ab8cc24c3, type: 2}
         direction: 28
     - rid: 1581632585354969097
       type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapseAsmDef}
       data:
-        InvalidateTileOnFail: 0
-        goal: {fileID: 11400000, guid: dd71be7ad22618c45baf4d1ff8effb88, type: 2}
+        goal: {fileID: 11400000, guid: d3ef0b160814d3d408b77f4cb45f8d2c, type: 2}
         direction: 448
     - rid: 1581632585354969098
       type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapseAsmDef}
       data:
-        InvalidateTileOnFail: 0
-        goal: {fileID: 11400000, guid: c6a4fd71e9e02a64bacf01f4a46159d6, type: 2}
+        goal: {fileID: 11400000, guid: e480210cc5e1aab4eb59c36909837bae, type: 2}
         direction: -513

@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ce63e6810607e042b44c98cc5e40e85, type: 3}
+  m_Script: {fileID: 11500000, guid: ef2c7f59bc3156d4a9930235d1f509e3, type: 3}
   m_Name: BeachTileList
   m_EditorClassIdentifier: 
   tiles:
-  - {fileID: 11400000, guid: d1637cbfd533a624599eeabddfd90d36, type: 2}
-  - {fileID: 11400000, guid: 4b80a1102d96b2940bf959e104e96aab, type: 2}
-  - {fileID: 11400000, guid: 3ee41d799c6fbbf40987ce9acd11a4ec, type: 2}
-  - {fileID: 11400000, guid: dd71be7ad22618c45baf4d1ff8effb88, type: 2}
-  - {fileID: 11400000, guid: c6a4fd71e9e02a64bacf01f4a46159d6, type: 2}
+  - {fileID: 11400000, guid: da291c544f6701649b2a2d5ab8cc24c3, type: 2}
+  - {fileID: 11400000, guid: 278a06451b96a704f8ab4d55328ce0a7, type: 2}
+  - {fileID: 11400000, guid: aab153de266be9a408ad547b80670a2c, type: 2}
+  - {fileID: 11400000, guid: d3ef0b160814d3d408b77f4cb45f8d2c, type: 2}
+  - {fileID: 11400000, guid: e480210cc5e1aab4eb59c36909837bae, type: 2}

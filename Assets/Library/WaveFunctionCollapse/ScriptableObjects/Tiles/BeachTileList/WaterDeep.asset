@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a466f86a19776f740aa9cbab4fbbc1e2, type: 3}
+  m_Script: {fileID: 11500000, guid: a6523d539e4dc7b4e9f0b43c7b2f79e9, type: 3}
   m_Name: WaterDeep
   m_EditorClassIdentifier: 
   TileData:
@@ -27,18 +27,15 @@ MonoBehaviour:
     - rid: 1581632585354969102
       type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapseAsmDef}
       data:
-        InvalidateTileOnFail: 0
-        goal: {fileID: 11400000, guid: d1637cbfd533a624599eeabddfd90d36, type: 2}
+        goal: {fileID: 11400000, guid: aab153de266be9a408ad547b80670a2c, type: 2}
         direction: -513
     - rid: 1581632585354969103
       type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapseAsmDef}
       data:
-        InvalidateTileOnFail: 0
-        goal: {fileID: 11400000, guid: 4b80a1102d96b2940bf959e104e96aab, type: 2}
-        direction: -513
+        goal: {fileID: 11400000, guid: da291c544f6701649b2a2d5ab8cc24c3, type: 2}
+        direction: 509
     - rid: 1581632585354969104
       type: {class: MultiCellIsNotTarget2D, ns: , asm: WaveFunctionCollapseAsmDef}
       data:
-        InvalidateTileOnFail: 0
-        goal: {fileID: 11400000, guid: 3ee41d799c6fbbf40987ce9acd11a4ec, type: 2}
+        goal: {fileID: 11400000, guid: 278a06451b96a704f8ab4d55328ce0a7, type: 2}
         direction: 509

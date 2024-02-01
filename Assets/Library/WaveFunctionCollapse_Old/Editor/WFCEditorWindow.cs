@@ -29,7 +29,7 @@ public class WFCEditorWindow : ExtendedEditorWindow
 		mapParent = (GameObject)EditorGUILayout.ObjectField("Map Parent: ", mapParent, typeof(GameObject), true);
 		wfcTileList = (WFCTileList)EditorGUILayout.ObjectField("Tile List: ", wfcTileList, typeof(WFCTileList), true);
 		exporter = (IWFCExporter)EditorGUILayout.ObjectField("Exporter: ", exporter, typeof(IWFCExporter), true);
-		gridSize = (Vector2Int)EditorGUILayout.Vector2IntField("Size: ", gridSize);
+		gridSize = EditorGUILayout.Vector2IntField("Size: ", gridSize);
 	}
 
 	[SerializeField] WaveFunctionCollapse_CPP dll;

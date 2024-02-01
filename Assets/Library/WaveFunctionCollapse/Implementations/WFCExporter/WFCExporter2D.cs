@@ -3,7 +3,7 @@ using FolvosLibrary.WFC;
 using UnityEngine;
 
 
-[CreateAssetMenu(menuName = "Folvos/WFC/Exporter/BeachExporter"), System.Serializable]
+[CreateAssetMenu(menuName = "Folvos/WFC/Exporter/2D_Exporter"), System.Serializable]
 public class WFCExporter2D : IWFCExporter
 {
 	Transform parent;
